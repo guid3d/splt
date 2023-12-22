@@ -15,7 +15,11 @@ const PageSetPassword = ({ form }: PageSetPasswordProps) => {
             <Text fw={500}>Set Password</Text>
           </Center>
           <Center>
-            <PinInput size="xl" {...form.getInputProps("password")} />
+            <PinInput
+              size="xl"
+              radius="lg"
+              {...form.getInputProps("password")}
+            />
           </Center>
         </Stack>
       </Container>

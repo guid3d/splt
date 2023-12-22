@@ -48,7 +48,7 @@ const ParticipantAvatar = ({ avatar, name }: ParticipantAvatarProps) => {
             console.log("xx");
           }}
         >
-          {/* TOOO: Add avatar */}
+          <Title order={1}>{avatar}</Title>
         </Avatar>
       </Center>
       <Center>

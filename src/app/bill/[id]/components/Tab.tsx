@@ -3,7 +3,12 @@ import { IconListLetters } from "@tabler/icons-react";
 import { IconChartCandle } from "@tabler/icons-react";
 import React from "react";
 
-const Tab = () => {
+type TabProps = {
+  selectedTab: string;
+  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+};
+
+const Tab = ({ selectedTab, setSelectedTab }: TabProps) => {
   const iconProps = {
     style: { width: rem(20), height: rem(20), display: "block" },
     stroke: 1.5,
@@ -11,6 +16,9 @@ const Tab = () => {
 
   return (
     <SegmentedControl
+      value={selectedTab}
+      onChange={setSelectedTab}
+      size="xl"
       data={[
         {
           value: "overview",

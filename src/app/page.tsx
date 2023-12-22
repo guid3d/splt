@@ -20,6 +20,8 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 import AddBillModal from "@/components/AddBillModal";
+import { SPLTIconBig } from "@/components/SPLTIcon";
+import { useRouter } from "next/navigation";
 // import AddBillModal from "@/components/AddBillModal";
 
 const recentlyVisited = [
@@ -31,21 +33,21 @@ const recentlyVisited = [
 ];
 
 const HomePage = () => {
+  const router = useRouter();
   return (
     //TODO: Add app shell here
     <>
       <Container size="xs">
         <Stack gap="xs">
           <Center>
-            <IconReportMoney style={{ width: rem(80), height: rem(80) }} />
-            <Title>SPLT</Title>
+            <SPLTIconBig />
           </Center>
           <Title order={5}>Recent Visited Bill</Title>
           <Stack mb={100} gap="xs">
             {recentlyVisited.map((bill) => (
               <NavLink
                 key={bill.id}
-                href="#required-for-focus"
+                // href="#required-for-focus"
                 label={bill.name}
                 leftSection={<Text>{bill.icon}</Text>}
                 rightSection={
@@ -55,6 +57,9 @@ const HomePage = () => {
                     className="mantine-rotate-rtl"
                   />
                 }
+                onClick={() => {
+                  router.push(`/bill/${bill.id}`);
+                }}
               ></NavLink>
             ))}
           </Stack>

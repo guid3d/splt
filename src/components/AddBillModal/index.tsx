@@ -44,7 +44,7 @@ const AddBillModal = () => {
 
   const form = useForm({
     initialValues: {
-      avatar: "🐥",
+      avatar: "🐔",
       name: "",
       description: "",
       password: "",
@@ -67,7 +67,7 @@ const AddBillModal = () => {
         centered
       >
         <Modal.Overlay />
-        <Modal.Content>
+        <Modal.Content radius={isMobile ? 0 : "l"}>
           <Modal.Header>
             <ActionIcon
               variant="transparent"
