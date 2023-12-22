@@ -14,21 +14,21 @@ import {
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import { BillFormValues } from "..";
+import ModalFooterButton from "@/components/ModalFooterButton";
 
 type PageSetNameProps = {
   form: UseFormReturnType<BillFormValues>;
-  isModalOpened: boolean;
-  pageHandler: any; //TODO: find type for this
+  // // isModalOpened: boolean;
+  // page: number;
+  // // scrollBack: () => void;
+  // pageIncrement: () => void;
+  // isMobile: boolean;
 };
-const PageSetName = ({
-  form,
-  isModalOpened,
-  pageHandler,
-}: PageSetNameProps) => {
+const PageSetName = ({ form }: PageSetNameProps) => {
   return (
-    <div>
-      <Container pb={40}>
-        <Stack justify="space-between">
+    <>
+      <Container>
+        <Stack justify="space-between" pb={40}>
           <Stack>
             <Center>
               {/* <Input
@@ -65,18 +65,7 @@ const PageSetName = ({
           </Stack>
         </Stack>
       </Container>
-      <Affix style={{ bottom: 20, left: 20, right: 20 }}>
-        <Button
-          variant="light"
-          fullWidth
-          onClick={() => {
-            pageHandler.increment();
-          }}
-        >
-          Confirm
-        </Button>
-      </Affix>
-    </div>
+    </>
   );
 };
 
