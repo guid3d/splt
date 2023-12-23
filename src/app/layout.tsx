@@ -1,12 +1,13 @@
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/dates/styles.css";
 
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../theme";
 
 export const metadata = {
-  title: "Mantine Next.js template",
+  title: "SPLT",
   description: "I am using Mantine with Next.js!",
 };
 

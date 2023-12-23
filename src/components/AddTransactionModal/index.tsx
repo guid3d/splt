@@ -1,36 +1,33 @@
 import React, { useCallback, useState } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { Button, Affix, Center, ActionIcon, rem, Stack } from "@mantine/core";
+import { Button, Affix, Center, ActionIcon, Stack, rem } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
-import PageSetName from "./components/PageSetName";
-import PageSetParticipant from "./components/PageSetParticipant";
-import PageSetPassword from "./components/PageSetPassword";
 import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
+import PageSetAmount from "./components/PageSetAmount";
+import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
 
-export interface BillFormValues {
+export interface TransactionFormValues {
   avatar: string;
   name: string;
   description: string;
-  password: string;
+  amount: number;
   participant: string[];
 }
 
-const AddBillModal = () => {
-  const router = useRouter();
+const AddTransactionModal = () => {
   const form = useForm({
     initialValues: {
-      avatar: "🐔",
+      avatar: "🍟",
       name: "",
       description: "",
-      password: "",
+      amount: 0,
       participant: [],
-      // termsOfService: false,
-    } as BillFormValues,
+    } as TransactionFormValues,
 
     validate: {
       // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -38,27 +35,24 @@ const AddBillModal = () => {
   });
 
   return (
-    <form>
+    <form onSubmit={form.onSubmit((values) => console.log(values))}>
       <Modal
-        numPage={3}
+        numPage={2}
         onConfirmClick={() => {
           console.log(form.values);
-          router.push(`/bill/billId`);
+          // router.push(`/bill/billId`);
         }}
-        buttonTitle="Create Bill"
+        isActionIcon
       >
         <Carousel.Slide>
-          <PageSetName form={form} />
+          <PageSetAmount form={form} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSetPassword form={form} />
-        </Carousel.Slide>
-        <Carousel.Slide>
-          <PageSetParticipant form={form} />
+          <PageSetDetails form={form} />
         </Carousel.Slide>
       </Modal>
     </form>
   );
 };
 
-export default AddBillModal;
+export default AddTransactionModal;

@@ -13,43 +13,14 @@ import {
   Title,
 } from "@mantine/core";
 import React, { useState } from "react";
-import Tab from "./components/Tab";
+import Tab, { TabType } from "./components/Tab";
 import { IconChevronRight } from "@tabler/icons-react";
 import TopSummary from "./components/TopSummary";
 import TabOverview from "./components/TabOverview";
 import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
-
-export type BillData = {
-  avatar: string;
-  name: string;
-  description: string;
-  participant: {
-    id: string;
-    name: string;
-    avatar: string;
-  }[];
-  debts: {
-    from: {
-      name: string;
-      avatar: string;
-    };
-    to: {
-      name: string;
-      avatar: string;
-    };
-    amount: number;
-  }[];
-};
-
-export type BillTransactionData = {
-  avatar: string;
-  amount: number;
-  name: string;
-  date: number;
-  description: string;
-  category: string;
-};
+import { BillData, TransactionsData } from "@/types";
+import AddTransactionModal from "@/components/AddTransactionModal";
 
 const billData: BillData = {
   avatar: "🐔",
@@ -61,6 +32,8 @@ const billData: BillData = {
     { id: "zyx", name: "Adam", avatar: "👩🏻‍🎤" },
     { id: "ss", name: "Tim", avatar: "🐶" },
   ],
+  totalAmount: 3000.89,
+  currency: "EUR",
   debts: [
     {
       from: { name: "Sarah", avatar: "👩🏻‍💼" },
@@ -80,8 +53,9 @@ const billData: BillData = {
   ],
 };
 
-const transactionsData = [
+const transactionsData: TransactionsData[] = [
   {
+    type: "expense",
     avatar: "🛫",
     amount: 340.94,
     name: "Plane Ticket",
@@ -90,6 +64,7 @@ const transactionsData = [
     category: "Transportation",
   },
   {
+    type: "expense",
     avatar: "🏨",
     amount: 93.5,
     name: "Hotel in San Francisco",
@@ -98,6 +73,7 @@ const transactionsData = [
     category: "Accomodation",
   },
   {
+    type: "expense",
     avatar: "🏨",
     amount: 49,
     name: "Panda Express",
@@ -105,27 +81,37 @@ const transactionsData = [
     description: "Dinner",
     category: "Food",
   },
+  {
+    type: "payback",
+    from: { name: "Sarah", avatar: "👩🏻‍💼" },
+    to: { name: "John", avatar: "🧑🏻‍💻" },
+    amount: 340.94,
+    date: 1703274999999,
+  },
 ];
 
 const BillPage = () => {
-  const [selectedTab, setSelectedTab] = useState("overview");
+  const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
 
   return (
-    <Container size="xs" mt="md">
-      <SPLTIconSmall />
-      <Stack>
-        <Center pb="xl">
-          <TopSummary billData={billData} />
-        </Center>
-        <Center>
-          <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-        </Center>
-        {selectedTab === "overview" && <TabOverview billData={billData} />}
-        {selectedTab === "transactions" && (
-          <TabTransactions billTransactionData={transactionsData} />
-        )}
-      </Stack>
-    </Container>
+    <>
+      <Container size="xs" mt="md">
+        <SPLTIconSmall />
+        <Stack>
+          <Center>
+            <TopSummary billData={billData} selectedTab={selectedTab} />
+          </Center>
+          <Center>
+            <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          </Center>
+          {selectedTab === "overview" && <TabOverview billData={billData} />}
+          {selectedTab === "transactions" && (
+            <TabTransactions billTransactionData={transactionsData} />
+          )}
+        </Stack>
+      </Container>
+      <AddTransactionModal />
+    </>
   );
 };
 

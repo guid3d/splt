@@ -3,9 +3,14 @@ import { IconListLetters } from "@tabler/icons-react";
 import { IconChartCandle } from "@tabler/icons-react";
 import React from "react";
 
+export enum TabType {
+  Transactions = "transactions",
+  Overview = "overview",
+}
+
 type TabProps = {
   selectedTab: string;
-  setSelectedTab: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedTab: React.Dispatch<React.SetStateAction<TabType>>;
 };
 
 const Tab = ({ selectedTab, setSelectedTab }: TabProps) => {
@@ -17,24 +22,24 @@ const Tab = ({ selectedTab, setSelectedTab }: TabProps) => {
   return (
     <SegmentedControl
       value={selectedTab}
-      onChange={setSelectedTab}
+      onChange={(e) => setSelectedTab(e as TabType)}
       size="xl"
       data={[
         {
-          value: "overview",
-          label: (
-            <>
-              <IconChartCandle {...iconProps} />
-              <VisuallyHidden>Overview</VisuallyHidden>
-            </>
-          ),
-        },
-        {
-          value: "transactions",
+          value: TabType.Transactions,
           label: (
             <>
               <IconListLetters {...iconProps} />
               <VisuallyHidden>Transactions</VisuallyHidden>
+            </>
+          ),
+        },
+        {
+          value: TabType.Overview,
+          label: (
+            <>
+              <IconChartCandle {...iconProps} />
+              <VisuallyHidden>Overview</VisuallyHidden>
             </>
           ),
         },

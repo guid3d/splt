@@ -8,10 +8,12 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import { BillTransactionData } from "../page";
+import { TransactionsData } from "@/types";
+import { DatesProvider } from "@mantine/dates";
+import { DateToCalendar } from "@/utils/date";
 
 type TabTransactionsProps = {
-  billTransactionData: BillTransactionData[];
+  billTransactionData: TransactionsData[];
 };
 
 const TabTransactions = ({ billTransactionData }: TabTransactionsProps) => {
@@ -19,28 +21,56 @@ const TabTransactions = ({ billTransactionData }: TabTransactionsProps) => {
     <>
       <Text fw={500}>Transactions</Text>
       <Stack mb={100} gap="xs">
-        {billTransactionData.map((trans, index) => (
-          <NavLink
-            key={index}
-            label={trans.name}
-            description={trans.date}
-            leftSection={
-              <Avatar>
-                <Title order={2}>{trans.avatar}</Title>
-              </Avatar>
-            }
-            rightSection={
-              <Title order={5}>
-                <NumberFormatter
-                  prefix="€ "
-                  value={trans.amount}
-                  thousandSeparator="."
-                  decimalSeparator=","
-                />
-              </Title>
-            }
-          ></NavLink>
-        ))}
+        {billTransactionData.map((trans, index) =>
+          trans.type === "expense" ? (
+            <NavLink
+              key={index}
+              label={trans.name}
+              description={DateToCalendar({ date: trans.date })}
+              leftSection={
+                <Avatar>
+                  <Title order={3}>{trans.avatar}</Title>
+                </Avatar>
+              }
+              rightSection={
+                <Title order={5}>
+                  <NumberFormatter
+                    prefix="€ "
+                    value={trans.amount}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                  />
+                </Title>
+              }
+            ></NavLink>
+          ) : trans.type === "payback" ? (
+            <NavLink
+              key={index}
+              label={`${trans.from.name} → ${trans.to.name}`}
+              description={DateToCalendar({ date: trans.date })}
+              leftSection={
+                <Avatar>
+                  <Title style={{ transform: "translate(2px)" }} order={4}>
+                    {trans.from.avatar}
+                  </Title>
+                  <Title style={{ transform: "translate(-2px)" }} order={4}>
+                    {trans.to.avatar}
+                  </Title>
+                </Avatar>
+              }
+              rightSection={
+                <Title order={5}>
+                  <NumberFormatter
+                    prefix="€ "
+                    value={trans.amount}
+                    thousandSeparator="."
+                    decimalSeparator=","
+                  />
+                </Title>
+              }
+            ></NavLink>
+          ) : null
+        )}
       </Stack>
     </>
   );

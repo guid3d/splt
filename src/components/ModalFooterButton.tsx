@@ -2,38 +2,41 @@ import { Affix, Button } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import React from "react";
 import { BillFormValues } from "./AddBillModal";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type ModalFooterButtonProps = {
-  form: UseFormReturnType<BillFormValues>;
+  // form: UseFormReturnType<BillFormValues>;
   isMobile: boolean;
   page: number;
+  maxPage: number;
   isModalOpened: boolean;
   pageIncrement: () => void;
+  confirmFunction: () => void;
 };
 
 const ModalFooterButton = ({
-  form,
+  // form,
   isMobile,
   page,
+  maxPage,
   isModalOpened,
   pageIncrement,
+  confirmFunction,
 }: ModalFooterButtonProps) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   if (isMobile) {
+    // Mobile
     if (isModalOpened) {
-      if (page === 2) {
+      if (page === maxPage) {
         return (
           <Affix style={{ bottom: 20, left: 20, right: 20 }}>
             <Button
               variant="light"
               fullWidth
-              onClick={() => {
-                console.log(form.values);
-                router.push(`/bill/${"billIdxxx"}`);
-              }}
+              onClick={confirmFunction}
               radius="xl"
+              // type="submit"
             >
               Confirm
             </Button>
@@ -57,17 +60,16 @@ const ModalFooterButton = ({
       }
     }
   } else {
+    // Desktop
     if (isModalOpened) {
-      if (page === 2) {
+      if (page === maxPage) {
         return (
           <Button
             variant="light"
             fullWidth
-            onClick={() => {
-              console.log(form.values);
-              router.push(`/bill/${"billIdxxx"}`);
-            }}
+            onClick={confirmFunction}
             radius="xl"
+            // type="submit"
           >
             Confirm
           </Button>

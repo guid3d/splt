@@ -8,7 +8,7 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import { BillData } from "../page";
+import { BillData } from "@/types";
 
 type TabOverviewProps = {
   billData: BillData;
@@ -22,7 +22,7 @@ const TabOverview = ({ billData }: TabOverviewProps) => {
         {billData.debts.map((bill, index) => (
           <NavLink
             key={index}
-            href="#required-for-focus"
+            // href="#required-for-focus"
             label={`${bill.from.name} → ${bill.to.name}`}
             leftSection={
               <AvatarGroup>
