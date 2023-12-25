@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import { BillFormValues } from "..";
-import ModalFooterButton from "@/components/ModalFooterButton";
+import EmojiActionButtion from "@/components/EmojiActionButtion";
 
 type PageSetNameProps = {
   form: UseFormReturnType<BillFormValues>;
@@ -26,12 +26,11 @@ type PageSetNameProps = {
 };
 const PageSetName = ({ form }: PageSetNameProps) => {
   return (
-    <>
-      <Container>
-        <Stack justify="space-between" pb={40}>
-          <Stack>
-            <Center>
-              {/* <Input
+    <Container>
+      <Stack justify="space-between" pb={40}>
+        <Stack>
+          <Center>
+            {/* <Input
               variant="filled"
               size={rem(60)}
               radius={rem(60)}
@@ -45,27 +44,27 @@ const PageSetName = ({ form }: PageSetNameProps) => {
               }}
               maxLength={2}
             /> */}
-              <ActionIcon variant="default" size={rem(100)} radius={rem(100)}>
-                <Title order={1} style={{ fontSize: rem(60) }}>
-                  {form.values.avatar}
-                </Title>
-              </ActionIcon>
-            </Center>
-            <TextInput
-              label="Name"
-              placeholder="Trip to chicken farm"
-              {...form.getInputProps("name")}
-            />
-            <TextInput
-              label="Description (optional)"
-              placeholder="Last weekend of March 2023"
-              {...form.getInputProps("description")}
-            />
-            <Space />
-          </Stack>
+            {/* <ActionIcon variant="default" size={rem(100)} radius={rem(100)}>
+              <Title order={1} style={{ fontSize: rem(60) }}>
+                {form.values.avatar}
+              </Title>
+            </ActionIcon> */}
+            <EmojiActionButtion />
+          </Center>
+          <TextInput
+            label="Name"
+            placeholder="Trip to chicken farm"
+            {...form.getInputProps("name")}
+          />
+          <TextInput
+            label="Description (optional)"
+            placeholder="Last weekend of March 2023"
+            {...form.getInputProps("description")}
+          />
+          <Space />
         </Stack>
-      </Container>
-    </>
+      </Stack>
+    </Container>
   );
 };
 

@@ -11,12 +11,14 @@ import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
+import { StoreEmojiData } from "@/types";
 
 export interface BillFormValues {
-  avatar: string;
+  avatar: StoreEmojiData;
   name: string;
   description: string;
   password: string;
+  currency: string;
   participant: string[];
 }
 
@@ -24,10 +26,11 @@ const AddBillModal = () => {
   const router = useRouter();
   const form = useForm({
     initialValues: {
-      avatar: "🐔",
+      avatar: { emoji: "😄", unified: "1f604" },
       name: "",
       description: "",
       password: "",
+      currency: "EUR",
       participant: [],
       // termsOfService: false,
     } as BillFormValues,

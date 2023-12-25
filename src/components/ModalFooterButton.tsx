@@ -30,7 +30,7 @@ const ModalFooterButton = ({
     if (isModalOpened) {
       if (page === maxPage) {
         return (
-          <Affix style={{ bottom: 20, left: 20, right: 20 }}>
+          <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
             <Button
               variant="light"
               fullWidth
@@ -44,7 +44,7 @@ const ModalFooterButton = ({
         );
       } else {
         return (
-          <Affix style={{ bottom: 20, left: 20, right: 20 }}>
+          <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
             <Button
               variant="light"
               fullWidth

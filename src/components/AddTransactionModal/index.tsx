@@ -10,9 +10,10 @@ import { useRouter } from "next/navigation";
 import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
+import { StoreEmojiData } from "@/types";
 
 export interface TransactionFormValues {
-  avatar: string;
+  avatar: StoreEmojiData;
   name: string;
   description: string;
   amount: number;
@@ -22,7 +23,7 @@ export interface TransactionFormValues {
 const AddTransactionModal = () => {
   const form = useForm({
     initialValues: {
-      avatar: "🍟",
+      avatar: { emoji: "😄", unified: "1f604" },
       name: "",
       description: "",
       amount: 0,

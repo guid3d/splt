@@ -47,3 +47,8 @@ export type PaybackTransactionData = {
   amount: number;
   date: number;
 };
+
+export type StoreEmojiData = {
+  emoji: string;
+  unified: string;
+};
