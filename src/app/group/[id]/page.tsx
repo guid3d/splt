@@ -23,7 +23,7 @@ import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
 
 const groupData: GroupData = {
-  avatar: "🐔",
+  avatar: { emoji: "🐔", unified: "sss" },
   name: "Trips to Chicken Farm",
   description: "A weekend in Silicon Valley",
   participant: [
@@ -60,18 +60,18 @@ const groupData: GroupData = {
   currency: "EUR",
   debts: [
     {
-      from: { name: "Sarah", avatar: "👩🏻‍💼" },
-      to: { name: "John", avatar: "🧑🏻‍💻" },
+      from: { name: "Sarah", avatar: { emoji: "👩🏻‍💼", unified: "xxx" } },
+      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
       amount: 340.94,
     },
     {
-      from: { name: "John", avatar: "🧑🏻‍💻" },
-      to: { name: "Adam", avatar: "👩🏻‍🎤" },
+      from: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
+      to: { name: "Adam", avatar: { emoji: "👩🏻‍🎤", unified: "xxx" } },
       amount: 33.5,
     },
     {
-      from: { name: "Tim", avatar: "🐶" },
-      to: { name: "John", avatar: "🧑🏻‍💻" },
+      from: { name: "Tim", avatar: { emoji: "🐶", unified: "xxx" } },
+      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
       amount: 46.0,
     },
   ],
@@ -80,7 +80,7 @@ const groupData: GroupData = {
 const transactionsData: TransactionsData[] = [
   {
     type: "expense",
-    avatar: "🛫",
+    avatar: { emoji: "🛫", unified: "xxx" },
     amount: 340.94,
     name: "Plane Ticket",
     date: 1703274759246,
@@ -89,7 +89,7 @@ const transactionsData: TransactionsData[] = [
   },
   {
     type: "expense",
-    avatar: "🏨",
+    avatar: { emoji: "🏨", unified: "xxx" },
     amount: 93.5,
     name: "Hotel in San Francisco",
     date: 1703274759246,
@@ -98,7 +98,7 @@ const transactionsData: TransactionsData[] = [
   },
   {
     type: "expense",
-    avatar: "🏨",
+    avatar: { emoji: "🍔", unified: "xxx" },
     amount: 49,
     name: "Panda Express",
     date: 1703274759246,

@@ -5,7 +5,7 @@ import { useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import PageSetName from "./components/PageSetName";
-import PageSetParticipant from "./components/PageSetParticipant";
+import PageAddParticipant from "./components/PageAddParticipant";
 import PageSetPassword from "./components/PageSetPassword";
 import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
@@ -65,7 +65,7 @@ const AddGroupModal = () => {
           <PageSetPassword form={form} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSetParticipant form={form} />
+          <PageAddParticipant form={form} />
         </Carousel.Slide>
       </Modal>
     </form>

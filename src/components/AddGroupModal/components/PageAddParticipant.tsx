@@ -23,11 +23,11 @@ import { IconPlus } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 
-type PageSetParticipantProps = {
+type PageAddParticipantProps = {
   form: UseFormReturnType<GroupFormValues>;
 };
 
-const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
+const PageAddParticipant = ({ form }: PageAddParticipantProps) => {
   return (
     <>
       <Container pb={40}>
@@ -45,7 +45,10 @@ const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
                     name={participant.name}
                   />
                 ))}
-                <AddParticipantModal groupForm={form} />
+                <AddParticipantModal
+                  groupForm={form}
+                  disabledPreferredPaymentMethod={true}
+                />
               </SimpleGrid>
             </ScrollArea.Autosize>
           </Center>
@@ -55,4 +58,4 @@ const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
   );
 };
 
-export default PageSetParticipant;
+export default PageAddParticipant;

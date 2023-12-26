@@ -27,10 +27,10 @@ const TabOverview = ({ groupData }: TabOverviewProps) => {
             leftSection={
               <AvatarGroup>
                 <Avatar>
-                  <Title order={2}>{group.from.avatar}</Title>
+                  <Title order={2}>{group.from.avatar.emoji}</Title>
                 </Avatar>
                 <Avatar>
-                  <Title order={2}>{group.to.avatar}</Title>
+                  <Title order={2}>{group.to.avatar.emoji}</Title>
                 </Avatar>
               </AvatarGroup>
             }

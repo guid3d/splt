@@ -26,7 +26,7 @@ export interface TransactionFormValues {
   amount: number;
   splitType: SplitType.Equally | SplitType.Percent | SplitType.Amount;
   everyoneIsParticipant: boolean;
-  participant: Participant[];
+  participant: string[];
 }
 
 type AddTransactionModalProps = {

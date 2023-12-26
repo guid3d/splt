@@ -8,7 +8,7 @@ export interface GroupFormValues {
 }
 
 export type GroupData = {
-  avatar: string;
+  avatar: StoreEmojiData;
   name: string;
   description: string;
   participant: Participant[];
@@ -17,11 +17,11 @@ export type GroupData = {
   debts: {
     from: {
       name: string;
-      avatar: string;
+      avatar: StoreEmojiData;
     };
     to: {
       name: string;
-      avatar: string;
+      avatar: StoreEmojiData;
     };
     amount: number;
   }[];
@@ -31,7 +31,7 @@ export type TransactionsData = PaybackTransactionData | ExpenseTransactionData;
 
 export type ExpenseTransactionData = {
   type: "expense";
-  avatar: string;
+  avatar: StoreEmojiData;
   amount: number;
   name: string;
   date: number;

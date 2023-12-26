@@ -21,12 +21,14 @@
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-imask": "^7.2.1"
+    "react-imask": "^7.2.1",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/uuid": "^9.0.7",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",

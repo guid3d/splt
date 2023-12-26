@@ -29,7 +29,7 @@ const TabTransactions = ({ groupTransactionData }: TabTransactionsProps) => {
               description={DateToCalendar({ date: trans.date })}
               leftSection={
                 <Avatar>
-                  <Title order={3}>{trans.avatar}</Title>
+                  <Title order={3}>{trans.avatar.emoji}</Title>
                 </Avatar>
               }
               rightSection={

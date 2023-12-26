@@ -113,46 +113,6 @@ const Modal = ({
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
-      {/* {!opened &&
-        (!isActionIcon ? (
-          <Affix
-            // TODO: Find the way to center the button without cannot touching behind this button
-            position={{ bottom: 20, right: 0, left: 0 }}
-            // style={{ transform: "translate(-50%, -50%)" }}
-          >
-            <Center>
-              <Button
-                variant="filled"
-                leftSection={<IconPlus size={14} />}
-                onClick={open}
-                justify="center"
-              >
-                {buttonTitle}
-              </Button>
-            </Center>
-          </Affix>
-        ) : (
-          <Affix
-            // TODO: Find the way to center the button without cannot touching behind this button
-            position={{ bottom: 20, right: 20 }}
-          >
-            <Center>
-              <ActionIcon
-                variant="filled"
-                color="gray"
-                size="xl"
-                radius="xl"
-                aria-label="Add Transaction"
-                onClick={open}
-              >
-                <IconPlus
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-            </Center>
-          </Affix>
-        ))} */}
       {!opened && <UnstyledButton onClick={open}>{button}</UnstyledButton>}
     </>
   );

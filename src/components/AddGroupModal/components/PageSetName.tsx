@@ -8,6 +8,7 @@ import {
   Space,
   Stack,
   TextInput,
+  Textarea,
   Title,
   rem,
 } from "@mantine/core";
@@ -27,7 +28,7 @@ const PageSetName = ({ form }: PageSetNameProps) => {
           <Center>
             <EmojiActionButtion form={form} />
           </Center>
-          <TextInput
+          {/* <TextInput
             label="Name"
             placeholder="Trip to chicken farm"
             {...form.getInputProps("name")}
@@ -36,12 +37,10 @@ const PageSetName = ({ form }: PageSetNameProps) => {
             label="Description (optional)"
             placeholder="Last weekend of March 2023"
             {...form.getInputProps("description")}
-          />
+          /> */}
 
-          {/* 
-          TODO: try this style
           <TextInput
-            styles={{ input: { textAlign: "center" } }}
+            styles={{ input: { textAlign: "center", height: rem(40) } }}
             radius={0}
             variant="unstyled"
             // label="Name"
@@ -49,16 +48,17 @@ const PageSetName = ({ form }: PageSetNameProps) => {
             size={rem(30)}
             {...form.getInputProps("name")}
           />
-          <TextInput
+          <Textarea
             styles={{ input: { textAlign: "center" } }}
             radius={0}
             variant="unstyled"
-            // label="Name"
-            // size={rem(30)}
+            autosize
+            minRows={2}
+            maxRows={4}
             placeholder="Description (optional)"
             // placeholder="Last weekend of March 2023"
             {...form.getInputProps("description")}
-          /> */}
+          />
           <Space />
         </Stack>
       </Stack>

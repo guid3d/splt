@@ -31,7 +31,7 @@ const TopSummary = ({ groupData, selectedTab }: TopSummaryProps) => {
           radius={rem(100)}
         >
           <Title order={1} style={{ fontSize: rem(60) }}>
-            {groupData.avatar}
+            {groupData.avatar.emoji}
           </Title>
         </ActionIcon>
       </Center>

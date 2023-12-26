@@ -13,13 +13,12 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { UseFormReturnType } from "@mantine/form";
-import { ParticipantFormValues } from "..";
 import { IMaskInput } from "react-imask";
-import { PaymentMethodType } from "@/types";
+import { Participant, PaymentMethodType } from "@/types";
 
 type PageSetPaymentProps = {
   disabledPreferredPaymentMethod?: boolean;
-  form: UseFormReturnType<ParticipantFormValues>;
+  form: UseFormReturnType<Participant>;
 };
 
 const PageSetPayment = ({

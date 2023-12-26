@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useId, useState, useMemo } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
   Button,
@@ -21,31 +21,13 @@ import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType, StoreEmojiData } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { GroupFormValues } from "@/types";
-import { useId } from "@mantine/hooks";
-
-export interface ParticipantFormValues {
-  randomId: string;
-  avatar: StoreEmojiData;
-  name: string;
-  accountName: string;
-  selectedPaymentMethod: PaymentMethodType;
-  paymentMethod: {
-    iban: string;
-    paypal: string;
-  };
-}
+// import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {
   return (
     <Stack>
       <Center>
-        <Avatar
-          size="lg"
-          radius="xl"
-          onClick={() => {
-            console.log("xx");
-          }}
-        >
+        <Avatar size="lg" radius="xl">
           <IconPlus style={{ width: "70%", height: "70%" }} stroke={1.5} />
         </Avatar>
       </Center>
@@ -54,14 +36,18 @@ const NewParticipantAvatar = () => {
 };
 
 type AddParticipantModalProps = {
+  disabledPreferredPaymentMethod?: boolean;
   groupForm: UseFormReturnType<GroupFormValues>;
 };
 
-const AddParticipantModal = ({ groupForm }: AddParticipantModalProps) => {
-  const uuid = useId("splt");
+const AddParticipantModal = ({
+  groupForm,
+  disabledPreferredPaymentMethod,
+}: AddParticipantModalProps) => {
+  // const [uuid, setuuid] = useState<string>(uuidv4());
+  // const id = useId();
   const form = useForm({
     initialValues: {
-      randomId: uuid,
       avatar: { emoji: "😄", unified: "1f604" },
       name: "",
       accountName: "",
@@ -88,7 +74,6 @@ const AddParticipantModal = ({ groupForm }: AddParticipantModalProps) => {
               ...groupForm.values.participant,
               newParticipant,
             ]);
-            console.log(form.values);
             form.reset();
           }}
           button={
@@ -101,7 +86,10 @@ const AddParticipantModal = ({ groupForm }: AddParticipantModalProps) => {
           }
         >
           <Carousel.Slide>
-            <PageSetPayment form={form} />
+            <PageSetPayment
+              disabledPreferredPaymentMethod={disabledPreferredPaymentMethod}
+              form={form}
+            />
           </Carousel.Slide>
         </Modal>
       </form>
