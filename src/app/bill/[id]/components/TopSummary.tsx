@@ -47,7 +47,7 @@ const TopSummary = ({ billData, selectedTab }: TopSummaryProps) => {
             <AvatarGroup>
               {billData.participant.map((participant, index) => (
                 <Avatar key={index}>
-                  <Title order={2}>{participant.avatar}</Title>
+                  <Title order={2}>{participant.avatar.emoji}</Title>
                 </Avatar>
               ))}
               <Avatar>
@@ -68,7 +68,7 @@ const TopSummary = ({ billData, selectedTab }: TopSummaryProps) => {
           <Center>
             <Title order={2}>
               <NumberFormatter
-                prefix="€ "
+                suffix=" €"
                 value={billData.totalAmount}
                 thousandSeparator="."
                 decimalSeparator=","

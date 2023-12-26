@@ -37,7 +37,7 @@ const TabOverview = ({ billData }: TabOverviewProps) => {
             rightSection={
               <Title order={5}>
                 <NumberFormatter
-                  prefix="€ "
+                  suffix=" €"
                   value={bill.amount}
                   thousandSeparator="."
                   decimalSeparator=","

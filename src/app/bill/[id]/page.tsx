@@ -19,7 +19,7 @@ import TopSummary from "./components/TopSummary";
 import TabOverview from "./components/TabOverview";
 import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
-import { BillData, TransactionsData } from "@/types";
+import { BillData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
 
 const billData: BillData = {
@@ -27,10 +27,34 @@ const billData: BillData = {
   name: "Trips to Chicken Farm",
   description: "A weekend in Silicon Valley",
   participant: [
-    { id: "xxx", name: "Sarah", avatar: "👩🏻‍💼" },
-    { id: "xyz", name: "John", avatar: "🧑🏻‍💻" },
-    { id: "zyx", name: "Adam", avatar: "👩🏻‍🎤" },
-    { id: "ss", name: "Tim", avatar: "🐶" },
+    {
+      name: "Sarah",
+      avatar: { emoji: "👩🏻‍💼", unified: "xxx" },
+      accountName: "Sarah Mooler",
+      selectedPaymentMethod: PaymentMethodType.Iban,
+      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
+    },
+    {
+      name: "John",
+      avatar: { emoji: "🧑🏻‍💻", unified: "xxx" },
+      accountName: "John Mooler",
+      selectedPaymentMethod: PaymentMethodType.Iban,
+      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
+    },
+    {
+      name: "Adam",
+      avatar: { emoji: "👩🏻‍🎤", unified: "xxx" },
+      accountName: "Adam Mooler",
+      selectedPaymentMethod: PaymentMethodType.Iban,
+      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
+    },
+    {
+      name: "Tim",
+      avatar: { emoji: "🐶", unified: "xxx" },
+      accountName: "Tim Mooler",
+      selectedPaymentMethod: PaymentMethodType.Iban,
+      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
+    },
   ],
   totalAmount: 3000.89,
   currency: "EUR",
@@ -110,7 +134,7 @@ const BillPage = () => {
           )}
         </Stack>
       </Container>
-      <AddTransactionModal />
+      <AddTransactionModal billData={billData} />
     </>
   );
 };

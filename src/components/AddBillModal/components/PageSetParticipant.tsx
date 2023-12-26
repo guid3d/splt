@@ -18,62 +18,13 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { BillFormValues } from "..";
+import { BillFormValues, StoreEmojiData } from "@/types";
 import { IconPlus } from "@tabler/icons-react";
+import AddParticipantModal from "@/components/AddParticipantModal";
+import ParticipantAvatar from "@/components/ParticipantAvatar";
 
 type PageSetParticipantProps = {
   form: UseFormReturnType<BillFormValues>;
-};
-
-type ParticipantAvatarProps = {
-  avatar: string;
-  name: string;
-};
-
-const participants = [
-  { id: "xxx", name: "You", avatar: "🐥" },
-  { id: "xyz", name: "John Fingerlickesdasdsadr", avatar: "🧑🏻‍💻" },
-  { id: "zyx", name: "Jenny Fingerliadwdawdcker", avatar: "👩🏻‍🎤" },
-  { id: "ss", name: "Jenny Fingerliadwdawdcker", avatar: "👩🏻‍🎤" },
-];
-
-const ParticipantAvatar = ({ avatar, name }: ParticipantAvatarProps) => {
-  return (
-    <Stack>
-      <Center>
-        <Avatar
-          size="lg"
-          radius="xl"
-          onClick={() => {
-            console.log("xx");
-          }}
-        >
-          <Title order={1}>{avatar}</Title>
-        </Avatar>
-      </Center>
-      <Center>
-        <Text truncate="end">{name}</Text>
-      </Center>
-    </Stack>
-  );
-};
-
-const NewParticipantAvatar = () => {
-  return (
-    <Stack>
-      <Center>
-        <Avatar
-          size="lg"
-          radius="xl"
-          onClick={() => {
-            console.log("xx");
-          }}
-        >
-          <IconPlus style={{ width: "70%", height: "70%" }} stroke={1.5} />
-        </Avatar>
-      </Center>
-    </Stack>
-  );
 };
 
 const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
@@ -82,19 +33,19 @@ const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
       <Container pb={40}>
         <Stack gap={"xl"}>
           <Center>
-            <Text fw={500}>Select Participant</Text>
+            <Text fw={500}>Participant</Text>
           </Center>
           <Center>
             <ScrollArea.Autosize mah={400}>
               <SimpleGrid cols={3}>
-                {participants.map((participant) => (
+                {form.values.participant.map((participant, index) => (
                   <ParticipantAvatar
-                    key={participant.id}
+                    key={index}
                     avatar={participant.avatar}
                     name={participant.name}
                   />
                 ))}
-                <NewParticipantAvatar />
+                <AddParticipantModal billForm={form} />
               </SimpleGrid>
             </ScrollArea.Autosize>
           </Center>

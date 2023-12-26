@@ -35,7 +35,7 @@ const TabTransactions = ({ billTransactionData }: TabTransactionsProps) => {
               rightSection={
                 <Title order={5}>
                   <NumberFormatter
-                    prefix="€ "
+                    suffix=" €"
                     value={trans.amount}
                     thousandSeparator="."
                     decimalSeparator=","
@@ -61,7 +61,7 @@ const TabTransactions = ({ billTransactionData }: TabTransactionsProps) => {
               rightSection={
                 <Title order={5}>
                   <NumberFormatter
-                    prefix="€ "
+                    suffix=" €"
                     value={trans.amount}
                     thousandSeparator="."
                     decimalSeparator=","

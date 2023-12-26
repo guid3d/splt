@@ -13,16 +13,11 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { BillFormValues } from "..";
+import { BillFormValues } from "@/types";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 
 type PageSetNameProps = {
   form: UseFormReturnType<BillFormValues>;
-  // // isModalOpened: boolean;
-  // page: number;
-  // // scrollBack: () => void;
-  // pageIncrement: () => void;
-  // isMobile: boolean;
 };
 const PageSetName = ({ form }: PageSetNameProps) => {
   return (
@@ -30,26 +25,7 @@ const PageSetName = ({ form }: PageSetNameProps) => {
       <Stack justify="space-between" pb={40}>
         <Stack>
           <Center>
-            {/* <Input
-              variant="filled"
-              size={rem(60)}
-              radius={rem(60)}
-              placeholder="🐥"
-              styles={{
-                input: {
-                  textAlign: "center",
-                  width: rem(100),
-                  height: rem(100),
-                },
-              }}
-              maxLength={2}
-            /> */}
-            {/* <ActionIcon variant="default" size={rem(100)} radius={rem(100)}>
-              <Title order={1} style={{ fontSize: rem(60) }}>
-                {form.values.avatar}
-              </Title>
-            </ActionIcon> */}
-            <EmojiActionButtion />
+            <EmojiActionButtion form={form} />
           </Center>
           <TextInput
             label="Name"
@@ -61,6 +37,28 @@ const PageSetName = ({ form }: PageSetNameProps) => {
             placeholder="Last weekend of March 2023"
             {...form.getInputProps("description")}
           />
+
+          {/* 
+          TODO: try this style
+          <TextInput
+            styles={{ input: { textAlign: "center" } }}
+            radius={0}
+            variant="unstyled"
+            // label="Name"
+            placeholder="Name of the bill"
+            size={rem(30)}
+            {...form.getInputProps("name")}
+          />
+          <TextInput
+            styles={{ input: { textAlign: "center" } }}
+            radius={0}
+            variant="unstyled"
+            // label="Name"
+            // size={rem(30)}
+            placeholder="Description (optional)"
+            // placeholder="Last weekend of March 2023"
+            {...form.getInputProps("description")}
+          /> */}
           <Space />
         </Stack>
       </Stack>

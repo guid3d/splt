@@ -1,7 +1,7 @@
 import { Affix, Button } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import React from "react";
-import { BillFormValues } from "./AddBillModal";
+import { BillFormValues } from "@/types";
 // import { useRouter } from "next/navigation";
 
 type ModalFooterButtonProps = {

@@ -8,6 +8,7 @@ import {
   ActionIcon,
   rem,
   Stack,
+  UnstyledButton,
 } from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
@@ -18,17 +19,19 @@ import ModalFooterButton from "./ModalFooterButton";
 type ModalPropsType = {
   children: React.ReactNode;
   numPage: number;
-  isActionIcon?: boolean;
+  // isActionIcon?: boolean;
   onConfirmClick: () => void;
-  buttonTitle?: string;
+  // buttonTitle?: string;
+  button: React.ReactNode;
 };
 
 const Modal = ({
   numPage,
-  isActionIcon,
+  // isActionIcon,
   children,
   onConfirmClick,
-  buttonTitle,
+  // buttonTitle,
+  button,
 }: ModalPropsType) => {
   const maxPage = numPage - 1;
   const [opened, { open, close }] = useDisclosure(false);
@@ -110,7 +113,7 @@ const Modal = ({
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
-      {!opened &&
+      {/* {!opened &&
         (!isActionIcon ? (
           <Affix
             // TODO: Find the way to center the button without cannot touching behind this button
@@ -149,7 +152,8 @@ const Modal = ({
               </ActionIcon>
             </Center>
           </Affix>
-        ))}
+        ))} */}
+      {!opened && <UnstyledButton onClick={open}>{button}</UnstyledButton>}
     </>
   );
 };

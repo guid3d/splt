@@ -11,16 +11,7 @@ import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
-import { StoreEmojiData } from "@/types";
-
-export interface BillFormValues {
-  avatar: StoreEmojiData;
-  name: string;
-  description: string;
-  password: string;
-  currency: string;
-  participant: string[];
-}
+import { BillFormValues, Participant, StoreEmojiData } from "@/types";
 
 const AddBillModal = () => {
   const router = useRouter();
@@ -48,7 +39,24 @@ const AddBillModal = () => {
           console.log(form.values);
           router.push(`/bill/billId`);
         }}
-        buttonTitle="Create Bill"
+        button={
+          <Affix
+            // TODO: Find the way to center the button without cannot touching behind this button
+            position={{ bottom: 20, right: 0, left: 0 }}
+            // style={{ transform: "translate(-50%, -50%)" }}
+          >
+            <Center>
+              <Button
+                variant="filled"
+                leftSection={<IconPlus size={14} />}
+                // onClick={open}
+                justify="center"
+              >
+                Create Bill
+              </Button>
+            </Center>
+          </Affix>
+        }
       >
         <Carousel.Slide>
           <PageSetName form={form} />

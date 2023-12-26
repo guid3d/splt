@@ -5,6 +5,7 @@ import {
   rem,
   Modal as MantineModal,
   Stack,
+  Indicator,
 } from "@mantine/core";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import React, { useState } from "react";
@@ -13,6 +14,9 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
 import { TransactionFormValues } from "./AddTransactionModal";
+import { BillFormValues } from "@/types";
+import { IconEdit } from "@tabler/icons-react";
+import { IconPencil } from "@tabler/icons-react";
 
 const Picker = dynamic(
   () => {
@@ -22,7 +26,7 @@ const Picker = dynamic(
 );
 
 type EmojiActionButtionProps = {
-  form: UseFormReturnType<TransactionFormValues>;
+  form: UseFormReturnType<any>;
 };
 
 const EmojiActionButtion = ({ form }: EmojiActionButtionProps) => {
@@ -88,16 +92,26 @@ const EmojiActionButtion = ({ form }: EmojiActionButtionProps) => {
         </MantineModal.Content>
       </MantineModal.Root>
       {!opened && (
-        <ActionIcon
-          variant="default"
-          size={rem(100)}
-          radius={rem(100)}
+        <Indicator
+          color="gray"
           onClick={open}
+          offset={13}
+          position="bottom-end"
+          size={35}
+          withBorder
+          label={<IconPencil size={20} width={20} height={20} stroke={1.5} />}
         >
-          <Title order={1} style={{ fontSize: rem(60) }}>
-            {form.values.avatar.emoji}
-          </Title>
-        </ActionIcon>
+          <ActionIcon
+            variant="default"
+            size={rem(100)}
+            radius={rem(100)}
+            onClick={open}
+          >
+            <Title order={1} style={{ fontSize: rem(60) }}>
+              {form.values.avatar.emoji}
+            </Title>
+          </ActionIcon>
+        </Indicator>
       )}
     </>
   );

@@ -1,12 +1,17 @@
+export interface BillFormValues {
+  avatar: StoreEmojiData;
+  name: string;
+  description: string;
+  password: string;
+  currency: string;
+  participant: Participant[];
+}
+
 export type BillData = {
   avatar: string;
   name: string;
   description: string;
-  participant: {
-    id: string;
-    name: string;
-    avatar: string;
-  }[];
+  participant: Participant[];
   totalAmount: number;
   currency: string;
   debts: {
@@ -52,3 +57,20 @@ export type StoreEmojiData = {
   emoji: string;
   unified: string;
 };
+
+export type Participant = {
+  avatar: StoreEmojiData;
+  name: string;
+  accountName: string;
+  selectedPaymentMethod: PaymentMethodType;
+  paymentMethod: {
+    iban: string;
+    paypal: string;
+  };
+};
+
+export enum PaymentMethodType {
+  Iban = "iban",
+  Paypal = "paypal",
+  Cash = "cash",
+}
