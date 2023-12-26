@@ -12,7 +12,7 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tab, { TabType } from "./components/Tab";
 import { IconChevronRight } from "@tabler/icons-react";
 import TopSummary from "./components/TopSummary";
@@ -21,7 +21,7 @@ import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
 import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
-
+import { resultList } from "@/api/pocketbase";
 const groupData: GroupData = {
   avatar: { emoji: "🐔", unified: "sss" },
   name: "Trips to Chicken Farm",
@@ -116,7 +116,10 @@ const transactionsData: TransactionsData[] = [
 
 const GroupPage = () => {
   const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
-
+  useEffect(() => {
+    resultList.then((resu) => console.log(resu));
+    // console.log(resu);
+  }, []);
   return (
     <>
       <Container size="xs" mt="md">

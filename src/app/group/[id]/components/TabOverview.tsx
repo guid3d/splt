@@ -17,7 +17,7 @@ type TabOverviewProps = {
 const TabOverview = ({ groupData }: TabOverviewProps) => {
   return (
     <>
-      <Text fw={500}>Overview</Text>
+      <Text fw={500}>Debts</Text>
       <Stack mb={100} gap="xs">
         {groupData.debts.map((group, index) => (
           <NavLink

@@ -14,7 +14,7 @@ import { GroupData, Participant, StoreEmojiData } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 
 export enum SplitType {
-  Equally = "equally",
+  Equal = "equal",
   Percent = "percent",
   Amount = "amount",
 }
@@ -24,7 +24,7 @@ export interface TransactionFormValues {
   name: string;
   description: string;
   amount: number;
-  splitType: SplitType.Equally | SplitType.Percent | SplitType.Amount;
+  splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
   everyoneIsParticipant: boolean;
   participant: string[];
 }
@@ -40,7 +40,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       name: "",
       description: "",
       amount: 0,
-      splitType: SplitType.Equally,
+      splitType: SplitType.Equal,
       everyoneIsParticipant: true,
       participant: [],
     } as TransactionFormValues,

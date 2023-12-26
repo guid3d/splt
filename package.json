@@ -19,6 +19,7 @@
     "embla-carousel-react": "^7.1.0",
     "emoji-picker-react": "^4.5.16",
     "next": "14.0.4",
+    "pocketbase": "^0.20.1",
     "react": "^18",
     "react-dom": "^18",
     "react-imask": "^7.2.1",

@@ -85,7 +85,7 @@ const PageSelectParticipant = ({
               form.setFieldValue("split", value);
             }}
             data={[
-              { label: "Equally", value: SplitType.Equally },
+              { label: "Equal", value: SplitType.Equal },
               { label: "Percent", value: SplitType.Percent, disabled: true },
               { label: "Amount", value: SplitType.Amount, disabled: true },
             ]}
