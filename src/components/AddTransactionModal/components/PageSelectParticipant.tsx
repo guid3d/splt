@@ -16,15 +16,15 @@ import React, { useState } from "react";
 import { SplitType, TransactionFormValues } from "..";
 import { UseFormReturnType } from "@mantine/form";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
-import { BillData } from "@/types";
+import { GroupData } from "@/types";
 
 type PageSelectParticipantProps = {
-  billData: BillData;
+  groupData: GroupData;
   form: UseFormReturnType<TransactionFormValues>;
 };
 
 const PageSelectParticipant = ({
-  billData,
+  groupData,
   form,
 }: PageSelectParticipantProps) => {
   const combobox = useCombobox();
@@ -106,7 +106,7 @@ const PageSelectParticipant = ({
               </Combobox.EventsTarget> */}
                 <Combobox.Options>
                   <SimpleGrid cols={3} spacing={0}>
-                    {billData.participant.map((item, index) => (
+                    {groupData.participant.map((item, index) => (
                       <Combobox.Option
                         key={index}
                         value={item.name}

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
-import { BillData, Participant, StoreEmojiData } from "@/types";
+import { GroupData, Participant, StoreEmojiData } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 
 export enum SplitType {
@@ -30,10 +30,10 @@ export interface TransactionFormValues {
 }
 
 type AddTransactionModalProps = {
-  billData: BillData;
+  groupData: GroupData;
 };
 
-const AddTransactionModal = ({ billData }: AddTransactionModalProps) => {
+const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -56,7 +56,7 @@ const AddTransactionModal = ({ billData }: AddTransactionModalProps) => {
         numPage={3}
         onConfirmClick={() => {
           console.log(form.values);
-          // router.push(`/bill/billId`);
+          // router.push(`/group/groupId`);
         }}
         button={
           <Affix
@@ -87,7 +87,7 @@ const AddTransactionModal = ({ billData }: AddTransactionModalProps) => {
           <PageSetDetails form={form} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSelectParticipant form={form} billData={billData} />
+          <PageSelectParticipant form={form} groupData={groupData} />
         </Carousel.Slide>
       </Modal>
     </form>

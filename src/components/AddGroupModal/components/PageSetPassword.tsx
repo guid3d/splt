@@ -1,10 +1,10 @@
 import { Center, Container, PinInput, Stack, Text } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { BillFormValues } from "@/types";
+import { GroupFormValues } from "@/types";
 
 type PageSetPasswordProps = {
-  form: UseFormReturnType<BillFormValues>;
+  form: UseFormReturnType<GroupFormValues>;
 };
 const PageSetPassword = ({ form }: PageSetPasswordProps) => {
   return (

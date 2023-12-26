@@ -18,13 +18,13 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { BillFormValues, StoreEmojiData } from "@/types";
+import { GroupFormValues, StoreEmojiData } from "@/types";
 import { IconPlus } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 
 type PageSetParticipantProps = {
-  form: UseFormReturnType<BillFormValues>;
+  form: UseFormReturnType<GroupFormValues>;
 };
 
 const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
@@ -45,7 +45,7 @@ const PageSetParticipant = ({ form }: PageSetParticipantProps) => {
                     name={participant.name}
                   />
                 ))}
-                <AddParticipantModal billForm={form} />
+                <AddParticipantModal groupForm={form} />
               </SimpleGrid>
             </ScrollArea.Autosize>
           </Center>

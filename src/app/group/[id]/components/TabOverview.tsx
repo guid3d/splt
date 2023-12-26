@@ -8,29 +8,29 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import { BillData } from "@/types";
+import { GroupData } from "@/types";
 
 type TabOverviewProps = {
-  billData: BillData;
+  groupData: GroupData;
 };
 
-const TabOverview = ({ billData }: TabOverviewProps) => {
+const TabOverview = ({ groupData }: TabOverviewProps) => {
   return (
     <>
       <Text fw={500}>Overview</Text>
       <Stack mb={100} gap="xs">
-        {billData.debts.map((bill, index) => (
+        {groupData.debts.map((group, index) => (
           <NavLink
             key={index}
             // href="#required-for-focus"
-            label={`${bill.from.name} → ${bill.to.name}`}
+            label={`${group.from.name} → ${group.to.name}`}
             leftSection={
               <AvatarGroup>
                 <Avatar>
-                  <Title order={2}>{bill.from.avatar}</Title>
+                  <Title order={2}>{group.from.avatar}</Title>
                 </Avatar>
                 <Avatar>
-                  <Title order={2}>{bill.to.avatar}</Title>
+                  <Title order={2}>{group.to.avatar}</Title>
                 </Avatar>
               </AvatarGroup>
             }
@@ -38,7 +38,7 @@ const TabOverview = ({ billData }: TabOverviewProps) => {
               <Title order={5}>
                 <NumberFormatter
                   suffix=" €"
-                  value={bill.amount}
+                  value={group.amount}
                   thousandSeparator="."
                   decimalSeparator=","
                 />

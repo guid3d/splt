@@ -20,7 +20,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType, StoreEmojiData } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
-import { BillFormValues } from "@/types";
+import { GroupFormValues } from "@/types";
 import { useId } from "@mantine/hooks";
 
 export interface ParticipantFormValues {
@@ -54,10 +54,10 @@ const NewParticipantAvatar = () => {
 };
 
 type AddParticipantModalProps = {
-  billForm: UseFormReturnType<BillFormValues>;
+  groupForm: UseFormReturnType<GroupFormValues>;
 };
 
-const AddParticipantModal = ({ billForm }: AddParticipantModalProps) => {
+const AddParticipantModal = ({ groupForm }: AddParticipantModalProps) => {
   const uuid = useId("splt");
   const form = useForm({
     initialValues: {
@@ -84,8 +84,8 @@ const AddParticipantModal = ({ billForm }: AddParticipantModalProps) => {
           numPage={1}
           onConfirmClick={() => {
             const newParticipant: Participant = form.values;
-            billForm.setFieldValue("participant", [
-              ...billForm.values.participant,
+            groupForm.setFieldValue("participant", [
+              ...groupForm.values.participant,
               newParticipant,
             ]);
             console.log(form.values);

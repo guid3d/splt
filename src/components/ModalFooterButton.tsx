@@ -1,11 +1,11 @@
 import { Affix, Button } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import React from "react";
-import { BillFormValues } from "@/types";
+import { GroupFormValues } from "@/types";
 // import { useRouter } from "next/navigation";
 
 type ModalFooterButtonProps = {
-  // form: UseFormReturnType<BillFormValues>;
+  // form: UseFormReturnType<GroupFormValues>;
   isMobile: boolean;
   page: number;
   maxPage: number;

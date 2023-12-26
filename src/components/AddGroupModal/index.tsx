@@ -11,9 +11,9 @@ import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
-import { BillFormValues, Participant, StoreEmojiData } from "@/types";
+import { GroupFormValues, Participant, StoreEmojiData } from "@/types";
 
-const AddBillModal = () => {
+const AddGroupModal = () => {
   const router = useRouter();
   const form = useForm({
     initialValues: {
@@ -24,7 +24,7 @@ const AddBillModal = () => {
       currency: "EUR",
       participant: [],
       // termsOfService: false,
-    } as BillFormValues,
+    } as GroupFormValues,
 
     validate: {
       // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
@@ -37,7 +37,7 @@ const AddBillModal = () => {
         numPage={3}
         onConfirmClick={() => {
           console.log(form.values);
-          router.push(`/bill/billId`);
+          router.push(`/group/groupId`);
         }}
         button={
           <Affix
@@ -52,7 +52,7 @@ const AddBillModal = () => {
                 // onClick={open}
                 justify="center"
               >
-                Create Bill
+                Create Group
               </Button>
             </Center>
           </Affix>
@@ -72,4 +72,4 @@ const AddBillModal = () => {
   );
 };
 
-export default AddBillModal;
+export default AddGroupModal;

@@ -13,15 +13,15 @@ import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
 
 type TabTransactionsProps = {
-  billTransactionData: TransactionsData[];
+  groupTransactionData: TransactionsData[];
 };
 
-const TabTransactions = ({ billTransactionData }: TabTransactionsProps) => {
+const TabTransactions = ({ groupTransactionData }: TabTransactionsProps) => {
   return (
     <>
       <Text fw={500}>Transactions</Text>
       <Stack mb={100} gap="xs">
-        {billTransactionData.map((trans, index) =>
+        {groupTransactionData.map((trans, index) =>
           trans.type === "expense" ? (
             <NavLink
               key={index}

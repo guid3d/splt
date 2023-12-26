@@ -19,17 +19,17 @@ import {
   IconArrowUp,
   IconPlus,
 } from "@tabler/icons-react";
-import AddBillModal from "@/components/AddBillModal";
+import AddGroupModal from "@/components/AddGroupModal";
 import { SPLTIconBig } from "@/components/SPLTIcon";
 import { useRouter } from "next/navigation";
-// import AddBillModal from "@/components/AddBillModal";
+// import AddGroupModal from "@/components/AddGroupModal";
 
 const recentlyVisited = [
-  { id: "xyz", name: "Bill 1", numPeople: 3, icon: "🍕" },
-  { id: "abc", name: "Bill 2", numPeople: 2, icon: "🍔" },
-  { id: "def", name: "Bill 3", numPeople: 1, icon: "🍟" },
-  { id: "ghi", name: "Bill 4", numPeople: 4, icon: "🌭" },
-  { id: "jkl", name: "Bill 5", numPeople: 5, icon: "🍿" },
+  { id: "xyz", name: "Group 1", numPeople: 3, icon: "🍕" },
+  { id: "abc", name: "Group 2", numPeople: 2, icon: "🍔" },
+  { id: "def", name: "Group 3", numPeople: 1, icon: "🍟" },
+  { id: "ghi", name: "Group 4", numPeople: 4, icon: "🌭" },
+  { id: "jkl", name: "Group 5", numPeople: 5, icon: "🍿" },
 ];
 
 const HomePage = () => {
@@ -42,14 +42,14 @@ const HomePage = () => {
           <Center>
             <SPLTIconBig />
           </Center>
-          <Title order={5}>Recent Visited Bill</Title>
+          <Title order={5}>Recent Visited Group</Title>
           <Stack mb={100} gap="xs">
-            {recentlyVisited.map((bill) => (
+            {recentlyVisited.map((group) => (
               <NavLink
-                key={bill.id}
+                key={group.id}
                 // href="#required-for-focus"
-                label={bill.name}
-                leftSection={<Text>{bill.icon}</Text>}
+                label={group.name}
+                leftSection={<Text>{group.icon}</Text>}
                 rightSection={
                   <IconChevronRight
                     size="0.8rem"
@@ -58,14 +58,14 @@ const HomePage = () => {
                   />
                 }
                 onClick={() => {
-                  router.push(`/bill/${bill.id}`);
+                  router.push(`/group/${group.id}`);
                 }}
               ></NavLink>
             ))}
           </Stack>
         </Stack>
       </Container>
-      <AddBillModal />
+      <AddGroupModal />
     </>
   );
 };

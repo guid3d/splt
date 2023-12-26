@@ -19,10 +19,10 @@ import TopSummary from "./components/TopSummary";
 import TabOverview from "./components/TabOverview";
 import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
-import { BillData, PaymentMethodType, TransactionsData } from "@/types";
+import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
 
-const billData: BillData = {
+const groupData: GroupData = {
   avatar: "🐔",
   name: "Trips to Chicken Farm",
   description: "A weekend in Silicon Valley",
@@ -114,7 +114,7 @@ const transactionsData: TransactionsData[] = [
   },
 ];
 
-const BillPage = () => {
+const GroupPage = () => {
   const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
 
   return (
@@ -123,20 +123,20 @@ const BillPage = () => {
         <SPLTIconSmall />
         <Stack>
           <Center>
-            <TopSummary billData={billData} selectedTab={selectedTab} />
+            <TopSummary groupData={groupData} selectedTab={selectedTab} />
           </Center>
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
-          {selectedTab === "overview" && <TabOverview billData={billData} />}
+          {selectedTab === "overview" && <TabOverview groupData={groupData} />}
           {selectedTab === "transactions" && (
-            <TabTransactions billTransactionData={transactionsData} />
+            <TabTransactions groupTransactionData={transactionsData} />
           )}
         </Stack>
       </Container>
-      <AddTransactionModal billData={billData} />
+      <AddTransactionModal groupData={groupData} />
     </>
   );
 };
 
-export default BillPage;
+export default GroupPage;

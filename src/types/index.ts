@@ -1,4 +1,4 @@
-export interface BillFormValues {
+export interface GroupFormValues {
   avatar: StoreEmojiData;
   name: string;
   description: string;
@@ -7,7 +7,7 @@ export interface BillFormValues {
   participant: Participant[];
 }
 
-export type BillData = {
+export type GroupData = {
   avatar: string;
   name: string;
   description: string;

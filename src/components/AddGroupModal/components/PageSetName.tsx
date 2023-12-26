@@ -13,11 +13,11 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { BillFormValues } from "@/types";
+import { GroupFormValues } from "@/types";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 
 type PageSetNameProps = {
-  form: UseFormReturnType<BillFormValues>;
+  form: UseFormReturnType<GroupFormValues>;
 };
 const PageSetName = ({ form }: PageSetNameProps) => {
   return (
@@ -45,7 +45,7 @@ const PageSetName = ({ form }: PageSetNameProps) => {
             radius={0}
             variant="unstyled"
             // label="Name"
-            placeholder="Name of the bill"
+            placeholder="Name of the group"
             size={rem(30)}
             {...form.getInputProps("name")}
           />
