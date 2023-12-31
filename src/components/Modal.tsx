@@ -21,6 +21,7 @@ type ModalPropsType = {
   numPage: number;
   // isActionIcon?: boolean;
   onConfirmClick: () => void;
+  onCloseModalClick?: () => void;
   // buttonTitle?: string;
   button: React.ReactNode;
 };
@@ -30,6 +31,7 @@ const Modal = ({
   // isActionIcon,
   children,
   onConfirmClick,
+  onCloseModalClick,
   // buttonTitle,
   button,
 }: ModalPropsType) => {
@@ -60,11 +62,13 @@ const Modal = ({
   const onCloseModal = () => {
     close();
     pageHandler.set(0);
+    onCloseModalClick();
   };
 
   const onConfirmClickHandler = () => {
+    close();
+    pageHandler.set(0);
     onConfirmClick();
-    onCloseModal();
   };
 
   return (

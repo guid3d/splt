@@ -36,8 +36,12 @@ const AddGroupModal = () => {
       <Modal
         numPage={3}
         onConfirmClick={() => {
+          form.reset();
           console.log(form.values);
           router.push(`/group/groupId`);
+        }}
+        onCloseModalClick={() => {
+          form.reset();
         }}
         button={
           <Affix

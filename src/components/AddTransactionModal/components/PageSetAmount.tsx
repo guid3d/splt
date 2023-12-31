@@ -1,8 +1,8 @@
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 import { Center, Container, NumberInput, Text, rem } from "@mantine/core";
 import React from "react";
-import { TransactionFormValues } from "..";
 import { UseFormReturnType } from "@mantine/form";
+import { TransactionFormValues } from "@/types";
 
 type PageSetAmountProps = {
   form: UseFormReturnType<TransactionFormValues>;
@@ -12,7 +12,9 @@ const PageSetAmount = ({ form }: PageSetAmountProps) => {
   return (
     <Container>
       <Center>
-        <Text fw={500} mb="xl">Amount</Text>
+        <Text fw={500} mb="xl">
+          Amount
+        </Text>
       </Center>
       <Center>
         <NumberInput

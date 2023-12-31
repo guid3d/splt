@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 dayjs.extend(calendar);
 
-const DateToCalendar = ({ date }: { date: number }) => {
+const DateToCalendar = ({ date }: { date: string }) => {
   return dayjs(date).calendar();
 };
 

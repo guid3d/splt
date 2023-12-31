@@ -1,17 +1,6 @@
 "use client";
 
-import {
-  Avatar,
-  AvatarGroup,
-  Center,
-  Container,
-  NavLink,
-  NumberFormatter,
-  SegmentedControl,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
+import { Center, Container, Stack } from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import Tab, { TabType } from "./components/Tab";
 import { IconChevronRight } from "@tabler/icons-react";
@@ -21,7 +10,9 @@ import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
 import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
-import { resultList } from "@/api/pocketbase";
+import { useParams } from "next/navigation";
+import { useGroup, useTotalSpend } from "@/api";
+// import { resultList } from "@/api/pocketbase";
 const groupData: GroupData = {
   avatar: { emoji: "🐔", unified: "sss" },
   name: "Trips to Chicken Farm",
@@ -83,7 +74,7 @@ const transactionsData: TransactionsData[] = [
     avatar: { emoji: "🛫", unified: "xxx" },
     amount: 340.94,
     name: "Plane Ticket",
-    date: 1703274759246,
+    date: "2023-12-27T16:17:59.769Z",
     description: "Qatar Airways",
     category: "Transportation",
   },
@@ -92,7 +83,7 @@ const transactionsData: TransactionsData[] = [
     avatar: { emoji: "🏨", unified: "xxx" },
     amount: 93.5,
     name: "Hotel in San Francisco",
-    date: 1703274759246,
+    date: "2023-12-27T16:17:59.769Z",
     description: "Holiday Inn",
     category: "Accomodation",
   },
@@ -101,7 +92,7 @@ const transactionsData: TransactionsData[] = [
     avatar: { emoji: "🍔", unified: "xxx" },
     amount: 49,
     name: "Panda Express",
-    date: 1703274759246,
+    date: "2023-12-27T16:17:59.769Z",
     description: "Dinner",
     category: "Food",
   },
@@ -110,23 +101,22 @@ const transactionsData: TransactionsData[] = [
     from: { name: "Sarah", avatar: "👩🏻‍💼" },
     to: { name: "John", avatar: "🧑🏻‍💻" },
     amount: 340.94,
-    date: 1703274999999,
+    date: "2023-12-27T16:17:59.769Z",
   },
 ];
 
 const GroupPage = () => {
   const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
-  useEffect(() => {
-    resultList.then((resu) => console.log(resu));
-    // console.log(resu);
-  }, []);
+  // const { id } = useParams<{ id: string }>();
+  // const { data, isPending, error } = useTotalSpend(id);
+  // console.log(data);
   return (
     <>
       <Container size="xs" mt="md">
         <SPLTIconSmall />
         <Stack>
           <Center>
-            <TopSummary groupData={groupData} selectedTab={selectedTab} />
+            <TopSummary selectedTab={selectedTab} />
           </Center>
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />

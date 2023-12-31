@@ -11,32 +11,37 @@ import React from "react";
 import { TransactionsData } from "@/types";
 import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
+import { useTransactions } from "@/api";
 
 type TabTransactionsProps = {
-  groupTransactionData: TransactionsData[];
+  // groupTransactionData: TransactionsData[];
 };
 
-const TabTransactions = ({ groupTransactionData }: TabTransactionsProps) => {
+const TabTransactions = () => {
+  const { data, isPending, error } = useTransactions();
+  // console.log(data);
   return (
     <>
       <Text fw={500}>Transactions</Text>
       <Stack mb={100} gap="xs">
-        {groupTransactionData.map((trans, index) =>
+        {data?.items.map((trans, index) =>
           trans.type === "expense" ? (
             <NavLink
               key={index}
-              label={trans.name}
-              description={DateToCalendar({ date: trans.date })}
+              label={trans.expand.expenseTransaction?.name}
+              description={DateToCalendar({ date: trans.transactionDateTime })}
               leftSection={
                 <Avatar>
-                  <Title order={3}>{trans.avatar.emoji}</Title>
+                  <Title order={3}>
+                    {trans.expand.expenseTransaction?.avatar.emoji}
+                  </Title>
                 </Avatar>
               }
               rightSection={
                 <Title order={5}>
                   <NumberFormatter
                     suffix=" €"
-                    value={trans.amount}
+                    value={trans.expand.expenseTransaction?.amount}
                     thousandSeparator="."
                     decimalSeparator=","
                   />
@@ -46,15 +51,21 @@ const TabTransactions = ({ groupTransactionData }: TabTransactionsProps) => {
           ) : trans.type === "payback" ? (
             <NavLink
               key={index}
-              label={`${trans.from.name} → ${trans.to.name}`}
-              description={DateToCalendar({ date: trans.date })}
+              label={`${trans.expand.paybackTransaction?.expand.fromPerson.name} → ${trans.expand.paybackTransaction?.expand.toPerson.name}`}
+              description={DateToCalendar({ date: trans.transactionDateTime })}
               leftSection={
                 <Avatar>
                   <Title style={{ transform: "translate(2px)" }} order={4}>
-                    {trans.from.avatar}
+                    {
+                      trans.expand.paybackTransaction?.expand.fromPerson.avatar
+                        .emoji
+                    }
                   </Title>
                   <Title style={{ transform: "translate(-2px)" }} order={4}>
-                    {trans.to.avatar}
+                    {
+                      trans.expand.paybackTransaction?.expand.toPerson.avatar
+                        .emoji
+                    }
                   </Title>
                 </Avatar>
               }
@@ -62,7 +73,7 @@ const TabTransactions = ({ groupTransactionData }: TabTransactionsProps) => {
                 <Title order={5}>
                   <NumberFormatter
                     suffix=" €"
-                    value={trans.amount}
+                    value={trans.expand.paybackTransaction?.amount}
                     thousandSeparator="."
                     decimalSeparator=","
                   />

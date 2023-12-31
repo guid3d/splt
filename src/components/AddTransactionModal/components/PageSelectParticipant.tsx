@@ -15,10 +15,9 @@ import {
   useCombobox,
 } from "@mantine/core";
 import React, { useEffect, useState } from "react";
-import { SplitType, TransactionFormValues } from "..";
 import { UseFormReturnType } from "@mantine/form";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
-import { GroupData } from "@/types";
+import { GroupData, SplitType, TransactionFormValues } from "@/types";
 
 type PageSelectParticipantProps = {
   groupData: GroupData;

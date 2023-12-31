@@ -76,6 +76,9 @@ const AddParticipantModal = ({
             ]);
             form.reset();
           }}
+          onCloseModalClick={() => {
+            form.reset();
+          }}
           button={
             <Stack>
               <NewParticipantAvatar />

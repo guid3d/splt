@@ -13,7 +13,6 @@ import dynamic from "next/dynamic";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
-import { TransactionFormValues } from "./AddTransactionModal";
 import { GroupFormValues } from "@/types";
 import { IconEdit } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";

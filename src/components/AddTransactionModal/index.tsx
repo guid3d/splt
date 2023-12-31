@@ -10,30 +10,27 @@ import { useRouter } from "next/navigation";
 import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
-import { GroupData, Participant, StoreEmojiData } from "@/types";
+import {
+  GroupData,
+  Participant,
+  SplitType,
+  StoreEmojiData,
+  TransactionFormValues,
+} from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
-
-export enum SplitType {
-  Equal = "equal",
-  Percent = "percent",
-  Amount = "amount",
-}
-
-export interface TransactionFormValues {
-  avatar: StoreEmojiData;
-  name: string;
-  description: string;
-  amount: number;
-  splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
-  everyoneIsParticipant: boolean;
-  participant: string[];
-}
+import dayjs from "dayjs";
 
 type AddTransactionModalProps = {
   groupData: GroupData;
 };
 
 const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
+  // console.log(dayjs().toISOString());
+  // const [timeNow, setTimeNow] = useState(() => dayjs().toISOString());
+  // console.log(timeNow);
+
+  // const timeNow = dayjs().toISOString();
+  // console.log(da)
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -43,6 +40,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       splitType: SplitType.Equal,
       everyoneIsParticipant: true,
       participant: [],
+      expenseDateTime: new Date(),
     } as TransactionFormValues,
 
     validate: {
@@ -55,8 +53,12 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       <Modal
         numPage={3}
         onConfirmClick={() => {
+          form.reset();
           console.log(form.values);
           // router.push(`/group/groupId`);
+        }}
+        onCloseModalClick={() => {
+          form.reset();
         }}
         button={
           <Affix

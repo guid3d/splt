@@ -5,6 +5,7 @@ import "@mantine/dates/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../theme";
+import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 
 export const metadata = {
   title: "SPLT",
@@ -23,9 +24,11 @@ const RootLayout = ({ children }: { children: any }) => {
         />
       </head>
       <body>
-        <MantineProvider theme={theme} defaultColorScheme="auto">
-          {children}
-        </MantineProvider>
+        <ReactQueryClientProvider>
+          <MantineProvider theme={theme} defaultColorScheme="auto">
+            {children}
+          </MantineProvider>
+        </ReactQueryClientProvider>
       </body>
     </html>
   );

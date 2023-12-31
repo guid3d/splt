@@ -10,8 +10,11 @@ import {
   rem,
 } from "@mantine/core";
 import React from "react";
-import { TransactionFormValues } from "..";
 import { UseFormReturnType } from "@mantine/form";
+import { TransactionFormValues } from "@/types";
+import { DateTimePicker } from "@mantine/dates";
+import dayjs from "dayjs";
+import { IconCalendarEvent } from "@tabler/icons-react";
 
 type PageSetDetailsProps = {
   form: UseFormReturnType<TransactionFormValues>;
@@ -51,6 +54,21 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
           // placeholder="Last weekend of March 2023"
           {...form.getInputProps("description")}
         />
+        <Center>
+          <DateTimePicker
+            // styles={{ input: { textAlign: "center" } }}
+            valueFormat="DD MMM YYYY, H:mm"
+            radius={0}
+            variant="unstyled"
+            // defaultValue={new Date()}
+            // size="lg"
+            dropdownType="modal"
+            // placeholder="Now"
+            // leftSection={<IconCalendarEvent />}
+            // value={dayjs(form.values.expenseDateTime).va}
+            {...form.getInputProps("expenseDateTime")}
+          ></DateTimePicker>
+        </Center>
       </Stack>
     </Container>
   );
