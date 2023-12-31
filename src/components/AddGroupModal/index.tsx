@@ -12,9 +12,12 @@ import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import { GroupFormValues, Participant, StoreEmojiData } from "@/types";
+import { useCreateGroup } from "@/api";
 
 const AddGroupModal = () => {
+  const createGroupMutation = useCreateGroup();
   const router = useRouter();
+  const [participantIds, setParticipantIds] = useState<string[]>([]);
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -22,7 +25,7 @@ const AddGroupModal = () => {
       description: "",
       password: "",
       currency: "EUR",
-      participant: [],
+      participants: [],
       // termsOfService: false,
     } as GroupFormValues,
 
@@ -36,9 +39,16 @@ const AddGroupModal = () => {
       <Modal
         numPage={3}
         onConfirmClick={() => {
+          const modifiedFormValues = {
+            ...form.values,
+            participants: participantIds,
+          };
+          console.log(modifiedFormValues);
+          createGroupMutation.mutate(modifiedFormValues);
           form.reset();
-          console.log(form.values);
-          router.push(`/group/groupId`);
+          // console.log(form.values);
+          // router.push(`/group/groupId`);
+          // form.setFieldValue("participant", participantIds);
         }}
         onCloseModalClick={() => {
           form.reset();
@@ -69,7 +79,11 @@ const AddGroupModal = () => {
           <PageSetPassword form={form} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageAddParticipant form={form} />
+          <PageAddParticipant
+            form={form}
+            participantIds={participantIds}
+            setParticipantIds={setParticipantIds}
+          />
         </Carousel.Slide>
       </Modal>
     </form>

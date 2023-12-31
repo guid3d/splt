@@ -1,10 +1,19 @@
-export type GroupFormValues = {
-  avatar: StoreEmojiData;
+export type ModifiedGroupFormValues = {
   name: string;
+  avatar: StoreEmojiData;
   description: string;
   password: string;
   currency: string;
-  participant: Participant[];
+  participants: Participant[];
+};
+
+export type GroupFormValues = {
+  name: string;
+  avatar: StoreEmojiData;
+  description: string;
+  password: string;
+  currency: string;
+  participants: Participant[];
 };
 
 export enum SplitType {
@@ -21,7 +30,7 @@ export type TransactionFormValues = {
   amount: number;
   splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
   everyoneIsParticipant: boolean;
-  participant: string[];
+  participants: string[];
 };
 
 export type TotalSpendData = {
@@ -96,6 +105,17 @@ export type StoreEmojiData = {
 };
 
 export type Participant = {
+  avatar: StoreEmojiData;
+  name: string;
+  accountName: string;
+  selectedPaymentMethod: PaymentMethodType;
+  paymentMethod: {
+    iban: string;
+    paypal: string;
+  };
+};
+
+export type ParticipantFormValues = {
   avatar: StoreEmojiData;
   name: string;
   accountName: string;

@@ -39,7 +39,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       amount: 0,
       splitType: SplitType.Equal,
       everyoneIsParticipant: true,
-      participant: [],
+      participants: [],
       expenseDateTime: new Date(),
     } as TransactionFormValues,
 

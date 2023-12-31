@@ -11,10 +11,30 @@ import React from "react";
 import { GroupData } from "@/types";
 
 type TabOverviewProps = {
-  groupData: GroupData;
+  // groupData: GroupData;
 };
 
-const TabOverview = ({ groupData }: TabOverviewProps) => {
+const groupData = {
+  debts: [
+    {
+      from: { name: "Sarah", avatar: { emoji: "👩🏻‍💼", unified: "xxx" } },
+      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
+      amount: 340.94,
+    },
+    {
+      from: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
+      to: { name: "Adam", avatar: { emoji: "👩🏻‍🎤", unified: "xxx" } },
+      amount: 33.5,
+    },
+    {
+      from: { name: "Tim", avatar: { emoji: "🐶", unified: "xxx" } },
+      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
+      amount: 46.0,
+    },
+  ],
+};
+
+const TabOverview = ({}: TabOverviewProps) => {
   return (
     <>
       <Text fw={500}>Debts</Text>

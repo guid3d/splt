@@ -11,62 +11,7 @@ import { SPLTIconSmall } from "@/components/SPLTIcon";
 import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
 import { useParams } from "next/navigation";
-import { useGroup, useTotalSpend } from "@/api";
-// import { resultList } from "@/api/pocketbase";
-const groupData: GroupData = {
-  avatar: { emoji: "🐔", unified: "sss" },
-  name: "Trips to Chicken Farm",
-  description: "A weekend in Silicon Valley",
-  participant: [
-    {
-      name: "Sarah",
-      avatar: { emoji: "👩🏻‍💼", unified: "xxx" },
-      accountName: "Sarah Mooler",
-      selectedPaymentMethod: PaymentMethodType.Iban,
-      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
-    },
-    {
-      name: "John",
-      avatar: { emoji: "🧑🏻‍💻", unified: "xxx" },
-      accountName: "John Mooler",
-      selectedPaymentMethod: PaymentMethodType.Iban,
-      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
-    },
-    {
-      name: "Adam",
-      avatar: { emoji: "👩🏻‍🎤", unified: "xxx" },
-      accountName: "Adam Mooler",
-      selectedPaymentMethod: PaymentMethodType.Iban,
-      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
-    },
-    {
-      name: "Tim",
-      avatar: { emoji: "🐶", unified: "xxx" },
-      accountName: "Tim Mooler",
-      selectedPaymentMethod: PaymentMethodType.Iban,
-      paymentMethod: { iban: "DE12345678901234567890", paypal: "" },
-    },
-  ],
-  totalAmount: 3000.89,
-  currency: "EUR",
-  debts: [
-    {
-      from: { name: "Sarah", avatar: { emoji: "👩🏻‍💼", unified: "xxx" } },
-      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
-      amount: 340.94,
-    },
-    {
-      from: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
-      to: { name: "Adam", avatar: { emoji: "👩🏻‍🎤", unified: "xxx" } },
-      amount: 33.5,
-    },
-    {
-      from: { name: "Tim", avatar: { emoji: "🐶", unified: "xxx" } },
-      to: { name: "John", avatar: { emoji: "🧑🏻‍💻", unified: "xxx" } },
-      amount: 46.0,
-    },
-  ],
-};
+import { useTotalSpend } from "@/api";
 
 const transactionsData: TransactionsData[] = [
   {
@@ -107,8 +52,9 @@ const transactionsData: TransactionsData[] = [
 
 const GroupPage = () => {
   const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
-  // const { id } = useParams<{ id: string }>();
-  // const { data, isPending, error } = useTotalSpend(id);
+
+  const { id } = useParams<{ id: string }>();
+  const groupData = useTotalSpend(id);
   // console.log(data);
   return (
     <>
@@ -116,12 +62,12 @@ const GroupPage = () => {
         <SPLTIconSmall />
         <Stack>
           <Center>
-            <TopSummary selectedTab={selectedTab} />
+            <TopSummary selectedTab={selectedTab} groupData={groupData} />
           </Center>
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
-          {selectedTab === "overview" && <TabOverview groupData={groupData} />}
+          {selectedTab === "overview" && <TabOverview />}
           {selectedTab === "transactions" && (
             <TabTransactions groupTransactionData={transactionsData} />
           )}

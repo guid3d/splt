@@ -12,13 +12,15 @@ import { TransactionsData } from "@/types";
 import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
+import { useParams } from "next/navigation";
 
 type TabTransactionsProps = {
   // groupTransactionData: TransactionsData[];
 };
 
 const TabTransactions = () => {
-  const { data, isPending, error } = useTransactions();
+  const { id } = useParams<{ id: string }>();
+  const { data, isPending, error } = useTransactions(id);
   // console.log(data);
   return (
     <>

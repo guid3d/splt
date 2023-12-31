@@ -1,10 +1,13 @@
 import {
   GroupData,
+  GroupFormValues,
+  ModifiedGroupFormValues,
+  ParticipantFormValues,
   TotalSpendData,
   TransactionFormValues,
   TransactionsData,
 } from "@/types";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
 
 type PbTransactionsList = {
@@ -17,7 +20,7 @@ type PbTransactionsList = {
 
 const pb = new PocketBase("http://127.0.0.1:8090");
 
-const useTransactions = (groupId?: string) => {
+const useTransactions = (groupId: string) => {
   const query = useQuery<PbTransactionsList, Error>({
     queryKey: ["transactions", groupId],
     queryFn: () =>
@@ -26,6 +29,7 @@ const useTransactions = (groupId?: string) => {
         expand:
           "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
         fields: "id, group, type, transactionDateTime, expand",
+        filter: `group.id="${groupId}"`,
         // "id, avatar, amount, name, date, description, category, expenseDateTime",
       }),
     // .then((res) => {
@@ -65,20 +69,38 @@ const useTotalSpend = (groupId: string) => {
   return query;
 };
 
-const useCreateTransaction = (data: TransactionFormValues) => {
-  const mutation = pb.collection("expenses").create(data);
-  const query = useQuery<any, Error>({
-    queryKey: ["createBill", id],
-    queryFn: () =>
-      pb
-        .collection("expenses")
-        .create(data)
-        .then((res) => {
-          console.log(res);
-          return res;
-        }),
+const useCreateParticipant = () => {
+  const mutation = useMutation<any, Error, ParticipantFormValues>({
+    mutationKey: ["createParticipant"],
+
+    mutationFn: (participantForm: ParticipantFormValues) =>
+      pb.collection("participants").create(participantForm),
+    onSuccess: () => {
+      // Update all simulations query
+      // queryClient.invalidateQueries({ queryKey: ["simulations"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
   });
-  return query;
+  return mutation;
 };
 
-export { useTransactions, useTotalSpend };
+const useCreateGroup = () => {
+  const mutation = useMutation<any, Error, ModifiedGroupFormValues>({
+    mutationKey: ["createGroup"],
+
+    mutationFn: (groupForm: ModifiedGroupFormValues) =>
+      pb.collection("groups").create(groupForm),
+    onSuccess: () => {
+      // Update all simulations query
+      // queryClient.invalidateQueries({ queryKey: ["simulations"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
+export { useTransactions, useTotalSpend, useCreateGroup, useCreateParticipant };

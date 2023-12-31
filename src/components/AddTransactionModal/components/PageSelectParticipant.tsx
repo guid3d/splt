@@ -39,10 +39,10 @@ const PageSelectParticipant = ({
   // const [value, setValue] = useState<string[]>([...form.values.participant]);
 
   const selectAllParticipant = () => {
-    const allParticipant = groupData.participant.map(
+    const allParticipant = groupData.expand.participants.map(
       (participant) => participant.name
     );
-    form.setFieldValue("participant", allParticipant);
+    form.setFieldValue("participants", allParticipant);
   };
 
   const handleValueSelect = (val: string) => {
@@ -51,12 +51,12 @@ const PageSelectParticipant = ({
     //     ? current.filter((v) => v !== val)
     //     : [...current, val]
     // );
-    const currentParticipant = form.values.participant;
+    const currentParticipants = form.values.participants;
     form.setFieldValue(
-      "participant",
-      currentParticipant.includes(val)
-        ? currentParticipant.filter((v) => v !== val)
-        : [...currentParticipant, val]
+      "participants",
+      currentParticipants.includes(val)
+        ? currentParticipants.filter((v) => v !== val)
+        : [...currentParticipants, val]
     );
 
     form.setFieldValue("everyoneIsParticipant", false);
@@ -126,15 +126,15 @@ const PageSelectParticipant = ({
               </Combobox.EventsTarget> */}
               <Combobox.Options>
                 <SimpleGrid cols={3} spacing={0}>
-                  {groupData.participant.map((item, index) => (
+                  {groupData.expand.participants.map((item, index) => (
                     <Combobox.Option
                       key={item.name}
                       value={item.name}
-                      active={form.values.participant.includes(item.name)}
+                      active={form.values.participants.includes(item.name)}
                       // m={0}
                       // p={0}
                     >
-                      {form.values.participant.includes(item.name) ? (
+                      {form.values.participants.includes(item.name) ? (
                         <ParticipantAvatar
                           key={item.name}
                           avatar={item.avatar}

@@ -21,6 +21,7 @@ import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType, StoreEmojiData } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { GroupFormValues } from "@/types";
+import { useCreateParticipant } from "@/api";
 // import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {
@@ -38,14 +39,17 @@ const NewParticipantAvatar = () => {
 type AddParticipantModalProps = {
   disabledPreferredPaymentMethod?: boolean;
   groupForm: UseFormReturnType<GroupFormValues>;
+  participantIds: string[];
+  setParticipantIds: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const AddParticipantModal = ({
   groupForm,
   disabledPreferredPaymentMethod,
+  participantIds,
+  setParticipantIds,
 }: AddParticipantModalProps) => {
-  // const [uuid, setuuid] = useState<string>(uuidv4());
-  // const id = useId();
+  const createParticipantMutation = useCreateParticipant();
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -70,10 +74,20 @@ const AddParticipantModal = ({
           numPage={1}
           onConfirmClick={() => {
             const newParticipant: Participant = form.values;
-            groupForm.setFieldValue("participant", [
-              ...groupForm.values.participant,
-              newParticipant,
-            ]);
+            createParticipantMutation.mutate(newParticipant, {
+              onSuccess: (returnNewParticipant) => {
+                // console.log(returnNewParticipant);
+                groupForm.setFieldValue("participants", [
+                  ...groupForm.values.participants,
+                  returnNewParticipant,
+                ]);
+                setParticipantIds([
+                  ...participantIds,
+                  `${returnNewParticipant.id}`,
+                ]);
+              },
+            });
+
             form.reset();
           }}
           onCloseModalClick={() => {

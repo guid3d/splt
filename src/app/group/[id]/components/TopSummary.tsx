@@ -10,21 +10,21 @@ import {
   rem,
 } from "@mantine/core";
 import React from "react";
-import { GroupData } from "@/types";
+import { GroupData, TotalSpendData } from "@/types";
 import { IconPlus } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";
 import { TabType } from "./Tab";
 import { useParams } from "next/navigation";
-import { useGroup, useTotalSpend } from "@/api";
+// import { useGroup, useTotalSpend } from "@/api";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type TopSummaryProps = {
-  // groupData: GroupData;
+  groupData: UseQueryResult<TotalSpendData, Error>;
   selectedTab: string;
 };
 
-const TopSummary = ({ selectedTab }: TopSummaryProps) => {
-  const { id } = useParams<{ id: string }>();
-  const { data, isPending, error } = useTotalSpend(id);
+const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
+  const { data, isLoading, error } = groupData;
   if (data) {
     return (
       <Stack gap="xs">

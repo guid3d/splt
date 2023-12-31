@@ -25,9 +25,15 @@ import ParticipantAvatar from "@/components/ParticipantAvatar";
 
 type PageAddParticipantProps = {
   form: UseFormReturnType<GroupFormValues>;
+  participantIds: string[];
+  setParticipantIds: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const PageAddParticipant = ({ form }: PageAddParticipantProps) => {
+const PageAddParticipant = ({
+  form,
+  participantIds,
+  setParticipantIds,
+}: PageAddParticipantProps) => {
   return (
     <>
       <Container pb={40}>
@@ -38,7 +44,7 @@ const PageAddParticipant = ({ form }: PageAddParticipantProps) => {
           <Center>
             <ScrollArea.Autosize mah={400}>
               <SimpleGrid cols={3}>
-                {form.values.participant.map((participant, index) => (
+                {form.values.participants.map((participant, index) => (
                   <ParticipantAvatar
                     key={index}
                     avatar={participant.avatar}
@@ -47,6 +53,8 @@ const PageAddParticipant = ({ form }: PageAddParticipantProps) => {
                 ))}
                 <AddParticipantModal
                   groupForm={form}
+                  participantIds={participantIds}
+                  setParticipantIds={setParticipantIds}
                   disabledPreferredPaymentMethod={true}
                 />
               </SimpleGrid>
