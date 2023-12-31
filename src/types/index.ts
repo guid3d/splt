@@ -4,7 +4,7 @@ export type ModifiedGroupFormValues = {
   description: string;
   password: string;
   currency: string;
-  participants: Participant[];
+  participants: string[]; // Make this string because create new record need participant id
 };
 
 export type GroupFormValues = {

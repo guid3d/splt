@@ -11,7 +11,12 @@ import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
-import { GroupFormValues, Participant, StoreEmojiData } from "@/types";
+import {
+  GroupFormValues,
+  ModifiedGroupFormValues,
+  Participant,
+  StoreEmojiData,
+} from "@/types";
 import { useCreateGroup } from "@/api";
 
 const AddGroupModal = () => {
@@ -39,7 +44,7 @@ const AddGroupModal = () => {
       <Modal
         numPage={3}
         onConfirmClick={() => {
-          const modifiedFormValues = {
+          const modifiedFormValues: ModifiedGroupFormValues = {
             ...form.values,
             participants: participantIds,
           };

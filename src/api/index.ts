@@ -7,8 +7,10 @@ import {
   TransactionFormValues,
   TransactionsData,
 } from "@/types";
+import { useLocalStorage } from "@mantine/hooks";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
+import { useEffect } from "react";
 
 type PbTransactionsList = {
   page: number;
@@ -55,6 +57,11 @@ const useTransactions = (groupId: string) => {
 // };
 
 const useTotalSpend = (groupId: string) => {
+  const [groupHistory, setGroupHistory] = useLocalStorage({
+    key: "splt-group-history",
+    defaultValue: [] as string[],
+  });
+
   const query = useQuery<TotalSpendData, Error>({
     queryKey: ["totalSpendData", groupId],
     queryFn: () =>
@@ -66,6 +73,17 @@ const useTotalSpend = (groupId: string) => {
       }),
     // pb.collection("groups").getList(1, 50),
   });
+  useEffect(() => {
+    if (query.data) {
+      // Add visited group to local storage for history
+      setGroupHistory((oldHistory) => {
+        const filteredOldHistory = oldHistory.filter(
+          (group) => group !== query.data.expand.groupInfo.id
+        );
+        return [query.data.expand.groupInfo.id, ...filteredOldHistory];
+      });
+    }
+  }, [query.data, setGroupHistory]);
   return query;
 };
 
@@ -103,4 +121,18 @@ const useCreateGroup = () => {
   return mutation;
 };
 
-export { useTransactions, useTotalSpend, useCreateGroup, useCreateParticipant };
+const useGroup = (groupId: string) => {
+  const query = useQuery<GroupData, Error>({
+    queryKey: ["group", groupId],
+    queryFn: () => pb.collection("groups").getOne(groupId),
+  });
+  return query;
+};
+
+export {
+  useTransactions,
+  useTotalSpend,
+  useCreateGroup,
+  useCreateParticipant,
+  useGroup,
+};

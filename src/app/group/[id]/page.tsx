@@ -12,6 +12,7 @@ import { GroupData, PaymentMethodType, TransactionsData } from "@/types";
 import AddTransactionModal from "@/components/AddTransactionModal";
 import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
+import { useLocalStorage } from "@mantine/hooks";
 
 const transactionsData: TransactionsData[] = [
   {
@@ -51,31 +52,40 @@ const transactionsData: TransactionsData[] = [
 ];
 
 const GroupPage = () => {
-  const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
-
   const { id } = useParams<{ id: string }>();
   const groupData = useTotalSpend(id);
-  // console.log(data);
-  return (
-    <>
-      <Container size="xs" mt="md">
-        <SPLTIconSmall />
-        <Stack>
-          <Center>
-            <TopSummary selectedTab={selectedTab} groupData={groupData} />
-          </Center>
-          <Center>
-            <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-          </Center>
-          {selectedTab === "overview" && <TabOverview />}
-          {selectedTab === "transactions" && (
-            <TabTransactions groupTransactionData={transactionsData} />
-          )}
-        </Stack>
-      </Container>
-      <AddTransactionModal groupData={groupData} />
-    </>
-  );
+  const [selectedTab, setSelectedTab] = useState(TabType.Transactions);
+  const [value, setValue] = useLocalStorage({
+    key: "splt-group-history",
+    defaultValue: [] as GroupData[],
+  });
+  // useEffect(() => {
+  //   // if (groupData.data) setValue([...value, groupData.data.expand.groupInfo]);
+  //   console.log(value);
+  // }, [value]);
+
+  if (groupData.data) {
+    return (
+      <>
+        <Container size="xs" mt="md">
+          <SPLTIconSmall />
+          <Stack>
+            <Center>
+              <TopSummary selectedTab={selectedTab} groupData={groupData} />
+            </Center>
+            <Center>
+              <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+            </Center>
+            {selectedTab === "overview" && <TabOverview />}
+            {selectedTab === "transactions" && (
+              <TabTransactions groupTransactionData={transactionsData} />
+            )}
+          </Stack>
+        </Container>
+        <AddTransactionModal groupData={groupData} />
+      </>
+    );
+  }
 };
 
 export default GroupPage;
