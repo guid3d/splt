@@ -57,6 +57,7 @@ const useTotalSpend = (groupId: string) => {
       pb.collection("totalSpend").getFirstListItem(`id="${groupId}"`, {
         expand: "groupInfo, groupInfo.participants",
         fields: "id, groupInfo, expand, sumExpenses",
+        filter: `groupInfo.id="${groupId}"`,
         // "id, avatar, amount, name, date, description, category, expenseDateTime",
       }),
     // pb.collection("groups").getList(1, 50),
