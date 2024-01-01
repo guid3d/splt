@@ -49,7 +49,11 @@ const AddGroupModal = () => {
             participants: participantIds,
           };
           console.log(modifiedFormValues);
-          createGroupMutation.mutate(modifiedFormValues);
+          createGroupMutation.mutate(modifiedFormValues, {
+            onSuccess: (data) => {
+              router.push(`/group/${data.id}`);
+            },
+          });
           form.reset();
           // console.log(form.values);
           // router.push(`/group/groupId`);

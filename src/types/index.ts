@@ -105,6 +105,7 @@ export type StoreEmojiData = {
 };
 
 export type Participant = {
+  id: string;
   avatar: StoreEmojiData;
   name: string;
   accountName: string;

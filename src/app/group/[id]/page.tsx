@@ -59,10 +59,6 @@ const GroupPage = () => {
     key: "splt-group-history",
     defaultValue: [] as GroupData[],
   });
-  // useEffect(() => {
-  //   // if (groupData.data) setValue([...value, groupData.data.expand.groupInfo]);
-  //   console.log(value);
-  // }, [value]);
 
   if (groupData.data) {
     return (
@@ -82,7 +78,7 @@ const GroupPage = () => {
             )}
           </Stack>
         </Container>
-        <AddTransactionModal groupData={groupData} />
+        <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
       </>
     );
   }

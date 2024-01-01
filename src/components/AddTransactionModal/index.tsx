@@ -55,7 +55,6 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         onConfirmClick={() => {
           form.reset();
           console.log(form.values);
-          // router.push(`/group/groupId`);
         }}
         onCloseModalClick={() => {
           form.reset();

@@ -39,8 +39,9 @@ const PageSelectParticipant = ({
   // const [value, setValue] = useState<string[]>([...form.values.participant]);
 
   const selectAllParticipant = () => {
+    console.log(groupData)
     const allParticipant = groupData.expand.participants.map(
-      (participant) => participant.name
+      (participant) => participant.id
     );
     form.setFieldValue("participants", allParticipant);
   };
@@ -117,33 +118,33 @@ const PageSelectParticipant = ({
             // disabled={form.values.everyoneIsParticipant}
           >
             <Stack>
-              {/* <Combobox.EventsTarget>
+              <Combobox.EventsTarget>
                 <TextInput
                   placeholder="Pick value"
-                  value={form.values.participant}
-                  onChange={(event) => {setValue(event.currentTarget.value)}}
+                  value={form.values.participants}
+                  // onChange={(event) => {setValue(event.currentTarget.value)}}
                 />
-              </Combobox.EventsTarget> */}
+              </Combobox.EventsTarget>
               <Combobox.Options>
                 <SimpleGrid cols={3} spacing={0}>
                   {groupData.expand.participants.map((item, index) => (
                     <Combobox.Option
-                      key={item.name}
-                      value={item.name}
-                      active={form.values.participants.includes(item.name)}
+                      key={item.id}
+                      value={item.id}
+                      active={form.values.participants.includes(item.id)}
                       // m={0}
                       // p={0}
                     >
-                      {form.values.participants.includes(item.name) ? (
+                      {form.values.participants.includes(item.id) ? (
                         <ParticipantAvatar
-                          key={item.name}
+                          key={item.id}
                           avatar={item.avatar}
                           name={item.name}
                           isSelected
                         />
                       ) : (
                         <ParticipantAvatar
-                          key={item.name}
+                          key={item.id}
                           avatar={item.avatar}
                           name={item.name}
                         />
