@@ -27,7 +27,14 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
       </Center>
       <Center mb="xl">
         <NumberInput
-          styles={{ input: { textAlign: "center" } }}
+          styles={{
+            input: {
+              textAlign: "center",
+              fontSize: rem(50),
+              height: rem(80),
+            },
+            error: { textAlign: "center", fontSize: rem(12) },
+          }}
           radius={0}
           variant="unstyled"
           placeholder="0,00"
@@ -40,7 +47,7 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
           decimalSeparator=","
           thousandSeparator="."
           allowNegative={false}
-          size={rem(50)}
+          // size={rem(50)}
           // mb="md"
           hideControls
           {...form.getInputProps("amount")}

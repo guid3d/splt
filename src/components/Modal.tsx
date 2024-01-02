@@ -15,6 +15,7 @@ import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "./ModalFooterButton";
+import { GroupFormValues } from "@/types";
 
 type ModalPropsType = {
   children: React.ReactNode;
@@ -24,6 +25,9 @@ type ModalPropsType = {
   onCloseModalClick?: () => void;
   // buttonTitle?: string;
   button: React.ReactNode;
+  page: number;
+  pageHandler: any;
+  form: UseFormReturnType<any>;
 };
 
 const Modal = ({
@@ -34,22 +38,27 @@ const Modal = ({
   onCloseModalClick,
   // buttonTitle,
   button,
+  page,
+  pageHandler,
+  form,
 }: ModalPropsType) => {
   const maxPage = numPage - 1;
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
-  const [page, pageHandler] = useCounter(0, {
-    min: 0,
-    max: maxPage,
-  });
+  // const [page, pageHandler] = useCounter(0, {
+  //   min: 0,
+  //   max: maxPage,
+  // });
   const [embla, setEmbla] = useState<Embla | null>(null);
   const pageDecrement = () => {
     scrollPrev();
     pageHandler.decrement();
   };
   const pageIncrement = () => {
-    scrollNext();
-    pageHandler.increment();
+    if (!form.validate().hasErrors) {
+      scrollNext();
+      pageHandler.increment();
+    }
   };
   const scrollPrev = useCallback(() => {
     if (embla) embla.scrollPrev();
@@ -62,13 +71,15 @@ const Modal = ({
   const onCloseModal = () => {
     close();
     pageHandler.set(0);
-    onCloseModalClick();
+    onCloseModalClick ? onCloseModalClick() : null;
   };
 
   const onConfirmClickHandler = () => {
-    close();
-    pageHandler.set(0);
-    onConfirmClick();
+    if (!form.validate().hasErrors) {
+      close();
+      pageHandler.set(0);
+      onConfirmClick();
+    }
   };
 
   return (

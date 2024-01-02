@@ -1,4 +1,5 @@
 import {
+  ExpenseTransactionData,
   GroupData,
   GroupFormValues,
   ModifiedGroupFormValues,
@@ -36,6 +37,24 @@ const useTransactions = (groupId: string) => {
       );
       return res.json();
     },
+    // pb.collection("transactions").getList(1, 50, {
+    //   sort: "-transactionDateTime",
+    //   expand:
+    //     "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
+    //   fields: "id, group, type, transactionDateTime, expand",
+    //   filter: `group.id="${groupId}"`,
+    // }),
+  });
+  return query;
+};
+
+const useExpense = (expenseId: string) => {
+  const query = useQuery<ExpenseTransactionData, Error>({
+    queryKey: ["expense", expenseId],
+    queryFn: () =>
+      pb.collection("expenses").getOne(expenseId, {
+        expand: "participants, paidBy",
+      }),
     // pb.collection("transactions").getList(1, 50, {
     //   sort: "-transactionDateTime",
     //   expand:
@@ -143,7 +162,12 @@ const useCreateTransaction = () => {
       pb.collection("expenses").create(transactionForm),
     onSuccess: () => {
       // Update all simulations query
-      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["totalSpendData"],
+      });
     },
     onError: (error) => {
       console.log(error);
@@ -159,4 +183,5 @@ export {
   useCreateParticipant,
   useGroup,
   useCreateTransaction,
+  useExpense,
 };

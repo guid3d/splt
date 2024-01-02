@@ -23,6 +23,11 @@ const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
   const router = useRouter();
   const [participantIds, setParticipantIds] = useState<string[]>([]);
+  const numPage = 3;
+  const [page, pageHandler] = useCounter(0, {
+    min: 0,
+    max: numPage - 1,
+  });
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -34,7 +39,35 @@ const AddGroupModal = () => {
       // termsOfService: false,
     } as GroupFormValues,
 
-    validate: {
+    validate: (values) => {
+      if (page === 0) {
+        return {
+          name:
+            values.name.trim().length < 1
+              ? "Group name must include at least 6 characters"
+              : null,
+        };
+      }
+
+      if (page === 1) {
+        return {
+          password:
+            values.password.length < 4
+              ? "Password must include at least 4 characters"
+              : null,
+        };
+      }
+
+      if (page === 2) {
+        return {
+          participants:
+            values.participants.length < 1
+              ? "Participants must include at least 1 person"
+              : null,
+        };
+      }
+
+      return {};
       // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
@@ -42,7 +75,10 @@ const AddGroupModal = () => {
   return (
     <form>
       <Modal
-        numPage={3}
+        form={form}
+        page={page}
+        pageHandler={pageHandler}
+        numPage={numPage}
         onConfirmClick={() => {
           const modifiedFormValues: ModifiedGroupFormValues = {
             ...form.values,

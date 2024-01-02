@@ -13,15 +13,16 @@ import { TransactionsData } from "@/types";
 import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 type TabTransactionsProps = {
   // groupTransactionData: TransactionsData[];
 };
 
 const TabTransactions = () => {
-  const { id } = useParams<{ id: string }>();
-  const { data, isPending, error } = useTransactions(id);
+  const router = useRouter();
+  const { groupId } = useParams<{ groupId: string }>();
+  const { data, isPending, error } = useTransactions(groupId);
   // console.log(data);
   if (data) {
     return (
@@ -61,6 +62,11 @@ const TabTransactions = () => {
                       />
                     </Title>
                   }
+                  onClick={() =>
+                    router.push(
+                      `./${trans.groupInfo}/transaction?e=${trans.id}`
+                    )
+                  }
                 ></NavLink>
               ) : trans.collectionName === "paybacks" ? (
                 <NavLink
@@ -88,6 +94,11 @@ const TabTransactions = () => {
                         decimalSeparator=","
                       />
                     </Title>
+                  }
+                  onClick={() =>
+                    router.push(
+                      `./${trans.groupInfo}/transaction?p=${trans.id}`
+                    )
                   }
                 ></NavLink>
               ) : null

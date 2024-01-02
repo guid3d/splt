@@ -84,10 +84,14 @@ export type ExpenseTransactionData = {
   id: string;
   name: string;
   paidBy: string;
-  participant: string[];
+  participants: string[];
   splitType: SplitType;
   transactionDateTime: string;
   updated: string;
+  expand: {
+    paidBy: Participant;
+    participants: Participant[];
+  };
 };
 
 export type PaybackTransactionData = {

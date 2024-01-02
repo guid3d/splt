@@ -15,6 +15,7 @@ import React from "react";
 import { UseFormReturnType } from "@mantine/form";
 import { IMaskInput } from "react-imask";
 import { Participant, PaymentMethodType } from "@/types";
+import BigTextInput from "@/components/BigTextInput";
 
 type PageSetPaymentProps = {
   disabledPreferredPaymentMethod?: boolean;
@@ -32,14 +33,9 @@ const PageSetPayment = ({
           <EmojiActionButtion form={form} />
         </Center>
         <Center>
-          <TextInput
+          <BigTextInput
             mb={"md"}
-            styles={{ input: { textAlign: "center", height: rem(40) } }}
-            radius={0}
-            variant="unstyled"
-            // label="Name"
             placeholder="Elon Musk"
-            size={rem(30)}
             {...form.getInputProps("name")}
           />
         </Center>

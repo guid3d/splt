@@ -33,12 +33,16 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
 
   // const timeNow = dayjs().toISOString();
   // console.log(da)
-  const { id } = useParams<{ id: string }>();
+  const { groupId } = useParams<{ groupId: string }>();
   const createTransactionMutation = useCreateTransaction();
-
+  const numPage = 3;
+  const [page, pageHandler] = useCounter(0, {
+    min: 0,
+    max: numPage - 1,
+  });
   const form = useForm({
     initialValues: {
-      groupInfo: id,
+      groupInfo: groupId,
       amount: 0,
       transactionDateTime: new Date(),
       name: "",
@@ -50,7 +54,34 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       participants: [],
     } as TransactionFormValues,
 
-    validate: {
+    validate: (values) => {
+      if (page === 0) {
+        return {
+          amount: values.amount < 0.01 ? "Amount must be > 0" : null,
+          paidBy: values.paidBy.length < 1 ? "Paid by must be selected" : null,
+        };
+      }
+
+      if (page === 1) {
+        return {
+          name:
+            values.name.length < 1 ? "Transaction name must be given" : null,
+          transactionDateTime: !values.transactionDateTime.toISOString()
+            ? "Transaction date must be given"
+            : null,
+        };
+      }
+
+      if (page === 2) {
+        return {
+          participants:
+            values.participants.length < 1
+              ? "Participants must include at least 1 person"
+              : null,
+        };
+      }
+
+      return {};
       // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
@@ -58,7 +89,10 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
       <Modal
-        numPage={3}
+        form={form}
+        page={page}
+        pageHandler={pageHandler}
+        numPage={numPage}
         onConfirmClick={() => {
           const modifiedFormValues: ModifiedTransactionFormValues = {
             ...form.values,

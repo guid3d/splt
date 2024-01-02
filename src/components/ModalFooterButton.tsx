@@ -6,6 +6,7 @@ import { GroupFormValues } from "@/types";
 
 type ModalFooterButtonProps = {
   // form: UseFormReturnType<GroupFormValues>;
+  nextButtonDisabled?: boolean;
   isMobile: boolean;
   page: number;
   maxPage: number;
@@ -22,6 +23,7 @@ const ModalFooterButton = ({
   isModalOpened,
   pageIncrement,
   confirmFunction,
+  nextButtonDisabled,
 }: ModalFooterButtonProps) => {
   // const router = useRouter();
 
@@ -37,6 +39,7 @@ const ModalFooterButton = ({
               onClick={confirmFunction}
               radius="xl"
               // type="submit"
+              disabled={nextButtonDisabled}
             >
               Confirm
             </Button>
@@ -52,6 +55,7 @@ const ModalFooterButton = ({
                 pageIncrement();
               }}
               radius="xl"
+              disabled={nextButtonDisabled}
             >
               Next
             </Button>
@@ -70,6 +74,7 @@ const ModalFooterButton = ({
             onClick={confirmFunction}
             radius="xl"
             // type="submit"
+            disabled={nextButtonDisabled}
           >
             Confirm
           </Button>
@@ -83,6 +88,7 @@ const ModalFooterButton = ({
               pageIncrement();
             }}
             radius="xl"
+            disabled={nextButtonDisabled}
           >
             Next
           </Button>

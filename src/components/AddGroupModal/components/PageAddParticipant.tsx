@@ -38,9 +38,18 @@ const PageAddParticipant = ({
     <>
       <Container pb={40}>
         <Stack gap={"xl"}>
-          <Center>
-            <Text fw={500}>Participant</Text>
-          </Center>
+          <Stack gap={"xs‰"}>
+            <Center>
+              <Text fw={500}>Participants</Text>
+            </Center>
+            {form.errors.participants && (
+              <Center>
+                <Text c="red" size="sm">
+                  {form.errors.participants}
+                </Text>
+              </Center>
+            )}
+          </Stack>
           <Center>
             <ScrollArea.Autosize mah={400}>
               <SimpleGrid cols={3}>

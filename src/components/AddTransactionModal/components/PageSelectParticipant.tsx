@@ -39,10 +39,10 @@ const PageSelectParticipant = ({
   // const [value, setValue] = useState<string[]>([...form.values.participant]);
 
   const selectAllParticipant = () => {
-    console.log(groupData)
+    // console.log(groupData);
     const allParticipant = groupData.expand.participants.map(
       (participant) => participant.id
-    );
+    ) as string[];
     form.setFieldValue("participants", allParticipant);
   };
 
@@ -110,6 +110,13 @@ const PageSelectParticipant = ({
             description="When new participant is later added, he/she will also be included"
           />
         </Center>
+        {form.errors.participants && (
+          <Center>
+            <Text c="red" size="sm">
+              {form.errors.participants}
+            </Text>
+          </Center>
+        )}
         <Center>
           <Combobox
             store={combobox}

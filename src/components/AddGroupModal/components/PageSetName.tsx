@@ -16,6 +16,7 @@ import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
 import { GroupFormValues } from "@/types";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
+import BigTextInput from "@/components/BigTextInput";
 
 type PageSetNameProps = {
   form: UseFormReturnType<GroupFormValues>;
@@ -38,14 +39,8 @@ const PageSetName = ({ form }: PageSetNameProps) => {
             placeholder="Last weekend of March 2023"
             {...form.getInputProps("description")}
           /> */}
-
-          <TextInput
-            styles={{ input: { textAlign: "center", height: rem(40) } }}
-            radius={0}
-            variant="unstyled"
-            // label="Name"
+          <BigTextInput
             placeholder="Name of the group"
-            size={rem(30)}
             {...form.getInputProps("name")}
           />
           <Textarea

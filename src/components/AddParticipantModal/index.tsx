@@ -50,6 +50,11 @@ const AddParticipantModal = ({
   setParticipantIds,
 }: AddParticipantModalProps) => {
   const createParticipantMutation = useCreateParticipant();
+  const numPage = 1;
+  const [page, pageHandler] = useCounter(0, {
+    min: 0,
+    max: numPage - 1,
+  });
   const form = useForm({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -61,9 +66,16 @@ const AddParticipantModal = ({
         paypal: "",
       },
     },
-    validate: {
-      // TODO: make sure name of participant is unique
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+    validate: (values) => {
+      if (page === 0) {
+        return {
+          name:
+            values.name.trim().length < 1
+              ? "Person name must include at least 1 character"
+              : null,
+        };
+      }
+      return {};
     },
   });
 
@@ -71,7 +83,10 @@ const AddParticipantModal = ({
     <Center>
       <form onSubmit={form.onSubmit((values) => console.log(values))}>
         <Modal
-          numPage={1}
+          form={form}
+          page={page}
+          pageHandler={pageHandler}
+          numPage={numPage}
           onConfirmClick={() => {
             const newParticipant: Participant = form.values;
             createParticipantMutation.mutate(newParticipant, {
