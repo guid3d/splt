@@ -66,7 +66,7 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
             // placeholder="Now"
             // leftSection={<IconCalendarEvent />}
             // value={dayjs(form.values.expenseDateTime).va}
-            {...form.getInputProps("expenseDateTime")}
+            {...form.getInputProps("transactionDateTime")}
           ></DateTimePicker>
         </Center>
       </Stack>

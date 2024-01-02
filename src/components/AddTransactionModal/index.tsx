@@ -6,12 +6,13 @@ import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
 import ModalFooterButton from "../ModalFooterButton";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
 import {
   GroupData,
+  ModifiedTransactionFormValues,
   Participant,
   SplitType,
   StoreEmojiData,
@@ -19,6 +20,7 @@ import {
 } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import dayjs from "dayjs";
+import { useCreateTransaction } from "@/api";
 
 type AddTransactionModalProps = {
   groupData: GroupData;
@@ -31,16 +33,21 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
 
   // const timeNow = dayjs().toISOString();
   // console.log(da)
+  const { id } = useParams<{ id: string }>();
+  const createTransactionMutation = useCreateTransaction();
+
   const form = useForm({
     initialValues: {
-      avatar: { emoji: "😄", unified: "1f604" },
-      name: "",
-      description: "",
+      groupInfo: id,
       amount: 0,
+      transactionDateTime: new Date(),
+      name: "",
+      avatar: { emoji: "😄", unified: "1f604" },
+      description: "",
+      paidBy: groupData.expand.participants[0].id,
       splitType: SplitType.Equal,
       everyoneIsParticipant: true,
       participants: [],
-      expenseDateTime: new Date(),
     } as TransactionFormValues,
 
     validate: {
@@ -53,8 +60,18 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
       <Modal
         numPage={3}
         onConfirmClick={() => {
+          const modifiedFormValues: ModifiedTransactionFormValues = {
+            ...form.values,
+            transactionDateTime: form.values.transactionDateTime.toISOString(),
+          };
+          console.log(modifiedFormValues);
+          // console.log(form.values);
+          createTransactionMutation.mutate(modifiedFormValues, {
+            onSuccess: (data) => {
+              console.log(data);
+            },
+          });
           form.reset();
-          console.log(form.values);
         }}
         onCloseModalClick={() => {
           form.reset();
@@ -82,7 +99,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         }
       >
         <Carousel.Slide>
-          <PageSetAmount form={form} />
+          <PageSetAmount form={form} groupData={groupData} />
         </Carousel.Slide>
         <Carousel.Slide>
           <PageSetDetails form={form} />

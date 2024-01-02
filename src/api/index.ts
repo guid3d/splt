@@ -2,13 +2,14 @@ import {
   GroupData,
   GroupFormValues,
   ModifiedGroupFormValues,
+  ModifiedTransactionFormValues,
   ParticipantFormValues,
   TotalSpendData,
   TransactionFormValues,
   TransactionsData,
 } from "@/types";
 import { useLocalStorage } from "@mantine/hooks";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
 import { useEffect } from "react";
 
@@ -133,10 +134,29 @@ const useGroup = (groupId: string) => {
   return query;
 };
 
+const useCreateTransaction = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
+    mutationKey: ["createTransaction"],
+
+    mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
+      pb.collection("expenses").create(transactionForm),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
 export {
   useTransactions,
   useTotalSpend,
   useCreateGroup,
   useCreateParticipant,
   useGroup,
+  useCreateTransaction,
 };

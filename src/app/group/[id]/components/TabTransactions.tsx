@@ -22,7 +22,7 @@ type TabTransactionsProps = {
 const TabTransactions = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isPending, error } = useTransactions(id);
-  console.log(data);
+  // console.log(data);
   if (data) {
     return (
       <>

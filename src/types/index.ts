@@ -22,12 +22,29 @@ export enum SplitType {
   Amount = "amount",
 }
 
-export type TransactionFormValues = {
-  avatar: StoreEmojiData;
-  name: string;
-  expenseDateTime: Date;
-  description: string;
+export type ModifiedTransactionFormValues = {
+  groupInfo: string;
   amount: number;
+  transactionDateTime: string;
+  name: string;
+  avatar: StoreEmojiData;
+  description: string;
+  // category: string;
+  paidBy: string;
+  splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
+  everyoneIsParticipant: boolean;
+  participants: string[];
+};
+
+export type TransactionFormValues = {
+  groupInfo: string;
+  amount: number;
+  transactionDateTime: Date;
+  name: string;
+  avatar: StoreEmojiData;
+  description: string;
+  // category: string;
+  paidBy: string;
   splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
   everyoneIsParticipant: boolean;
   participants: string[];
@@ -142,7 +159,7 @@ export type StoreEmojiData = {
 };
 
 export type Participant = {
-  id: string;
+  id?: string;
   avatar: StoreEmojiData;
   name: string;
   accountName: string;

@@ -118,24 +118,24 @@ const PageSelectParticipant = ({
             // disabled={form.values.everyoneIsParticipant}
           >
             <Stack>
-              <Combobox.EventsTarget>
+              {/* <Combobox.EventsTarget>
                 <TextInput
                   placeholder="Pick value"
                   value={form.values.participants}
                   // onChange={(event) => {setValue(event.currentTarget.value)}}
                 />
-              </Combobox.EventsTarget>
+              </Combobox.EventsTarget> */}
               <Combobox.Options>
                 <SimpleGrid cols={3} spacing={0}>
                   {groupData.expand.participants.map((item, index) => (
                     <Combobox.Option
                       key={item.id}
-                      value={item.id}
-                      active={form.values.participants.includes(item.id)}
+                      value={item.id!}
+                      active={form.values.participants.includes(item.id!)}
                       // m={0}
                       // p={0}
                     >
-                      {form.values.participants.includes(item.id) ? (
+                      {form.values.participants.includes(item.id!) ? (
                         <ParticipantAvatar
                           key={item.id}
                           avatar={item.avatar}
