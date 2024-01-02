@@ -12,31 +12,35 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
 import { useEffect } from "react";
 
-type PbTransactionsList = {
-  page: number;
-  perPage: number;
-  totalPages: number;
-  totalItems: number;
-  items: TransactionsData[];
+// type PbTransactionsList = {
+//   page: number;
+//   perPage: number;
+//   totalPages: number;
+//   totalItems: number;
+//   items: TransactionsData[];
+// };
+
+type PbHooksTransactionsList = {
+  transactions: TransactionsData[];
 };
 
 const pb = new PocketBase("http://127.0.0.1:8090");
 
 const useTransactions = (groupId: string) => {
-  const query = useQuery<PbTransactionsList, Error>({
+  const query = useQuery<PbHooksTransactionsList, Error>({
     queryKey: ["transactions", groupId],
-    queryFn: () =>
-      pb.collection("transactions").getList(1, 50, {
-        sort: "-transactionDateTime",
-        expand:
-          "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
-        fields: "id, group, type, transactionDateTime, expand",
-        filter: `group.id="${groupId}"`,
-        // "id, avatar, amount, name, date, description, category, expenseDateTime",
-      }),
-    // .then((res) => {
-    //   console.log(res);
-    //   return res;
+    queryFn: async () => {
+      const res = await fetch(
+        `http://127.0.0.1:8090/api/splt/transactions?groupId=${groupId}`
+      );
+      return res.json();
+    },
+    // pb.collection("transactions").getList(1, 50, {
+    //   sort: "-transactionDateTime",
+    //   expand:
+    //     "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
+    //   fields: "id, group, type, transactionDateTime, expand",
+    //   filter: `group.id="${groupId}"`,
     // }),
   });
   return query;

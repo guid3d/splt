@@ -76,7 +76,7 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
               <Title order={2}>
                 <NumberFormatter
                   suffix=" €"
-                  value={data.sumExpenses}
+                  value={data.sumExpenses ? data.sumExpenses : 0}
                   thousandSeparator="."
                   decimalSeparator=","
                 />

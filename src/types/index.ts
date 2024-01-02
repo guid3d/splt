@@ -53,16 +53,7 @@ export type GroupData = {
   name: string;
 };
 
-export type TransactionsData = {
-  id: string;
-  groupInfo: string;
-  type: "expense" | "payback";
-  transactionDateTime: string;
-  expand: {
-    paybackTransaction?: PaybackTransactionData;
-    expenseTransaction?: ExpenseTransactionData;
-  };
-};
+export type TransactionsData = ExpenseTransactionData & PaybackTransactionData;
 
 export type ExpenseTransactionData = {
   amount: number;
@@ -98,6 +89,52 @@ export type PaybackTransactionData = {
   transactionDateTime: string;
   updated: string;
 };
+
+// export type TransactionsData = {
+//   id: string;
+//   groupInfo: string;
+//   type: "expenses" | "paybacks";
+//   transactionDateTime: string;
+//   expand: {
+//     paybackTransaction?: PaybackTransactionData;
+//     expenseTransaction?: ExpenseTransactionData;
+//   };
+// };
+
+// export type ExpenseTransactionData = {
+//   amount: number;
+//   avatar: StoreEmojiData;
+//   collectionId: string;
+//   collectionName: string;
+//   created: string;
+//   description: string;
+//   everyoneIsParticipant: boolean;
+//   groupInfo: string;
+//   id: string;
+//   name: string;
+//   paidBy: string;
+//   participant: string[];
+//   splitType: SplitType;
+//   transactionDateTime: string;
+//   updated: string;
+// };
+
+// export type PaybackTransactionData = {
+//   amount: number;
+//   collectionId: string;
+//   collectionName: string;
+//   created: string;
+//   expand: {
+//     fromPerson: Participant;
+//     toPerson: Participant;
+//   };
+//   fromPerson: string;
+//   groupInfo: string;
+//   id: string;
+//   toPerson: string;
+//   transactionDateTime: string;
+//   updated: string;
+// };
 
 export type StoreEmojiData = {
   emoji: string;
