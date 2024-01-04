@@ -41,7 +41,7 @@ const PageSetPayment = ({
         </Center>
         {!disabledPreferredPaymentMethod && (
           <>
-            <Stack gap={0}>
+            <Stack gap={rem(3)} mb="xs">
               <Text size="sm">Preferred Payment By</Text>
               <SegmentedControl
                 value={form.values.selectedPaymentMethod}

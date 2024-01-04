@@ -32,7 +32,7 @@ const ParticipantAvatar = ({
         borderRadius: 20,
       }}
     >
-      <Stack gap={0}>
+      <Stack gap="xs">
         <Center>
           <Avatar size="lg" radius="xl">
             <Title order={1}>{avatar.emoji}</Title>

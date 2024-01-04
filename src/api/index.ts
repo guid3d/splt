@@ -4,6 +4,7 @@ import {
   GroupFormValues,
   ModifiedGroupFormValues,
   ModifiedTransactionFormValues,
+  Participant,
   ParticipantFormValues,
   PaybackTransactionData,
   TotalSpendData,
@@ -141,6 +142,28 @@ const useCreateParticipant = () => {
   return mutation;
 };
 
+const useUpdateParticipant = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<Participant, Error, Participant>({
+    mutationKey: ["createParticipant"],
+
+    mutationFn: (participantForm: Participant) =>
+      pb
+        .collection("participants")
+        .update(participantForm.id!, participantForm),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+      queryClient.invalidateQueries({ queryKey: ["group"] });
+      queryClient.invalidateQueries({ queryKey: ["participant"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
 const useCreateGroup = () => {
   const mutation = useMutation<any, Error, ModifiedGroupFormValues>({
     mutationKey: ["createGroup"],
@@ -161,7 +184,18 @@ const useCreateGroup = () => {
 const useGroup = (groupId: string) => {
   const query = useQuery<GroupData, Error>({
     queryKey: ["group", groupId],
-    queryFn: () => pb.collection("groups").getOne(groupId),
+    queryFn: () =>
+      pb.collection("groups").getOne(groupId, {
+        expand: "participants",
+      }),
+  });
+  return query;
+};
+
+const useParticipant = (participantId: string) => {
+  const query = useQuery<Participant, Error>({
+    queryKey: ["participant", participantId],
+    queryFn: () => pb.collection("participants").getOne(participantId),
   });
   return query;
 };
@@ -198,4 +232,6 @@ export {
   useCreateTransaction,
   useExpense,
   usePayback,
+  useUpdateParticipant,
+  useParticipant,
 };

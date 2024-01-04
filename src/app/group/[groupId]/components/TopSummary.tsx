@@ -17,6 +17,7 @@ import { TabType } from "./Tab";
 import { useParams } from "next/navigation";
 // import { useGroup, useTotalSpend } from "@/api";
 import { UseQueryResult } from "@tanstack/react-query";
+import ListParticipantsModal from "@/components/ListParticipantsModal";
 
 type TopSummaryProps = {
   groupData: UseQueryResult<TotalSpendData, Error>;
@@ -49,21 +50,7 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
               <Text>{data.expand.groupInfo.description}</Text>
             </Center>
             <Center>
-              <AvatarGroup>
-                {data.expand.groupInfo.expand.participants.map(
-                  (participant, index) => (
-                    <Avatar key={index}>
-                      <Title order={2}>{participant.avatar.emoji}</Title>
-                    </Avatar>
-                  )
-                )}
-                <Avatar>
-                  <IconPencil
-                    style={{ width: "70%", height: "70%" }}
-                    stroke={1.5}
-                  />
-                </Avatar>
-              </AvatarGroup>
+              <ListParticipantsModal groupInfo={data.expand.groupInfo} />
             </Center>
           </Stack>
         )}

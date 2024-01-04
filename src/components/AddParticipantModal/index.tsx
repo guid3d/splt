@@ -18,7 +18,12 @@ import ModalFooterButton from "../ModalFooterButton";
 import { useRouter } from "next/navigation";
 
 import Modal from "@/components/Modal";
-import { Participant, PaymentMethodType, StoreEmojiData } from "@/types";
+import {
+  Participant,
+  ParticipantFormValues,
+  PaymentMethodType,
+  StoreEmojiData,
+} from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { GroupFormValues } from "@/types";
 import { useCreateParticipant } from "@/api";
@@ -88,7 +93,7 @@ const AddParticipantModal = ({
           pageHandler={pageHandler}
           numPage={numPage}
           onConfirmClick={() => {
-            const newParticipant: Participant = form.values;
+            const newParticipant: ParticipantFormValues = form.values;
             createParticipantMutation.mutate(newParticipant, {
               onSuccess: (returnNewParticipant) => {
                 // console.log(returnNewParticipant);

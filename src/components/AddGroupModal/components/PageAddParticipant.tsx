@@ -38,7 +38,7 @@ const PageAddParticipant = ({
     <>
       <Container pb={40}>
         <Stack gap={"xl"}>
-          <Stack gap={"xs‰"}>
+          <Stack gap={"xs"}>
             <Center>
               <Text fw={500}>Participants</Text>
             </Center>
