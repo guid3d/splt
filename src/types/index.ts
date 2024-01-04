@@ -74,10 +74,14 @@ export type TransactionsData = ExpenseTransactionData & PaybackTransactionData;
 
 export type ExpenseTransactionData = {
   amount: number;
+  amountPerPerson?: number;
   avatar: StoreEmojiData;
-  collectionId: string;
-  collectionName: string;
   created: string;
+  expand: {
+    groupInfo: GroupData;
+    participants: Participant[];
+    paidBy: Participant;
+  };
   description: string;
   everyoneIsParticipant: boolean;
   groupInfo: string;
@@ -88,10 +92,6 @@ export type ExpenseTransactionData = {
   splitType: SplitType;
   transactionDateTime: string;
   updated: string;
-  expand: {
-    paidBy: Participant;
-    participants: Participant[];
-  };
 };
 
 export type PaybackTransactionData = {
@@ -100,6 +100,7 @@ export type PaybackTransactionData = {
   collectionName: string;
   created: string;
   expand: {
+    groupInfo: GroupData;
     fromPerson: Participant;
     toPerson: Participant;
   };

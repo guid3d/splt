@@ -17,6 +17,7 @@ import { IconMessage } from "@tabler/icons-react";
 import { IconCash } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
+import ParticipantAvatar from "@/components/ParticipantAvatar";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -25,11 +26,19 @@ const textTypeStyle: TextProps = {
 };
 
 const textStyle: TextProps = {
-  fw: 500,
+  // fw: 500,
+  maw: rem(330),
 };
 
 const iconProps = {
-  style: { width: rem(30), height: rem(30), margin: rem(5) },
+  style: {
+    width: rem(30),
+    height: rem(30),
+    marginTop: rem(5),
+    marginBottom: rem(10),
+    marginLeft: rem(10),
+    marginRight: rem(10),
+  },
   stroke: 1.25,
 };
 
@@ -37,10 +46,10 @@ const ExpensePage = () => {
   const searchParams = useSearchParams();
   const expenseId = searchParams.get("e")!;
   const { data, isPending, error } = useExpense(expenseId);
+  console.log(data);
   if (data) {
     return (
       <Stack gap="xs">
-        {/* <Center> */}
         <ActionIcon
           disabled
           variant="default"
@@ -67,57 +76,72 @@ const ExpensePage = () => {
         </Text>
         <Text fw={500}>Details</Text>
         <Stack>
-          <Group>
+          <Group align="start">
             <IconMessage {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Description</Text>
               <Text {...textStyle}>{data.description}</Text>
             </Stack>
           </Group>
-          <Group>
+          <Group align="start">
             <IconCash {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Type</Text>
               <Text {...textStyle}>Expense</Text>
             </Stack>
           </Group>
-          {/* <Group>
-            <IconCash {...iconProps} />
-            <Stack gap={0}>
-              <Text {...textTypeStyle}>Everyone is Participant</Text>
-              <Text {...textStyle}>
-                {data.everyoneIsParticipant ? "True" : "False"}
-              </Text>
-            </Stack>
-          </Group> */}
-          <Group>
+          <Group align="start">
             <IconUser {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Paid By</Text>
-              <Group gap="xs">
-                <ActionIcon disabled variant="default">
-                  <Text>{data.expand.paidBy.avatar.emoji}</Text>
-                </ActionIcon>
-                <Text {...textStyle}>{data.expand.paidBy.name}</Text>
-              </Group>
+              <ParticipantAvatar
+                avatar={data.expand.paidBy.avatar}
+                name={data.expand.paidBy.name}
+              />
             </Stack>
           </Group>
-          <Group>
+          <Group align="start">
             <IconShare {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Participants</Text>
-              {data.expand.participants.map((participant, index) => (
-                <Group gap="xs" key={participant.id}>
-                  <ActionIcon disabled variant="default">
-                    <Text>{participant.avatar.emoji}</Text>
-                  </ActionIcon>
-                  <Text {...textStyle}>{participant.name}</Text>
-                </Group>
-              ))}
+              <Group gap="xs">
+                {!data.everyoneIsParticipant
+                  ? data.expand.participants.map((participant, index) => (
+                      <ParticipantAvatar
+                        key={participant.id}
+                        avatar={participant.avatar}
+                        name={participant.name}
+                        description={
+                          <NumberFormatter
+                            suffix=" €"
+                            value={data.amountPerPerson}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                          />
+                        }
+                      />
+                    ))
+                  : data.expand.groupInfo.expand.participants.map(
+                      (participant, index) => (
+                        <ParticipantAvatar
+                          key={participant.id}
+                          avatar={participant.avatar}
+                          name={participant.name}
+                          description={
+                            <NumberFormatter
+                              suffix=" €"
+                              value={data.amountPerPerson}
+                              thousandSeparator="."
+                              decimalSeparator=","
+                            />
+                          }
+                        />
+                      )
+                    )}
+              </Group>
             </Stack>
           </Group>
         </Stack>
-        {/* </Center> */}
       </Stack>
     );
   }

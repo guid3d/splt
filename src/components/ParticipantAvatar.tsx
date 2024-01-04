@@ -15,30 +15,26 @@ type ParticipantAvatarProps = {
   avatar: StoreEmojiData;
   name: string;
   isSelected?: boolean;
+  description?: React.ReactNode;
 };
 
 const ParticipantAvatar = ({
   avatar,
   name,
   isSelected,
+  description,
 }: ParticipantAvatarProps) => {
   return (
     <Container
       bg={isSelected ? "#3b3b3b" : ""}
-      pt="md"
-      pb="md"
-      // p="md"
+      p="sm"
       style={{
         borderRadius: 20,
-        //  width: rem(120)
       }}
     >
-      <Stack>
+      <Stack gap={0}>
         <Center>
-          <Avatar
-            size="lg"
-            radius="xl"
-          >
+          <Avatar size="lg" radius="xl">
             <Title order={1}>{avatar.emoji}</Title>
           </Avatar>
         </Center>
@@ -47,6 +43,13 @@ const ParticipantAvatar = ({
             {name}
           </Text>
         </Center>
+        {description && (
+          <Center>
+            <Text c="dimmed" lineClamp={2} ta="center">
+              {description}
+            </Text>
+          </Center>
+        )}
       </Stack>
     </Container>
   );

@@ -5,6 +5,7 @@ import {
   ModifiedGroupFormValues,
   ModifiedTransactionFormValues,
   ParticipantFormValues,
+  PaybackTransactionData,
   TotalSpendData,
   TransactionFormValues,
   TransactionsData,
@@ -51,17 +52,29 @@ const useTransactions = (groupId: string) => {
 const useExpense = (expenseId: string) => {
   const query = useQuery<ExpenseTransactionData, Error>({
     queryKey: ["expense", expenseId],
-    queryFn: () =>
-      pb.collection("expenses").getOne(expenseId, {
-        expand: "participants, paidBy",
-      }),
-    // pb.collection("transactions").getList(1, 50, {
-    //   sort: "-transactionDateTime",
-    //   expand:
-    //     "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
-    //   fields: "id, group, type, transactionDateTime, expand",
-    //   filter: `group.id="${groupId}"`,
-    // }),
+    queryFn: async () => {
+      // TODO: handle error when expenseId is not found
+      const res = await fetch(
+        `http://127.0.0.1:8090/api/splt/expense?expenseId=${expenseId}`
+      );
+      // console.log(res.json());
+      return res.json();
+    },
+  });
+  return query;
+};
+
+const usePayback = (paybackId: string) => {
+  const query = useQuery<PaybackTransactionData, Error>({
+    queryKey: ["payback", paybackId],
+    queryFn: async () => {
+      // TODO: handle error when paybackId is not found
+      const res = await fetch(
+        `http://127.0.0.1:8090/api/splt/payback?paybackId=${paybackId}`
+      );
+      // console.log(res.json());
+      return res.json();
+    },
   });
   return query;
 };
@@ -184,4 +197,5 @@ export {
   useGroup,
   useCreateTransaction,
   useExpense,
+  usePayback,
 };
