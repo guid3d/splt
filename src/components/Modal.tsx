@@ -107,12 +107,13 @@ const Modal = ({
             </ActionIcon>
           </MantineModal.Header>
           <MantineModal.Body>
-            <Stack mih={rem(500)} justify="space-between">
+            <Stack h={rem(550)} justify="space-between">
               <Carousel
                 draggable={false}
                 withControls={false}
                 getEmblaApi={setEmbla}
                 withKeyboardEvents={false}
+                pb={isMobile ? "xl" : "none"}
               >
                 {children}
               </Carousel>

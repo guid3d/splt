@@ -72,7 +72,7 @@ const PageSelectParticipant = ({
 
   return (
     <Container>
-      <ScrollArea.Autosize>
+      <ScrollArea h={rem(500)}>
         <Stack gap="s">
           <Center>
             <Text fw={500} mb="sm">
@@ -171,7 +171,7 @@ const PageSelectParticipant = ({
             </Combobox>
           </Center>
         </Stack>
-      </ScrollArea.Autosize>
+      </ScrollArea>
     </Container>
   );
 };

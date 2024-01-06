@@ -36,6 +36,7 @@ const PageSetPayment = ({
           <BigTextInput
             mb={"md"}
             placeholder="Elon Musk"
+            maxLength={15}
             {...form.getInputProps("name")}
           />
         </Center>

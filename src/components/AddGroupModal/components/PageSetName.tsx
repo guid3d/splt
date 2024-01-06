@@ -24,38 +24,25 @@ type PageSetNameProps = {
 const PageSetName = ({ form }: PageSetNameProps) => {
   return (
     <Container>
-      <Stack justify="space-between" pb={40}>
-        <Stack>
-          <Center>
-            <EmojiActionButtion form={form} />
-          </Center>
-          {/* <TextInput
-            label="Name"
-            placeholder="Trip to chicken farm"
-            {...form.getInputProps("name")}
-          />
-          <TextInput
-            label="Description (optional)"
-            placeholder="Last weekend of March 2023"
-            {...form.getInputProps("description")}
-          /> */}
-          <BigTextInput
-            placeholder="Name of the group"
-            {...form.getInputProps("name")}
-          />
-          <Textarea
-            styles={{ input: { textAlign: "center" } }}
-            radius={0}
-            variant="unstyled"
-            autosize
-            minRows={2}
-            maxRows={4}
-            placeholder="Description (optional)"
-            // placeholder="Last weekend of March 2023"
-            {...form.getInputProps("description")}
-          />
-          <Space />
-        </Stack>
+      <Stack gap={"xl"}>
+        <Center>
+          <EmojiActionButtion form={form} />
+        </Center>
+        <BigTextInput
+          placeholder="Name of the group"
+          {...form.getInputProps("name")}
+        />
+        <Textarea
+          styles={{ input: { textAlign: "center" } }}
+          radius={0}
+          variant="unstyled"
+          autosize
+          minRows={2}
+          maxRows={6}
+          placeholder="Description (optional)"
+          // placeholder="Last weekend of March 2023"
+          {...form.getInputProps("description")}
+        />
       </Stack>
     </Container>
   );

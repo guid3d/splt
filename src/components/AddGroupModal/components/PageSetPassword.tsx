@@ -9,7 +9,7 @@ type PageSetPasswordProps = {
 const PageSetPassword = ({ form }: PageSetPasswordProps) => {
   return (
     <>
-      <Container pb={40}>
+      <Container>
         <Stack gap={"xl"}>
           <Center>
             <Text fw={500}>Set Password</Text>

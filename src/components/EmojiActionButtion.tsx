@@ -61,7 +61,7 @@ const EmojiActionButtion = ({ form }: EmojiActionButtionProps) => {
             </ActionIcon>
           </MantineModal.Header>
           <MantineModal.Body>
-            <Stack mih={rem(500)} justify="space-between">
+            <Stack mih={rem(550)} justify="space-between">
               <Center>
                 <ActionIcon variant="default" size={rem(100)} radius={rem(100)}>
                   <Title order={1} style={{ fontSize: rem(60) }}>

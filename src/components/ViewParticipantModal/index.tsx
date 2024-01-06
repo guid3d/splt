@@ -91,7 +91,10 @@ const ViewParticipantModal = ({
           }
         >
           <Carousel.Slide>
-            <PageSetPayment form={form} />
+            <PageSetPayment
+              form={form}
+              // disabledPreferredPaymentMethod={false}
+            />
           </Carousel.Slide>
         </Modal>
       </form>

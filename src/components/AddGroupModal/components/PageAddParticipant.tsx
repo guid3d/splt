@@ -36,23 +36,24 @@ const PageAddParticipant = ({
 }: PageAddParticipantProps) => {
   return (
     <>
-      <Container pb={40}>
-        <Stack gap={"xl"}>
-          <Stack gap={"xs"}>
-            <Center>
-              <Text fw={500}>Participants</Text>
-            </Center>
-            {form.errors.participants && (
+      <Container>
+        <ScrollArea h={rem(500)}>
+          <Stack gap={"xl"}>
+            <Stack gap={"xs"}>
               <Center>
-                <Text c="red" size="sm">
-                  {form.errors.participants}
-                </Text>
+                <Text fw={500}>Participants</Text>
               </Center>
-            )}
-          </Stack>
-          <Center>
-            <ScrollArea.Autosize mah={400}>
-              <SimpleGrid cols={3}>
+              {form.errors.participants && (
+                <Center>
+                  <Text c="red" size="sm">
+                    {form.errors.participants}
+                  </Text>
+                </Center>
+              )}
+            </Stack>
+            {/* <Center> */}
+            <Stack>
+              <SimpleGrid cols={3} spacing={0} pb="xl">
                 {participants.map((participant, index) => (
                   <ParticipantAvatar
                     key={index}
@@ -66,9 +67,10 @@ const PageAddParticipant = ({
                   disabledPreferredPaymentMethod={true}
                 />
               </SimpleGrid>
-            </ScrollArea.Autosize>
-          </Center>
-        </Stack>
+            </Stack>
+            {/* </Center> */}
+          </Stack>
+        </ScrollArea>
       </Container>
     </>
   );

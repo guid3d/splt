@@ -100,13 +100,14 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
             </ActionIcon>
           </MantineModal.Header>
           <MantineModal.Body>
-            <Stack h={rem(500)}>
-              <Center>
-                <Text fw={500}>Participants</Text>
-              </Center>
-              <Center>
-                <ScrollArea.Autosize>
-                  <SimpleGrid cols={3} pb="xl">
+            <ScrollArea h={rem(550)}>
+              <Stack>
+                <Center>
+                  <Text fw={500}>Participants</Text>
+                </Center>
+                {/* <Center> */}
+                <Stack>
+                  <SimpleGrid cols={3} spacing={0} pb="xl">
                     {groupInfo.expand.participants.map((participant, index) => (
                       <ViewParticipantModal
                         key={index}
@@ -118,7 +119,7 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                       // setNewParticipant={setNewParticipant}
                       participants={participants}
                       setParticipants={setParticipants}
-                      disabledPreferredPaymentMethod={true}
+                      // disabledPreferredPaymentMethod={true}
                       onConfirmClick={(newParticipant) => {
                         console.log(newParticipant);
                         (async () => {
@@ -162,9 +163,10 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                       }}
                     />
                   </SimpleGrid>
-                </ScrollArea.Autosize>
-              </Center>
-            </Stack>
+                </Stack>
+                {/* </Center> */}
+              </Stack>
+            </ScrollArea>
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
