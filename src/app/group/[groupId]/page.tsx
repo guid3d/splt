@@ -22,27 +22,28 @@ const GroupPage = () => {
     key: "splt-group-history",
     defaultValue: [] as GroupData[],
   });
+  console.log(groupData.data)
 
-  if (groupData.data) {
-    return (
-      <>
-        <Container size="xs" mt="md">
-          <SPLTIconSmall />
-          <Stack>
-            <Center>
-              <TopSummary selectedTab={selectedTab} groupData={groupData} />
-            </Center>
-            <Center>
-              <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
-            </Center>
-            {selectedTab === "overview" && <TabOverview />}
-            {selectedTab === "transactions" && <TabTransactions />}
-          </Stack>
-        </Container>
+  return (
+    <>
+      <Container size="xs" mt="md">
+        <SPLTIconSmall />
+        <Stack>
+          <Center>
+            <TopSummary selectedTab={selectedTab} groupData={groupData} />
+          </Center>
+          <Center>
+            <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
+          </Center>
+          {selectedTab === "overview" && <TabOverview />}
+          {selectedTab === "transactions" && <TabTransactions />}
+        </Stack>
+      </Container>
+      {groupData.data && (
         <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
-      </>
-    );
-  }
+      )}
+    </>
+  );
 };
 
 export default GroupPage;

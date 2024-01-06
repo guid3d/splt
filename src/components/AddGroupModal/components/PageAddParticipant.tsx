@@ -18,21 +18,21 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { useForm, UseFormReturnType } from "@mantine/form";
-import { GroupFormValues, StoreEmojiData } from "@/types";
+import { GroupFormValues, Participant, StoreEmojiData } from "@/types";
 import { IconPlus } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 
 type PageAddParticipantProps = {
   form: UseFormReturnType<GroupFormValues>;
-  participantIds: string[];
-  setParticipantIds: React.Dispatch<React.SetStateAction<string[]>>;
+  participants: Participant[];
+  setParticipants: React.Dispatch<React.SetStateAction<Participant[]>>;
 };
 
 const PageAddParticipant = ({
   form,
-  participantIds,
-  setParticipantIds,
+  participants,
+  setParticipants,
 }: PageAddParticipantProps) => {
   return (
     <>
@@ -53,7 +53,7 @@ const PageAddParticipant = ({
           <Center>
             <ScrollArea.Autosize mah={400}>
               <SimpleGrid cols={3}>
-                {form.values.participants.map((participant, index) => (
+                {participants.map((participant, index) => (
                   <ParticipantAvatar
                     key={index}
                     avatar={participant.avatar}
@@ -61,9 +61,8 @@ const PageAddParticipant = ({
                   />
                 ))}
                 <AddParticipantModal
-                  groupForm={form}
-                  participantIds={participantIds}
-                  setParticipantIds={setParticipantIds}
+                  participants={participants}
+                  setParticipants={setParticipants}
                   disabledPreferredPaymentMethod={true}
                 />
               </SimpleGrid>

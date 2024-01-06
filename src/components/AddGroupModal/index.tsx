@@ -13,22 +13,23 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import {
   GroupFormValues,
-  ModifiedGroupFormValues,
+  // ModifiedGroupFormValues,
   Participant,
   StoreEmojiData,
 } from "@/types";
-import { useCreateGroup } from "@/api";
+import { useCreateGroup, useCreateParticipant } from "@/api";
 
 const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
+  const createParticipantMutation = useCreateParticipant();
   const router = useRouter();
-  const [participantIds, setParticipantIds] = useState<string[]>([]);
+  const [participants, setParticipants] = useState<Participant[]>([]);
   const numPage = 3;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
     max: numPage - 1,
   });
-  const form = useForm({
+  const form = useForm<GroupFormValues>({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
       name: "",
@@ -36,8 +37,7 @@ const AddGroupModal = () => {
       password: "",
       currency: "EUR",
       participants: [],
-      // termsOfService: false,
-    } as GroupFormValues,
+    },
 
     validate: (values) => {
       if (page === 0) {
@@ -61,7 +61,7 @@ const AddGroupModal = () => {
       if (page === 2) {
         return {
           participants:
-            values.participants.length < 1
+            participants.length < 1
               ? "Participants must include at least 1 person"
               : null,
         };
@@ -80,20 +80,43 @@ const AddGroupModal = () => {
         pageHandler={pageHandler}
         numPage={numPage}
         onConfirmClick={() => {
-          const modifiedFormValues: ModifiedGroupFormValues = {
-            ...form.values,
-            participants: participantIds,
-          };
-          console.log(modifiedFormValues);
-          createGroupMutation.mutate(modifiedFormValues, {
-            onSuccess: (data) => {
-              router.push(`/group/${data.id}`);
-            },
-          });
+          (async () => {
+            const participantIds: string[] = [];
+            try {
+              for (const newParticipant of participants) {
+                await new Promise((resolve, reject) => {
+                  createParticipantMutation.mutate(newParticipant, {
+                    onSuccess: (returnNewParticipant) => {
+                      // form.setFieldValue("participants", [
+                      //   ...form.values.participants,
+                      //   returnNewParticipant.id,
+                      // ]);
+                      participantIds.push(returnNewParticipant.id);
+                      resolve(returnNewParticipant);
+                    },
+                    onError: (error) => {
+                      console.log(error);
+                      reject(error);
+                    },
+                  });
+                });
+              }
+              // console.log(form.values);
+              const newFormValues = {
+                ...form.values,
+                participants: participantIds,
+              };
+              createGroupMutation.mutate(newFormValues, {
+                onSuccess: (data) => {
+                  router.push(`/group/${data.id}`);
+                },
+              });
+            } catch (error) {
+              console.log("Error during participant creation:", error);
+            }
+          })();
+
           form.reset();
-          // console.log(form.values);
-          // router.push(`/group/groupId`);
-          // form.setFieldValue("participant", participantIds);
         }}
         onCloseModalClick={() => {
           form.reset();
@@ -126,8 +149,8 @@ const AddGroupModal = () => {
         <Carousel.Slide>
           <PageAddParticipant
             form={form}
-            participantIds={participantIds}
-            setParticipantIds={setParticipantIds}
+            participants={participants}
+            setParticipants={setParticipants}
           />
         </Carousel.Slide>
       </Modal>

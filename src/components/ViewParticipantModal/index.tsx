@@ -37,7 +37,6 @@ import { useUpdateParticipant } from "@/api";
 type ViewParticipantModalProps = {
   participant: Participant;
   groupInfo: GroupData;
-  // form: UseFormReturnType<any>;
 };
 
 const ViewParticipantModal = ({
@@ -77,23 +76,9 @@ const ViewParticipantModal = ({
             // const newParticipant: Participant = form.values;
             updateParticipant.mutate(form.values, {
               onSuccess: (returnNewParticipant) => {
-                console.log(returnNewParticipant);
-                form.reset();
+                form.setValues(returnNewParticipant);
               },
             });
-            // createParticipantMutation.mutate(newParticipant, {
-            //   onSuccess: (returnNewParticipant) => {
-            //     // console.log(returnNewParticipant);
-            //     groupForm.setFieldValue("participants", [
-            //       ...groupForm.values.participants,
-            //       returnNewParticipant,
-            //     ]);
-            //     setParticipantIds([
-            //       ...participantIds,
-            //       `${returnNewParticipant.id}`,
-            //     ]);
-            //   },
-            // });
           }}
           onCloseModalClick={() => {
             form.reset();

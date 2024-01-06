@@ -24,7 +24,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-imask": "^7.2.1",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@types/node": "^20",

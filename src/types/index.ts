@@ -1,19 +1,33 @@
-export type ModifiedGroupFormValues = {
-  name: string;
-  avatar: StoreEmojiData;
-  description: string;
-  password: string;
-  currency: string;
-  participants: string[]; // Make this string because create new record need participant id
-};
+// export type ModifiedGroupFormValues = {
+//   name: string;
+//   avatar: StoreEmojiData;
+//   description: string;
+//   password: string;
+//   currency: string;
+//   participants: string[]; // Make this string because create new record need participant id
+// };
 
 export type GroupFormValues = {
+  id?: string;
   name: string;
   avatar: StoreEmojiData;
   description: string;
   password: string;
   currency: string;
-  participants: Participant[];
+  participants: string[];
+};
+
+export type GroupData = {
+  avatar: StoreEmojiData;
+  currency: string;
+  description: string;
+  participants: string[];
+  expand: {
+    participants: Participant[];
+  };
+  id: string;
+  name: string;
+  password: string;
 };
 
 export enum SplitType {
@@ -57,17 +71,6 @@ export type TotalSpendData = {
     groupInfo: GroupData;
   };
   sumExpenses: number;
-};
-
-export type GroupData = {
-  avatar: StoreEmojiData;
-  currency: string;
-  description: string;
-  expand: {
-    participants: Participant[];
-  };
-  id: string;
-  name: string;
 };
 
 export type TransactionsData = ExpenseTransactionData & PaybackTransactionData;

@@ -18,13 +18,20 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { UseFormReturnType } from "@mantine/form";
-import { GroupFormValues, GroupData } from "@/types";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import {
+  GroupFormValues,
+  GroupData,
+  Participant,
+  PaymentMethodType,
+} from "@/types";
 import { IconEdit } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ViewParticipantModal from "@/components/ViewParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
+import { useCreateParticipant, useUpdateGroup } from "@/api";
+import { useRouter } from "next/navigation";
 
 type ListParticipantsModalProps = {
   groupInfo: GroupData;
@@ -32,8 +39,41 @@ type ListParticipantsModalProps = {
 };
 
 const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
+  // const [participantIds, setParticipantIds] = useState<string[]>(
+  //   groupInfo.participants
+  // );
+  const router = useRouter();
+  // const [newParticipant, setNewParticipant] = useState<Participant>({
+  //   avatar: { emoji: "😄", unified: "1f604" },
+  //   name: "",
+  //   accountName: "",
+  //   selectedPaymentMethod: PaymentMethodType.Iban,
+  //   paymentMethod: {
+  //     iban: "",
+  //     paypal: "",
+  //   },
+  // });
+
+  const [participants, setParticipants] = useState<Participant[]>(
+    groupInfo.expand.participants
+  );
+  const createParticipantMutation = useCreateParticipant();
+  const updateGroupMutation = useUpdateGroup();
+
+  const groupForm = useForm<GroupFormValues>({
+    initialValues: {
+      id: groupInfo.id,
+      avatar: groupInfo.avatar,
+      name: groupInfo.name,
+      description: groupInfo.description,
+      password: groupInfo.password,
+      currency: groupInfo.currency,
+      participants: groupInfo.participants,
+    },
+  });
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
+
   return (
     <>
       <MantineModal.Root
@@ -60,13 +100,13 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
             </ActionIcon>
           </MantineModal.Header>
           <MantineModal.Body>
-            <Stack mih={rem(500)}>
+            <Stack h={rem(500)}>
               <Center>
                 <Text fw={500}>Participants</Text>
               </Center>
               <Center>
-                <ScrollArea.Autosize mah={400}>
-                  <SimpleGrid cols={3}>
+                <ScrollArea.Autosize>
+                  <SimpleGrid cols={3} pb="xl">
                     {groupInfo.expand.participants.map((participant, index) => (
                       <ViewParticipantModal
                         key={index}
@@ -74,12 +114,53 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                         groupInfo={groupInfo}
                       />
                     ))}
-                    {/* <AddParticipantModal
-                      groupForm={form}
-                      participantIds={participantIds}
-                      setParticipantIds={setParticipantIds}
+                    <AddParticipantModal
+                      // setNewParticipant={setNewParticipant}
+                      participants={participants}
+                      setParticipants={setParticipants}
                       disabledPreferredPaymentMethod={true}
-                    /> */}
+                      onConfirmClick={(newParticipant) => {
+                        console.log(newParticipant);
+                        (async () => {
+                          const participantIds: string[] =
+                            groupForm.values.participants;
+                          try {
+                            await new Promise((resolve, reject) => {
+                              createParticipantMutation.mutate(newParticipant, {
+                                onSuccess: (returnNewParticipant) => {
+                                  // form.setFieldValue("participants", [
+                                  //   ...form.values.participants,
+                                  //   returnNewParticipant.id,
+                                  // ]);
+                                  participantIds.push(returnNewParticipant.id);
+                                  resolve(returnNewParticipant);
+                                },
+                                onError: (error) => {
+                                  console.log(error);
+                                  reject(error);
+                                },
+                              });
+                            });
+
+                            // console.log(form.values);
+                            const newFormValues = {
+                              ...groupForm.values,
+                              participants: participantIds,
+                            };
+                            updateGroupMutation.mutate(newFormValues, {
+                              onSuccess: (data) => {
+                                // router.push(`/group/${data.id}`);
+                              },
+                            });
+                          } catch (error) {
+                            console.log(
+                              "Error during participant creation:",
+                              error
+                            );
+                          }
+                        })();
+                      }}
+                    />
                   </SimpleGrid>
                 </ScrollArea.Autosize>
               </Center>
@@ -90,11 +171,13 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
 
       <UnstyledButton onClick={open}>
         <AvatarGroup>
-          {groupInfo.expand.participants.map((participant, index) => (
-            <Avatar key={index}>
-              <Title order={2}>{participant.avatar.emoji}</Title>
-            </Avatar>
-          ))}
+          {groupInfo.expand.participants
+            .slice(0, 8)
+            .map((participant, index) => (
+              <Avatar key={index}>
+                <Title order={2}>{participant.avatar.emoji}</Title>
+              </Avatar>
+            ))}
           <Avatar>
             <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
           </Avatar>

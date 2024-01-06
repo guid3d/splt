@@ -2,7 +2,6 @@ import {
   ExpenseTransactionData,
   GroupData,
   GroupFormValues,
-  ModifiedGroupFormValues,
   ModifiedTransactionFormValues,
   Participant,
   ParticipantFormValues,
@@ -165,14 +164,34 @@ const useUpdateParticipant = () => {
 };
 
 const useCreateGroup = () => {
-  const mutation = useMutation<any, Error, ModifiedGroupFormValues>({
+  const mutation = useMutation<GroupData, Error, GroupFormValues>({
     mutationKey: ["createGroup"],
 
-    mutationFn: (groupForm: ModifiedGroupFormValues) =>
+    mutationFn: (groupForm: GroupFormValues) =>
       pb.collection("groups").create(groupForm),
     onSuccess: () => {
       // Update all simulations query
       // queryClient.invalidateQueries({ queryKey: ["simulations"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
+const useUpdateGroup = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<GroupData, Error, GroupFormValues>({
+    mutationKey: ["updateGroup"],
+
+    mutationFn: (groupForm: GroupFormValues) =>
+      pb.collection("groups").update(groupForm.id!, groupForm),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+      queryClient.invalidateQueries({ queryKey: ["group"] });
+      queryClient.invalidateQueries({ queryKey: ["participant"] });
     },
     onError: (error) => {
       console.log(error);
@@ -234,4 +253,5 @@ export {
   usePayback,
   useUpdateParticipant,
   useParticipant,
+  useUpdateGroup,
 };

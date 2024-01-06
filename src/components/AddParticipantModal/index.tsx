@@ -43,18 +43,21 @@ const NewParticipantAvatar = () => {
 
 type AddParticipantModalProps = {
   disabledPreferredPaymentMethod?: boolean;
-  groupForm: UseFormReturnType<GroupFormValues>;
-  participantIds: string[];
-  setParticipantIds: React.Dispatch<React.SetStateAction<string[]>>;
+  // groupForm: UseFormReturnType<GroupFormValues>;
+  participants: Participant[];
+  setParticipants: React.Dispatch<React.SetStateAction<Participant[]>>;
+  // setNewParticipant?: React.Dispatch<React.SetStateAction<Participant>>;
+  onConfirmClick?: (newParticipant: Participant) => void;
 };
 
 const AddParticipantModal = ({
-  groupForm,
+  // groupForm,
   disabledPreferredPaymentMethod,
-  participantIds,
-  setParticipantIds,
+  participants,
+  setParticipants,
+  // setNewParticipant,
+  onConfirmClick,
 }: AddParticipantModalProps) => {
-  const createParticipantMutation = useCreateParticipant();
   const numPage = 1;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
@@ -93,21 +96,10 @@ const AddParticipantModal = ({
           pageHandler={pageHandler}
           numPage={numPage}
           onConfirmClick={() => {
-            const newParticipant: ParticipantFormValues = form.values;
-            createParticipantMutation.mutate(newParticipant, {
-              onSuccess: (returnNewParticipant) => {
-                // console.log(returnNewParticipant);
-                groupForm.setFieldValue("participants", [
-                  ...groupForm.values.participants,
-                  returnNewParticipant,
-                ]);
-                setParticipantIds([
-                  ...participantIds,
-                  `${returnNewParticipant.id}`,
-                ]);
-              },
-            });
-
+            setParticipants([...participants, form.values]);
+            if (onConfirmClick) {
+              onConfirmClick(form.values);
+            }
             form.reset();
           }}
           onCloseModalClick={() => {
