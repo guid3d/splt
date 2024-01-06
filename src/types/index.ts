@@ -194,3 +194,17 @@ export enum PaymentMethodType {
   Paypal = "paypal",
   Cash = "cash",
 }
+
+export type DebtData = {
+  amount: number;
+  fromPerson: {
+    avatar: StoreEmojiData;
+    id: string;
+    name: string;
+  };
+  toPerson: {
+    avatar: StoreEmojiData;
+    id: string;
+    name: string;
+  };
+};

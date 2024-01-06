@@ -1,4 +1,5 @@
 import {
+  DebtData,
   ExpenseTransactionData,
   GroupData,
   GroupFormValues,
@@ -27,14 +28,16 @@ type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
 
-const pb = new PocketBase("http://127.0.0.1:8090");
+const spltPocketHost = "https://splt.pockethost.io/";
+
+const pb = new PocketBase(spltPocketHost);
 
 const useTransactions = (groupId: string) => {
   const query = useQuery<PbHooksTransactionsList, Error>({
     queryKey: ["transactions", groupId],
     queryFn: async () => {
       const res = await fetch(
-        `http://127.0.0.1:8090/api/splt/transactions?groupId=${groupId}`
+        `${spltPocketHost}/api/splt/transactions?groupId=${groupId}`
       );
       return res.json();
     },
@@ -55,7 +58,7 @@ const useExpense = (expenseId: string) => {
     queryFn: async () => {
       // TODO: handle error when expenseId is not found
       const res = await fetch(
-        `http://127.0.0.1:8090/api/splt/expense?expenseId=${expenseId}`
+        `${spltPocketHost}/api/splt/expense?expenseId=${expenseId}`
       );
       // console.log(res.json());
       return res.json();
@@ -70,7 +73,22 @@ const usePayback = (paybackId: string) => {
     queryFn: async () => {
       // TODO: handle error when paybackId is not found
       const res = await fetch(
-        `http://127.0.0.1:8090/api/splt/payback?paybackId=${paybackId}`
+        `${spltPocketHost}/api/splt/payback?paybackId=${paybackId}`
+      );
+      // console.log(res.json());
+      return res.json();
+    },
+  });
+  return query;
+};
+
+const useDebts = (groupId: string) => {
+  const query = useQuery<DebtData[], Error>({
+    queryKey: ["debts", groupId],
+    queryFn: async () => {
+      // TODO: handle error when paybackId is not found
+      const res = await fetch(
+        `${spltPocketHost}/api/splt/hasSpent?groupId=${groupId}`
       );
       // console.log(res.json());
       return res.json();
@@ -254,4 +272,5 @@ export {
   useUpdateParticipant,
   useParticipant,
   useUpdateGroup,
+  useDebts,
 };
