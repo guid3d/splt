@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { UseFormReturnType } from "@mantine/form";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { GroupData, SplitType, TransactionFormValues } from "@/types";
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 
 type PageSelectParticipantProps = {
   groupData: GroupData;
@@ -31,7 +31,8 @@ const PageSelectParticipant = ({
   form,
 }: PageSelectParticipantProps) => {
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
-
+  const { height, width } = useViewportSize();
+  const modalHeight = isMobile ? rem(height - 100) : rem(500);
   useEffect(() => {
     // Select all participant when toggle on
     if (form.values.everyoneIsParticipant) {
@@ -72,7 +73,7 @@ const PageSelectParticipant = ({
 
   return (
     <Container>
-      <ScrollArea h={rem(500)}>
+      <ScrollArea h={modalHeight}>
         <Stack gap="s">
           <Center>
             <Text fw={500} mb="sm">

@@ -32,7 +32,7 @@ import ViewParticipantModal from "@/components/ViewParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { useCreateParticipant, useUpdateGroup } from "@/api";
 import { useRouter } from "next/navigation";
-
+import { useViewportSize } from "@mantine/hooks";
 type ListParticipantsModalProps = {
   groupInfo: GroupData;
   // form: UseFormReturnType<any>;
@@ -53,6 +53,9 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
   //     paypal: "",
   //   },
   // });
+  const isMobile = useMediaQuery("(max-width: 50em)") || false;
+  const { height, width } = useViewportSize();
+  const modalHeight = isMobile ? rem(height - 100) : rem(500);
 
   const [participants, setParticipants] = useState<Participant[]>(
     groupInfo.expand.participants
@@ -72,7 +75,6 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
     },
   });
   const [opened, { open, close }] = useDisclosure(false);
-  const isMobile = useMediaQuery("(max-width: 50em)") || false;
 
   return (
     <>
@@ -100,7 +102,7 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
             </ActionIcon>
           </MantineModal.Header>
           <MantineModal.Body>
-            <ScrollArea h={rem(550)}>
+            <ScrollArea h={modalHeight}>
               <Stack>
                 <Center>
                   <Text fw={500}>Participants</Text>

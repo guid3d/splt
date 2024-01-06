@@ -22,6 +22,7 @@ import { GroupFormValues, Participant, StoreEmojiData } from "@/types";
 import { IconPlus } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
+import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 
 type PageAddParticipantProps = {
   form: UseFormReturnType<GroupFormValues>;
@@ -34,10 +35,13 @@ const PageAddParticipant = ({
   participants,
   setParticipants,
 }: PageAddParticipantProps) => {
+  const { height, width } = useViewportSize();
+  const isMobile = useMediaQuery("(max-width: 50em)") || false;
+  const modalHeight = isMobile ? rem(height - 100) : rem(500);
   return (
     <>
       <Container>
-        <ScrollArea h={rem(500)}>
+        <ScrollArea h={modalHeight}>
           <Stack gap={"xl"}>
             <Stack gap={"xs"}>
               <Center>
