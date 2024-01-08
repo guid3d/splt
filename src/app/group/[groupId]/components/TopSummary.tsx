@@ -18,6 +18,7 @@ import { useParams } from "next/navigation";
 // import { useGroup, useTotalSpend } from "@/api";
 import { UseQueryResult } from "@tanstack/react-query";
 import ListParticipantsModal from "@/components/ListParticipantsModal";
+import { EuroNumberFormatter } from "@/components/NumberFormatter";
 
 type TopSummaryProps = {
   groupData: UseQueryResult<TotalSpendData, Error>;
@@ -61,11 +62,8 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
             </Center>
             <Center>
               <Title order={2}>
-                <NumberFormatter
-                  suffix=" €"
+                <EuroNumberFormatter
                   value={data.sumExpenses ? data.sumExpenses : 0}
-                  thousandSeparator="."
-                  decimalSeparator=","
                 />
               </Title>
             </Center>

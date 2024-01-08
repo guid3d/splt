@@ -18,6 +18,7 @@ import { IconCash } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
+import { EuroNumberFormatter } from "@/components/NumberFormatter";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -25,7 +26,7 @@ const textTypeStyle: TextProps = {
   size: "sm",
 };
 
-const textStyle: TextProps = {
+const dataStyle = {
   // fw: 500,
   maw: rem(330),
 };
@@ -46,7 +47,7 @@ const ExpensePage = () => {
   const searchParams = useSearchParams();
   const expenseId = searchParams.get("e")!;
   const { data, isPending, error } = useExpense(expenseId);
-  console.log(data);
+  // console.log(data);
   if (data) {
     return (
       <Stack gap="xs">
@@ -64,12 +65,7 @@ const ExpensePage = () => {
           {data.name}
         </Title>
         <Title order={1} style={{ fontSize: rem(40) }}>
-          <NumberFormatter
-            suffix=" €"
-            value={data.amount}
-            thousandSeparator="."
-            decimalSeparator=","
-          />
+          <EuroNumberFormatter value={data.amount} />
         </Title>
         <Text c="dimmed" pb="xl">
           {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
@@ -80,14 +76,16 @@ const ExpensePage = () => {
             <IconMessage {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Description</Text>
-              <Text {...textStyle}>{data.description}</Text>
+              <Text {...dataStyle}>
+                {data.description ? data.description : "-"}
+              </Text>
             </Stack>
           </Group>
           <Group align="start">
             <IconCash {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Type</Text>
-              <Text {...textStyle}>Expense</Text>
+              <Text {...dataStyle}>Expense</Text>
             </Stack>
           </Group>
           <Group align="start">
@@ -104,7 +102,7 @@ const ExpensePage = () => {
             <IconShare {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Participants</Text>
-              <Group gap="xs">
+              <Group gap="xs" {...dataStyle}>
                 {!data.everyoneIsParticipant
                   ? data.expand.participants.map((participant, index) => (
                       <ParticipantAvatar
@@ -112,12 +110,7 @@ const ExpensePage = () => {
                         avatar={participant.avatar}
                         name={participant.name}
                         description={
-                          <NumberFormatter
-                            suffix=" €"
-                            value={data.amountPerPerson}
-                            thousandSeparator="."
-                            decimalSeparator=","
-                          />
+                          <EuroNumberFormatter value={data.amountPerPerson} />
                         }
                       />
                     ))
@@ -128,12 +121,7 @@ const ExpensePage = () => {
                           avatar={participant.avatar}
                           name={participant.name}
                           description={
-                            <NumberFormatter
-                              suffix=" €"
-                              value={data.amountPerPerson}
-                              thousandSeparator="."
-                              decimalSeparator=","
-                            />
+                            <EuroNumberFormatter value={data.amountPerPerson} />
                           }
                         />
                       )

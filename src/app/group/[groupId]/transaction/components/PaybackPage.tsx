@@ -20,6 +20,7 @@ import { IconShare } from "@tabler/icons-react";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { IconArrowRight } from "@tabler/icons-react";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
+import { EuroNumberFormatter } from "@/components/NumberFormatter";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -94,12 +95,7 @@ const PaybackPage = () => {
           </Stack>
         </Group>
         <Title order={1} style={{ fontSize: rem(40) }}>
-          <NumberFormatter
-            suffix=" €"
-            value={data.amount}
-            thousandSeparator="."
-            decimalSeparator=","
-          />
+          <EuroNumberFormatter value={data.amount} />
         </Title>
         <Text c="dimmed" pb="xl">
           {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}

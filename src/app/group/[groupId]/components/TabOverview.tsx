@@ -11,6 +11,7 @@ import React from "react";
 import { GroupData } from "@/types";
 import { useDebts } from "@/api";
 import { useParams } from "next/navigation";
+import { EuroNumberFormatter } from "@/components/NumberFormatter";
 
 type TabOverviewProps = {
   // groupData: GroupData;
@@ -41,12 +42,7 @@ const TabOverview = ({}: TabOverviewProps) => {
               }
               rightSection={
                 <Title order={5}>
-                  <NumberFormatter
-                    suffix=" €"
-                    value={debt.amount}
-                    thousandSeparator="."
-                    decimalSeparator=","
-                  />
+                  <EuroNumberFormatter value={debt.amount} />
                 </Title>
               }
             ></NavLink>

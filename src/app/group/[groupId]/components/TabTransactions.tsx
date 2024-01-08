@@ -14,6 +14,7 @@ import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
+import { EuroNumberFormatter } from "@/components/NumberFormatter";
 
 type TabTransactionsProps = {
   // groupTransactionData: TransactionsData[];
@@ -23,12 +24,12 @@ const TabTransactions = () => {
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
-  // console.log(data);
+  console.log(data);
   if (data) {
     return (
       <>
         <Text fw={500}>Transactions</Text>
-        {data.transactions.length === 0 ? (
+        {data.transactions?.length === 0 ? (
           <Center
             p="lg"
             // c="dimmed" style={{ border: "1px dashed" }}
@@ -39,7 +40,7 @@ const TabTransactions = () => {
           </Center>
         ) : (
           <Stack mb={100} gap="xs">
-            {data.transactions.map((trans, index) =>
+            {data.transactions?.map((trans, index) =>
               trans.collectionName === "expenses" ? (
                 <NavLink
                   key={index}
@@ -54,12 +55,7 @@ const TabTransactions = () => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <NumberFormatter
-                        suffix=" €"
-                        value={trans.amount}
-                        thousandSeparator="."
-                        decimalSeparator=","
-                      />
+                      <EuroNumberFormatter value={trans.amount} />
                     </Title>
                   }
                   onClick={() =>
@@ -87,12 +83,7 @@ const TabTransactions = () => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <NumberFormatter
-                        suffix=" €"
-                        value={trans.amount}
-                        thousandSeparator="."
-                        decimalSeparator=","
-                      />
+                      <EuroNumberFormatter value={trans.amount} />
                     </Title>
                   }
                   onClick={() =>
