@@ -9,7 +9,7 @@ import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 
 export const metadata = {
   title: "SPLT",
-  description: "I am using Mantine with Next.js!",
+  description: "Simplifying Bill Splitting",
 };
 
 const RootLayout = ({ children }: { children: any }) => {
