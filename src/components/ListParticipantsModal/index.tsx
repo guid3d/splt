@@ -5,7 +5,6 @@ import {
   rem,
   Modal as MantineModal,
   Stack,
-  Indicator,
   Text,
   ScrollArea,
   SimpleGrid,
@@ -13,19 +12,11 @@ import {
   Avatar,
   UnstyledButton,
 } from "@mantine/core";
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
+import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { UseFormReturnType, useForm } from "@mantine/form";
-import {
-  GroupFormValues,
-  GroupData,
-  Participant,
-  PaymentMethodType,
-} from "@/types";
-import { IconEdit } from "@tabler/icons-react";
+import { useForm } from "@mantine/form";
+import { GroupFormValues, GroupData, Participant } from "@/types";
 import { IconPencil } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ViewParticipantModal from "@/components/ViewParticipantModal";
@@ -114,7 +105,13 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                       <ViewParticipantModal
                         key={index}
                         participant={participant}
-                        groupInfo={groupInfo}
+                        // groupInfo={groupInfo}
+                        button={
+                          <ParticipantAvatar
+                            avatar={participant.avatar}
+                            name={participant.name}
+                          />
+                        }
                       />
                     ))}
                     <AddParticipantModal

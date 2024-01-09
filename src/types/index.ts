@@ -115,6 +115,14 @@ export type PaybackTransactionData = {
   updated: string;
 };
 
+export type PaybackFormValues = {
+  amount: number;
+  fromPerson: string;
+  toPerson: string;
+  groupInfo: string;
+  transactionDateTime: string;
+};
+
 // export type TransactionsData = {
 //   id: string;
 //   groupInfo: string;

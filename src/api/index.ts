@@ -6,9 +6,9 @@ import {
   ModifiedTransactionFormValues,
   Participant,
   ParticipantFormValues,
+  PaybackFormValues,
   PaybackTransactionData,
   TotalSpendData,
-  TransactionFormValues,
   TransactionsData,
 } from "@/types";
 import { useLocalStorage } from "@mantine/hooks";
@@ -174,6 +174,7 @@ const useUpdateParticipant = () => {
       queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
       queryClient.invalidateQueries({ queryKey: ["group"] });
       queryClient.invalidateQueries({ queryKey: ["participant"] });
+      queryClient.invalidateQueries({ queryKey: ["debts"] });
     },
     onError: (error) => {
       console.log(error);
@@ -261,6 +262,30 @@ const useCreateTransaction = () => {
   return mutation;
 };
 
+const useCreatePayback = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<any, Error, PaybackFormValues>({
+    mutationKey: ["createTransaction"],
+
+    mutationFn: (paybackFrom: PaybackFormValues) =>
+      pb.collection("paybacks").create(paybackFrom),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"],
+      });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["totalSpendData"],
+      // });
+      queryClient.invalidateQueries({ queryKey: ["debts"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
 export {
   useTransactions,
   useTotalSpend,
@@ -274,4 +299,5 @@ export {
   useParticipant,
   useUpdateGroup,
   useDebts,
+  useCreatePayback,
 };

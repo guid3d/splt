@@ -1,34 +1,7 @@
-import {
-  ActionIcon,
-  Center,
-  Title,
-  rem,
-  Modal as MantineModal,
-  Stack,
-  Indicator,
-  Text,
-  ScrollArea,
-  SimpleGrid,
-  AvatarGroup,
-  Avatar,
-  UnstyledButton,
-} from "@mantine/core";
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
-import React, { useState } from "react";
-import dynamic from "next/dynamic";
-import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { IconChevronLeft } from "@tabler/icons-react";
-import { UseFormReturnType, useForm } from "@mantine/form";
-import {
-  GroupFormValues,
-  GroupData,
-  Participant,
-  PaymentMethodType,
-} from "@/types";
-import { IconEdit } from "@tabler/icons-react";
-import { IconPencil } from "@tabler/icons-react";
-import AddParticipantModal from "@/components/AddParticipantModal";
-import ParticipantAvatar from "@/components/ParticipantAvatar";
+import { Center } from "@mantine/core";
+import { useCounter } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+import { Participant } from "@/types";
 import PageSetPayment from "../AddParticipantModal/components/PageSetPayment";
 import Modal from "../Modal";
 import { Carousel } from "@mantine/carousel";
@@ -36,12 +9,12 @@ import { useUpdateParticipant } from "@/api";
 
 type ViewParticipantModalProps = {
   participant: Participant;
-  groupInfo: GroupData;
+  button: React.ReactNode;
 };
 
 const ViewParticipantModal = ({
   participant,
-  groupInfo,
+  button,
 }: ViewParticipantModalProps) => {
   const updateParticipant = useUpdateParticipant();
   const numPage = 1;
@@ -83,12 +56,7 @@ const ViewParticipantModal = ({
           onCloseModalClick={() => {
             form.reset();
           }}
-          button={
-            <ParticipantAvatar
-              avatar={participant.avatar}
-              name={participant.name}
-            />
-          }
+          button={button}
         >
           <Carousel.Slide>
             <PageSetPayment
