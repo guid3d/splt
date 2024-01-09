@@ -66,7 +66,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const { height, width } = useViewportSize();
-  const modalHeight = isMobile ? rem(height - 100) : rem(700);
+  const modalHeight = isMobile ? rem(height - 100) : rem(600);
   const createPayback = useCreatePayback();
 
   const [opened, { open, close }] = useDisclosure(false);
@@ -99,7 +99,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
           <MantineModal.Body>
             <ScrollArea h={modalHeight}>
               <Container>
-                <Stack h={rem(690)} justify="space-between">
+                <Stack h={rem(590)} justify="space-between">
                   <Stack>
                     <Center>
                       <Group>
@@ -156,7 +156,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                         <EuroNumberFormatter value={debt.amount} />
                       </Title>
                     </Center>
-                    <Group gap={3}>
+                    <Group gap={3} align="center">
                       <Text
                         fw={500}
                       >{`${debt.toPerson.name}'s Payment Details`}</Text>
@@ -165,7 +165,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                         participant={debt.toPerson}
                         button={
                           <IconPencil
-                            style={{ width: rem(18), margin: rem(3) }}
+                            style={{ width: rem(18), margin: rem(3), marginTop: rem(9) }}
                           />
                         }
                       />

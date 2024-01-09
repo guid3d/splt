@@ -1,6 +1,7 @@
 import {
   Avatar,
   AvatarGroup,
+  Center,
   NavLink,
   NumberFormatter,
   Stack,
@@ -26,9 +27,18 @@ const TabOverview = ({}: TabOverviewProps) => {
       <>
         <Text fw={500}>Debts</Text>
         <Stack mb={100} gap="xs">
-          {data.map((debt, index) => (
-            <ViewDebtModal key={index} debt={debt} />
-          ))}
+          {data.length > 0 ? (
+            data.map((debt, index) => <ViewDebtModal key={index} debt={debt} />)
+          ) : (
+            <Center
+              p="lg"
+              // c="dimmed" style={{ border: "1px dashed" }}
+            >
+              <Text c="dimmed" size="sm">
+                No debts
+              </Text>
+            </Center>
+          )}
         </Stack>
       </>
     );
