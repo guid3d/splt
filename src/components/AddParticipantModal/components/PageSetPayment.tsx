@@ -1,19 +1,6 @@
 import EmojiActionButtion from "@/components/EmojiActionButtion";
-import {
-  Center,
-  Container,
-  Group,
-  Input,
-  SegmentedControl,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-  rem,
-} from "@mantine/core";
-import React from "react";
+import { Center, Container, Input, SegmentedControl, Stack, Text, TextInput, rem } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import { IMaskInput } from "react-imask";
 import { Participant, PaymentMethodType } from "@/types";
 import BigTextInput from "@/components/BigTextInput";
 

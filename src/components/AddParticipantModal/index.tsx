@@ -1,32 +1,13 @@
-import React, { useCallback, useId, useState, useMemo } from "react";
-import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import {
-  Button,
-  Affix,
-  Center,
-  ActionIcon,
-  Stack,
-  rem,
-  Avatar,
-  Text,
-} from "@mantine/core";
-import { UseFormReturnType, useForm } from "@mantine/form";
+import React from "react";
+import { useCounter } from "@mantine/hooks";
+import { Center, Stack, Avatar, Text } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
-import { IconChevronLeft } from "@tabler/icons-react";
-import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
-import ModalFooterButton from "../ModalFooterButton";
-import { useRouter } from "next/navigation";
+import { Carousel } from "@mantine/carousel";
 
 import Modal from "@/components/Modal";
-import {
-  Participant,
-  ParticipantFormValues,
-  PaymentMethodType,
-  StoreEmojiData,
-} from "@/types";
+import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
-import { GroupFormValues } from "@/types";
-import { useCreateParticipant } from "@/api";
 // import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {

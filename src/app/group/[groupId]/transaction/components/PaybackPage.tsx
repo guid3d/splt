@@ -68,12 +68,12 @@ const PaybackPage = () => {
               </ActionIcon>
             </Center>
             <Center>
-              <Title order={2} pb="md">
+              <Title fw={500} order={2} pb="md">
                 {data.expand.fromPerson.name}
               </Title>
             </Center>
           </Stack>
-          <IconArrowNarrowRight size="3rem" stroke={2} />
+          <IconArrowNarrowRight size="3rem" stroke={1.5} />
           <Stack>
             <Center>
               <ActionIcon
@@ -88,7 +88,7 @@ const PaybackPage = () => {
               </ActionIcon>
             </Center>
             <Center>
-              <Title order={2} pb="md">
+              <Title fw={500} order={2} pb="md">
                 {data.expand.toPerson.name}
               </Title>
             </Center>

@@ -1,13 +1,7 @@
 import { useGroup } from "@/api";
 import { NavLink, Text } from "@mantine/core";
-import {
-  IconReportMoney,
-  IconChevronRight,
-  IconArrowUp,
-  IconPlus,
-} from "@tabler/icons-react";
+import { IconChevronRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 type GroupHistoryListProps = {
   groupId: string;

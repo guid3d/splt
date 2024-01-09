@@ -190,6 +190,7 @@ export type ParticipantFormValues = {
 };
 
 export enum PaymentMethodType {
+  None = "none",
   Iban = "iban",
   Paypal = "paypal",
   Cash = "cash",
@@ -197,14 +198,6 @@ export enum PaymentMethodType {
 
 export type DebtData = {
   amount: number;
-  fromPerson: {
-    avatar: StoreEmojiData;
-    id: string;
-    name: string;
-  };
-  toPerson: {
-    avatar: StoreEmojiData;
-    id: string;
-    name: string;
-  };
+  fromPerson: Participant;
+  toPerson: Participant;
 };
