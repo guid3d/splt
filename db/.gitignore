@@ -1,4 +1,21 @@
-/pb_data/storage
+*
 
-pocketbase
-/pb_migrations
+!.gitignore
+!*/pb_data/backups/*
+!*/pb_hooks/*
+
+# # Ignore everything
+# *
+
+# # But not these files...
+# !.gitignore
+# !script.pl
+# !template.latex
+# # etc...
+
+# # ...even if they are in subdirectories
+# !*/
+
+# # if the files to be tracked are in subdirectories
+# !*/a/b/file1.txt
+# !*/a/b/c/*
