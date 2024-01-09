@@ -24,8 +24,12 @@ const TabTransactions = () => {
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
-  console.log(data);
   if (data) {
+    data.transactions.sort((a, b) => {
+      return (
+        Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime)
+      );
+    });
     return (
       <>
         <Text fw={500}>Transactions</Text>

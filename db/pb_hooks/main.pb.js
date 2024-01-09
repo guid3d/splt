@@ -36,14 +36,16 @@ routerAdd("GET", "/api/splt/transactions", (c) => {
   );
   $app.dao().expandRecords(paybacks, ["fromPerson", "toPerson"]);
 
-  const transactions = [...expenses, ...paybacks].sort((a, b) => {
-    return new Date(b.transactionDateTime) - new Date(a.transactionDateTime);
-  });
+  const notSortedTransactions = [...expenses, ...paybacks];
+
+  // const transactions = notSortedTransactions.sort((a, b) => {
+  //   return Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime);
+  // });
 
   // const expenses = $app.dao().findRecordsByIds("expenses", []);
   console.log("expenses", expenses);
   return c.json(200, {
-    transactions: transactions,
+    transactions: notSortedTransactions,
     // expenses: expenses,
     // paybacks: paybacks,
   });
@@ -264,6 +266,40 @@ routerAdd("GET", "/api/splt/hasSpent", (c) => {
       sortedArray[0][1].amount = 0; //
     }
   }
+
+  const paybacks = $app.dao().findRecordsByFilter(
+    "paybacks",
+    "groupInfo = {:groupId}",
+    "-transactionDateTime",
+    // 50,
+    0,
+    0,
+    { groupId: groupId }
+  );
+
+  paybacks.forEach((payback) => {
+    const parsed = JSON.parse(JSON.stringify(payback));
+    const fromPersonId = parsed.fromPerson;
+    const toPersonId = parsed.toPerson;
+    const amount = parsed.amount;
+    haveTopay.forEach((pay) => {
+      if (
+        pay.fromPerson.id === fromPersonId &&
+        pay.toPerson.id === toPersonId
+      ) {
+        pay.amount -= amount;
+      }
+
+      if (pay.amount < 0.01) {
+        // pay.amount = 0;
+        haveTopay.splice(haveTopay.indexOf(pay), 1);
+      }
+    });
+  });
+
+  // haveTopay.filter((pay) => pay.amount > 0);
+
+  // haveTopay.filter((pay) => pay.amount > 0.009);
 
   return c.json(200, haveTopay);
 });
