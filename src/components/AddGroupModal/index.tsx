@@ -124,7 +124,7 @@ const AddGroupModal = () => {
         button={
           <Affix
             // TODO: Find the way to center the button without cannot touching behind this button
-            position={{ bottom: 20, right: 0, left: 0 }}
+            position={{ bottom: 40, right: 0, left: 0 }}
             // style={{ transform: "translate(-50%, -50%)" }}
           >
             <Center>

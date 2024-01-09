@@ -49,11 +49,22 @@ const HomePage = () => {
           <Center>
             <SPLTIconBig />
           </Center>
-          <Title order={5}>Recent Visited Group</Title>
+          <Title order={5}>Recent Visited Groups</Title>
           <Stack mb={100} gap="xs">
-            {recentlyVisited.map((groupId) => (
-              <GroupHistoryList key={groupId} groupId={groupId} />
-            ))}
+            {recentlyVisited.length > 0 ? (
+              recentlyVisited.map((groupId) => (
+                <GroupHistoryList key={groupId} groupId={groupId} />
+              ))
+            ) : (
+              <Center
+                p="lg"
+                // c="dimmed" style={{ border: "1px dashed" }}
+              >
+                <Text c="dimmed" size="sm">
+                  Press + to create new group
+                </Text>
+              </Center>
+            )}
           </Stack>
         </Stack>
       </Container>

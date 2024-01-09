@@ -6,8 +6,8 @@ import React from "react";
 const SPLTIconBig = () => {
   return (
     <>
-      <IconReportMoney style={{ width: rem(80), height: rem(80) }} />
-      <Title>SPLT</Title>
+      {/* <IconReportMoney style={{ width: rem(80), height: rem(80) }} /> */}
+      <Title p="xl">SPLT</Title>
     </>
   );
 };
