@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ActionIcon,
+  Button,
   Center,
   Group,
   NumberFormatter,
@@ -20,6 +21,8 @@ import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { IconTrash } from "@tabler/icons-react";
+import DeleteButton from "./DeleteButton";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -61,7 +64,7 @@ const ExpensePage = () => {
   }
   if (data) {
     return (
-      <Stack gap="xs">
+      <Stack gap="xs" pb="xl">
         <ActionIcon
           disabled
           variant="default"
@@ -140,6 +143,9 @@ const ExpensePage = () => {
               </Group>
             </Stack>
           </Group>
+          <Center>
+            <DeleteButton id={expenseId} />
+          </Center>
         </Stack>
       </Stack>
     );

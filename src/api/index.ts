@@ -243,10 +243,10 @@ const useParticipant = (participantId: string) => {
   return query;
 };
 
-const useCreateTransaction = () => {
+const useCreateExpense = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
-    mutationKey: ["createTransaction"],
+    mutationKey: ["createExpense"],
 
     mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
       pb.collection("expenses").create(transactionForm),
@@ -266,10 +266,32 @@ const useCreateTransaction = () => {
   return mutation;
 };
 
+const useDeleteExpense = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<boolean, Error, string>({
+    mutationKey: ["deleteExpense"],
+
+    mutationFn: (expenseId) => pb.collection("expenses").delete(expenseId),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["totalSpendData"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
 const useCreatePayback = () => {
   const queryClient = useQueryClient();
   const mutation = useMutation<any, Error, PaybackFormValues>({
-    mutationKey: ["createTransaction"],
+    mutationKey: ["createPayback"],
 
     mutationFn: (paybackFrom: PaybackFormValues) =>
       pb.collection("paybacks").create(paybackFrom),
@@ -296,7 +318,7 @@ export {
   useCreateGroup,
   useCreateParticipant,
   useGroup,
-  useCreateTransaction,
+  useCreateExpense,
   useExpense,
   usePayback,
   useUpdateParticipant,
@@ -304,4 +326,5 @@ export {
   useUpdateGroup,
   useDebts,
   useCreatePayback,
+  useDeleteExpense,
 };
