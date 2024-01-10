@@ -76,9 +76,9 @@ const Modal = ({
 
   const onConfirmClickHandler = () => {
     if (!form.validate().hasErrors) {
-      close();
-      pageHandler.set(0);
       onConfirmClick();
+      pageHandler.set(0);
+      close();
     }
   };
 

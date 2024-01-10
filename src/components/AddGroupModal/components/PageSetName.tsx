@@ -33,6 +33,7 @@ const PageSetName = ({ form }: PageSetNameProps) => {
           {...form.getInputProps("name")}
         />
         <Textarea
+          size="md"
           styles={{ input: { textAlign: "center" } }}
           radius={0}
           variant="unstyled"
