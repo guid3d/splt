@@ -151,7 +151,9 @@ const AddGroupModal = () => {
             </Center>
           </Affix>
         }
-        nextButtonIsPending={createGroupMutation.isPending}
+        nextButtonIsPending={
+          createGroupMutation.isPending || createParticipantMutation.isPending
+        }
         confirmSuccess={confirmSuccess}
       >
         <Carousel.Slide>

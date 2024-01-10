@@ -31,7 +31,7 @@ const PageNotifyFinish = ({ groupUrl }: PageNotifyFinishProps) => {
   const urlPath = window.location.href;
   const shareLink = urlPath + groupUrl;
   return (
-    <Container>
+    <Container mah={rem(300)}>
       <Stack gap={"xl"}>
         <Center>
           <Avatar color="green" size="xl" radius={rem(100)}>
@@ -48,7 +48,9 @@ const PageNotifyFinish = ({ groupUrl }: PageNotifyFinishProps) => {
         </Center>
         <Center>
           {/* <IconLink style={{ width: rem(16), marginRight: rem(5) }} /> */}
-          <Title order={5}>{shareLink}</Title>
+          <Text maw={rem(300)} fw={600} style={{ overflowWrap: "anywhere" }}>
+            {shareLink}
+          </Text>
           <CopyButton value={shareLink} />
         </Center>
       </Stack>
