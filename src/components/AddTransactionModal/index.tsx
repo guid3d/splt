@@ -35,10 +35,11 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
   // console.log(da)
   const { groupId } = useParams<{ groupId: string }>();
   const createTransactionMutation = useCreateTransaction();
-  const numPage = 3;
+  const maxPage = 2;
+  const confirmPage = 2;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
-    max: numPage - 1,
+    max: maxPage,
   });
   const form = useForm({
     initialValues: {
@@ -92,7 +93,8 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         form={form}
         page={page}
         pageHandler={pageHandler}
-        numPage={numPage}
+        maxPage={maxPage}
+        confirmPage={confirmPage}
         onConfirmClick={() => {
           const modifiedFormValues: ModifiedTransactionFormValues = {
             ...form.values,

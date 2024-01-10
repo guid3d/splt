@@ -18,17 +18,21 @@ import {
   StoreEmojiData,
 } from "@/types";
 import { useCreateGroup, useCreateParticipant } from "@/api";
+import PageNotifyFinish from "./components/PageNotifyFinish";
 
 const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
   const createParticipantMutation = useCreateParticipant();
   const router = useRouter();
   const [participants, setParticipants] = useState<Participant[]>([]);
-  const numPage = 3;
+  const maxPage = 2;
+  const confirmPage = 1;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
-    max: numPage - 1,
+    max: maxPage,
   });
+  const [groupUrl, setGroupUrl] = useState<string>("");
+  const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const form = useForm<GroupFormValues>({
     initialValues: {
       avatar: { emoji: "😄", unified: "1f604" },
@@ -49,16 +53,16 @@ const AddGroupModal = () => {
         };
       }
 
-      if (page === 1) {
-        return {
-          password:
-            values.password.length < 4
-              ? "Password must include at least 4 characters"
-              : null,
-        };
-      }
+      // if (page === 1) {
+      //   return {
+      //     password:
+      //       values.password.length < 4
+      //         ? "Password must include at least 4 characters"
+      //         : null,
+      //   };
+      // }
 
-      if (page === 2) {
+      if (page === 1) {
         return {
           participants:
             participants.length < 1
@@ -78,7 +82,8 @@ const AddGroupModal = () => {
         form={form}
         page={page}
         pageHandler={pageHandler}
-        numPage={numPage}
+        maxPage={maxPage}
+        confirmPage={confirmPage}
         onConfirmClick={() => {
           (async () => {
             const participantIds: string[] = [];
@@ -108,18 +113,25 @@ const AddGroupModal = () => {
               };
               createGroupMutation.mutate(newFormValues, {
                 onSuccess: (data) => {
-                  router.push(`/group/${data.id}`);
+                  setGroupUrl(`/group/${data.id}`);
+                  setConfirmSuccess(true);
+                  // pageHandler.increment();
+                  // router.push(`/group/${data.id}`);
                 },
               });
             } catch (error) {
               console.log("Error during participant creation:", error);
             }
           })();
-
           form.reset();
+        }}
+        onLastPageHandler={() => {
+          setParticipants([]);
+          router.push(groupUrl);
         }}
         onCloseModalClick={() => {
           form.reset();
+          setParticipants([]);
         }}
         button={
           <Affix
@@ -139,19 +151,25 @@ const AddGroupModal = () => {
             </Center>
           </Affix>
         }
+        nextButtonIsPending={createGroupMutation.isPending}
+        confirmSuccess={confirmSuccess}
       >
         <Carousel.Slide>
           <PageSetName form={form} />
         </Carousel.Slide>
-        <Carousel.Slide>
+        {/* TODO: Implment Password handling */}
+        {/* <Carousel.Slide>
           <PageSetPassword form={form} />
-        </Carousel.Slide>
+        </Carousel.Slide> */}
         <Carousel.Slide>
           <PageAddParticipant
             form={form}
             participants={participants}
             setParticipants={setParticipants}
           />
+        </Carousel.Slide>
+        <Carousel.Slide>
+          <PageNotifyFinish groupUrl={groupUrl} />
         </Carousel.Slide>
       </Modal>
     </form>

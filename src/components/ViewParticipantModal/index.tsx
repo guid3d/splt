@@ -17,10 +17,11 @@ const ViewParticipantModal = ({
   button,
 }: ViewParticipantModalProps) => {
   const updateParticipant = useUpdateParticipant();
-  const numPage = 1;
+  const maxPage = 0;
+  const confirmPage = 0;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
-    max: numPage - 1,
+    max: maxPage,
   });
   const form = useForm({
     initialValues: participant,
@@ -43,7 +44,8 @@ const ViewParticipantModal = ({
           form={form}
           page={page}
           pageHandler={pageHandler}
-          numPage={numPage}
+          maxPage={maxPage}
+          confirmPage={confirmPage}
           onConfirmClick={() => {
             console.log(form.values);
             // const newParticipant: Participant = form.values;

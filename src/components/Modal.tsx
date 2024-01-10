@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
   Modal as MantineModal,
@@ -19,7 +19,8 @@ import { GroupFormValues } from "@/types";
 
 type ModalPropsType = {
   children: React.ReactNode;
-  numPage: number;
+  maxPage: number;
+  confirmPage: number;
   // isActionIcon?: boolean;
   onConfirmClick: () => void;
   onCloseModalClick?: () => void;
@@ -28,10 +29,14 @@ type ModalPropsType = {
   page: number;
   pageHandler: any;
   form: UseFormReturnType<any>;
+  nextButtonIsPending?: boolean;
+  confirmSuccess?: boolean;
+  onLastPageHandler?: () => void;
 };
 
 const Modal = ({
-  numPage,
+  maxPage,
+  confirmPage,
   // isActionIcon,
   children,
   onConfirmClick,
@@ -41,8 +46,16 @@ const Modal = ({
   page,
   pageHandler,
   form,
+  nextButtonIsPending,
+  confirmSuccess,
+  onLastPageHandler
 }: ModalPropsType) => {
-  const maxPage = numPage - 1;
+  useEffect(() => {
+    if (confirmSuccess) {
+      pageIncrement();
+    }
+  }, [confirmSuccess]);
+  // const maxPage = maxPage - 1;
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   // const [page, pageHandler] = useCounter(0, {
@@ -68,17 +81,19 @@ const Modal = ({
     if (embla) embla.scrollNext();
   }, [embla]);
 
-  const onCloseModal = () => {
+  const closeModalHandler = () => {
     close();
     pageHandler.set(0);
+  };
+
+  const onCloseModal = () => {
+    closeModalHandler();
     onCloseModalClick ? onCloseModalClick() : null;
   };
 
-  const onConfirmClickHandler = () => {
+  const confirmFunction = () => {
     if (!form.validate().hasErrors) {
       onConfirmClick();
-      pageHandler.set(0);
-      close();
     }
   };
 
@@ -122,8 +137,12 @@ const Modal = ({
                 isModalOpened={opened}
                 page={page}
                 maxPage={maxPage}
+                confirmPage={confirmPage}
                 pageIncrement={pageIncrement}
-                confirmFunction={onConfirmClickHandler}
+                confirmFunction={confirmFunction}
+                closeModalHandler={closeModalHandler}
+                nextButtonIsPending={nextButtonIsPending}
+                onLastPageHandler={onLastPageHandler}
               />
             </Stack>
           </MantineModal.Body>
