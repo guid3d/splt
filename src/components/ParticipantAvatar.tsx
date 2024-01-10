@@ -31,7 +31,7 @@ const ParticipantAvatar = ({
       style={{
         borderRadius: 20,
       }}
-      w={rem(100)}
+      w={rem(95)}
     >
       <Stack gap="xs">
         <Center>
