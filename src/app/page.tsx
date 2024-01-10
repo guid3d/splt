@@ -36,7 +36,6 @@ import GroupHistoryList from "./components/GroupHistoryList";
 // ];
 
 const HomePage = () => {
-  const router = useRouter();
   const [recentlyVisited, setRecentlyVisited] = useLocalStorage({
     key: "splt-group-history",
     defaultValue: [] as string[],

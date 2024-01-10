@@ -4,6 +4,7 @@ import {
   AvatarGroup,
   Center,
   NumberFormatter,
+  Skeleton,
   Stack,
   Text,
   Title,
@@ -26,7 +27,19 @@ type TopSummaryProps = {
 };
 
 const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
-  const { data, isLoading, error } = groupData;
+  const { data, isPending, error } = groupData;
+  if (isPending) {
+    return (
+      <Stack gap="xs">
+        {/* <Center> */}
+          <Skeleton height={rem(100)} circle />
+        {/* </Center> */}
+        <Skeleton height={rem(30)} width={rem(100)} radius="xl" />
+        <Skeleton height={rem(15)} radius="xl" />
+        <Skeleton height={rem(20)} radius="xl" />
+      </Stack>
+    );
+  }
   if (data) {
     return (
       <Stack gap="xs">

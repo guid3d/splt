@@ -13,6 +13,7 @@ const EuroNumberFormatter = ({ value }: NumberFormatterProps) => {
       thousandSeparator="."
       decimalSeparator=","
       decimalScale={2}
+      fixedDecimalScale
     />
   );
 };

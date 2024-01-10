@@ -6,9 +6,11 @@ import {
   Group,
   NavLink,
   NumberFormatter,
+  Skeleton,
   Stack,
   Text,
   Title,
+  rem,
 } from "@mantine/core";
 import React from "react";
 import { GroupData, TotalSpendData, TransactionsData } from "@/types";
@@ -29,6 +31,20 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
+  if (isPending) {
+    return (
+      <Stack>
+        {/* <Center> */}
+        {/* <Skeleton height={rem(100)} circle /> */}
+        {/* </Center> */}
+        <Skeleton height={rem(60)} radius="md" my={rem(10)} />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+      </Stack>
+    );
+  }
   if (data) {
     data.transactions.sort((a, b) => {
       return (
