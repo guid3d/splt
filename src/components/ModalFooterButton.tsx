@@ -44,7 +44,7 @@ const ModalFooterButton = ({
           return (
             <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
               <Button
-                variant="light"
+                // variant="light"
                 fullWidth
                 onClick={() => {
                   confirmFunction();
@@ -65,7 +65,7 @@ const ModalFooterButton = ({
           return (
             <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
               <Button
-                variant="light"
+                // variant="light"
                 fullWidth
                 onClick={() => {
                   pageIncrement();
@@ -87,7 +87,7 @@ const ModalFooterButton = ({
           return (
             <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
               <Button
-                variant="light"
+                // variant="light"
                 fullWidth
                 onClick={() => {
                   confirmFunction();
@@ -110,7 +110,7 @@ const ModalFooterButton = ({
           return (
             <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
               <Button
-                variant="light"
+                // variant="light"
                 fullWidth
                 onClick={() => {
                   // pageIncrement();
@@ -137,7 +137,7 @@ const ModalFooterButton = ({
           // Confirm then go to next page
           return (
             <Button
-              variant="light"
+              // variant="light"
               fullWidth
               onClick={() => {
                 confirmFunction();
@@ -156,7 +156,7 @@ const ModalFooterButton = ({
         } else {
           return (
             <Button
-              variant="light"
+              // variant="light"
               fullWidth
               onClick={() => {
                 pageIncrement();
@@ -176,7 +176,7 @@ const ModalFooterButton = ({
           // Confirm then go close modal
           return (
             <Button
-              variant="light"
+              // variant="light"
               fullWidth
               onClick={() => {
                 confirmFunction();
@@ -197,7 +197,7 @@ const ModalFooterButton = ({
           // Just close modal
           return (
             <Button
-              variant="light"
+              // variant="light"
               fullWidth
               onClick={() => {
                 // pageIncrement();

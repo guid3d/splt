@@ -29,6 +29,7 @@ import {
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import dayjs from "dayjs";
 import { useCreateTransaction } from "@/api";
+import PageNotifyFinish from "./components/PageNotifyFinish";
 
 type AddTransactionModalProps = {
   groupData: GroupData;
@@ -41,9 +42,10 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
 
   // const timeNow = dayjs().toISOString();
   // console.log(da)
+  const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const { groupId } = useParams<{ groupId: string }>();
   const createTransactionMutation = useCreateTransaction();
-  const maxPage = 2;
+  const maxPage = 3;
   const confirmPage = 2;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
@@ -112,16 +114,23 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
           // console.log(form.values);
           createTransactionMutation.mutate(modifiedFormValues, {
             onSuccess: (data) => {
+              setConfirmSuccess(true);
               console.log(data);
             },
           });
+        }}
+        onLastPageHandler={() => {
           form.reset();
         }}
         onCloseModalClick={() => {
           form.reset();
         }}
+        nextButtonIsPending={createTransactionMutation.isPending}
+        confirmSuccess={confirmSuccess}
         button={
-          <Text fw={600} c="blue">Add</Text>
+          <Text fw={600} c="blue">
+            Add
+          </Text>
           // <Affix
           //   // TODO: Find the way to center the button without cannot touching behind this button
           //   position={{ bottom: 20, right: 20 }}
@@ -151,6 +160,9 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         </Carousel.Slide>
         <Carousel.Slide>
           <PageSelectParticipant form={form} groupData={groupData} />
+        </Carousel.Slide>
+        <Carousel.Slide>
+          <PageNotifyFinish />
         </Carousel.Slide>
       </Modal>
     </form>
