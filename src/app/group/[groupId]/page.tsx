@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { Center, Container, Stack } from "@mantine/core";
 import { useState } from "react";
 import Tab, { TabType } from "./components/Tab";
@@ -27,12 +27,14 @@ const GroupPage = () => {
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
           {selectedTab === "overview" && <TabOverview />}
-          {selectedTab === "transactions" && <TabTransactions />}
+          {selectedTab === "transactions" && (
+            <TabTransactions groupData={groupData} />
+          )}
         </Stack>
       </Container>
-      {groupData.data && (
+      {/* {groupData.data && (
         <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
-      )}
+      )} */}
     </>
   );
 };

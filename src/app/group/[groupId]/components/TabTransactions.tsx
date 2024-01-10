@@ -1,7 +1,9 @@
 import {
   Avatar,
   AvatarGroup,
+  Button,
   Center,
+  Group,
   NavLink,
   NumberFormatter,
   Stack,
@@ -9,18 +11,21 @@ import {
   Title,
 } from "@mantine/core";
 import React from "react";
-import { TransactionsData } from "@/types";
+import { GroupData, TotalSpendData, TransactionsData } from "@/types";
 import { DatesProvider } from "@mantine/dates";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import AddTransactionModal from "@/components/AddTransactionModal";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type TabTransactionsProps = {
+  groupData: UseQueryResult<TotalSpendData, Error>;
   // groupTransactionData: TransactionsData[];
 };
 
-const TabTransactions = () => {
+const TabTransactions = ({ groupData }: TabTransactionsProps) => {
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
@@ -32,7 +37,12 @@ const TabTransactions = () => {
     });
     return (
       <>
-        <Text fw={500}>Transactions</Text>
+        <Group justify="space-between">
+          <Text fw={500}>Transactions</Text>
+          {groupData.data && (
+            <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
+          )}
+        </Group>
         {data.transactions?.length === 0 ? (
           <Center
             p="lg"

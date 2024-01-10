@@ -1,6 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { Button, Affix, Center, ActionIcon, Stack, rem } from "@mantine/core";
+import {
+  Button,
+  Affix,
+  Center,
+  ActionIcon,
+  Stack,
+  rem,
+  Text,
+} from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
@@ -113,25 +121,26 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
           form.reset();
         }}
         button={
-          <Affix
-            // TODO: Find the way to center the button without cannot touching behind this button
-            position={{ bottom: 20, right: 20 }}
-          >
-            <Center>
-              <ActionIcon
-                variant="filled"
-                color="gray"
-                size="xl"
-                radius="xl"
-                aria-label="Add Transaction"
-              >
-                <IconPlus
-                  style={{ width: "70%", height: "70%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-            </Center>
-          </Affix>
+          <Text fw={600} c="blue">Add</Text>
+          // <Affix
+          //   // TODO: Find the way to center the button without cannot touching behind this button
+          //   position={{ bottom: 20, right: 20 }}
+          // >
+          //   <Center>
+          //     <ActionIcon
+          //       variant="filled"
+          //       color="gray"
+          //       size="xl"
+          //       radius="xl"
+          //       aria-label="Add Transaction"
+          //     >
+          //       <IconPlus
+          //         style={{ width: "70%", height: "70%" }}
+          //         stroke={1.5}
+          //       />
+          //     </ActionIcon>
+          //   </Center>
+          // </Affix>
         }
       >
         <Carousel.Slide>
