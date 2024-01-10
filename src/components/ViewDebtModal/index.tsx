@@ -108,10 +108,10 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                             <ActionIcon
                               disabled
                               variant="default"
-                              size={rem(100)}
-                              radius={rem(100)}
+                              size={rem(80)}
+                              radius={rem(80)}
                             >
-                              <Title order={1} style={{ fontSize: rem(60) }}>
+                              <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.fromPerson.avatar.emoji}
                               </Title>
                             </ActionIcon>
@@ -135,10 +135,10 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                             <ActionIcon
                               disabled
                               variant="default"
-                              size={rem(100)}
-                              radius={rem(100)}
+                              size={rem(80)}
+                              radius={rem(80)}
                             >
-                              <Title order={1} style={{ fontSize: rem(60) }}>
+                              <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.toPerson.avatar.emoji}
                               </Title>
                             </ActionIcon>

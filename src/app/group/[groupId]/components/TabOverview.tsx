@@ -4,9 +4,11 @@ import {
   Center,
   NavLink,
   NumberFormatter,
+  Skeleton,
   Stack,
   Text,
   Title,
+rem,
 } from "@mantine/core";
 import React from "react";
 import { GroupData } from "@/types";
@@ -22,6 +24,18 @@ type TabOverviewProps = {
 const TabOverview = ({}: TabOverviewProps) => {
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useDebts(groupId);
+  if (isPending) {
+    return (
+      <Stack>
+        <Skeleton height={rem(50)} radius="md" my={rem(10)} />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+        <Skeleton height={rem(30)} radius="md" />
+        
+      </Stack>
+    );
+  }
   if (data) {
     return (
       <>

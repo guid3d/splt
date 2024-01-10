@@ -34,14 +34,12 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
   if (isPending) {
     return (
       <Stack>
-        {/* <Center> */}
-        {/* <Skeleton height={rem(100)} circle /> */}
-        {/* </Center> */}
         <Skeleton height={rem(50)} radius="md" my={rem(10)} />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
+        
       </Stack>
     );
   }

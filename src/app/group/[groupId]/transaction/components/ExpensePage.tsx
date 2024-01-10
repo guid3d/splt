@@ -4,6 +4,7 @@ import {
   Center,
   Group,
   NumberFormatter,
+  Skeleton,
   Stack,
   Text,
   TextProps,
@@ -48,6 +49,16 @@ const ExpensePage = () => {
   const expenseId = searchParams.get("e")!;
   const { data, isPending, error } = useExpense(expenseId);
   // console.log(data);
+  if (isPending) {
+    return (
+      <Stack gap={0}>
+        <Skeleton height={rem(100)} circle mb="md" />
+        <Skeleton height={rem(30)} radius="xl" mb="xl" />
+        <Skeleton height={rem(50)} radius="xl" mb="md" />
+        <Skeleton height={rem(20)} radius="xl" mb="sm" />
+      </Stack>
+    );
+  }
   if (data) {
     return (
       <Stack gap="xs">

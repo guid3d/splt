@@ -4,6 +4,7 @@ import {
   Center,
   Group,
   NumberFormatter,
+  Skeleton,
   Stack,
   Text,
   TextProps,
@@ -49,7 +50,17 @@ const PaybackPage = () => {
   const searchParams = useSearchParams();
   const paybackId = searchParams.get("p")!;
   const { data, isPending, error } = usePayback(paybackId);
-  console.log(data);
+  if (isPending) {
+    return (
+      <Stack gap={0}>
+        <Skeleton height={rem(100)} radius="xl" mb="md" />
+        <Skeleton height={rem(30)} radius="xl" mb="lg" />
+        <Skeleton height={rem(50)} radius="xl" mb="md" />
+        <Skeleton height={rem(20)} radius="xl" mb="sm" />
+      </Stack>
+    );
+  }
+
   if (data) {
     return (
       <Stack gap="xs">
@@ -59,10 +70,10 @@ const PaybackPage = () => {
               <ActionIcon
                 disabled
                 variant="default"
-                size={rem(100)}
-                radius={rem(100)}
+                size={rem(80)}
+                radius={rem(80)}
               >
-                <Title order={1} style={{ fontSize: rem(60) }}>
+                <Title order={1} style={{ fontSize: rem(50) }}>
                   {data.expand.fromPerson.avatar.emoji}
                 </Title>
               </ActionIcon>
@@ -79,10 +90,10 @@ const PaybackPage = () => {
               <ActionIcon
                 disabled
                 variant="default"
-                size={rem(100)}
-                radius={rem(100)}
+                size={rem(80)}
+                radius={rem(80)}
               >
-                <Title order={1} style={{ fontSize: rem(60) }}>
+                <Title order={1} style={{ fontSize: rem(50) }}>
                   {data.expand.toPerson.avatar.emoji}
                 </Title>
               </ActionIcon>

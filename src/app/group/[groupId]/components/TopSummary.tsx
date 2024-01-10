@@ -30,13 +30,13 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
   const { data, isPending, error } = groupData;
   if (isPending) {
     return (
-      <Stack gap="xs">
+      <Stack gap={0}>
         {/* <Center> */}
-          <Skeleton height={rem(100)} circle />
+        <Skeleton height={rem(100)} circle mb="sm" />
         {/* </Center> */}
-        <Skeleton height={rem(30)} width={rem(100)} radius="xl" />
-        <Skeleton height={rem(15)} radius="xl" />
-        <Skeleton height={rem(20)} radius="xl" />
+        <Skeleton height={rem(40)} radius="xl" mb="sm" />
+        <Skeleton height={rem(20)} radius="xl" mb="sm" />
+        <Skeleton height={rem(20)} radius="xl" mb="sm" />
       </Stack>
     );
   }
