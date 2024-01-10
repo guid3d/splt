@@ -52,9 +52,12 @@ const HomePage = () => {
           <Title order={5}>Recent Visited Groups</Title>
           <Stack mb={100} gap="xs">
             {recentlyVisited.length > 0 ? (
-              recentlyVisited.map((groupId) => (
-                <GroupHistoryList key={groupId} groupId={groupId} />
-              ))
+              recentlyVisited.map((group) => {
+                const parsedGroup: GroupData = JSON.parse(group);
+                return (
+                  <GroupHistoryList key={parsedGroup.id} group={parsedGroup} />
+                );
+              })
             ) : (
               <Center
                 p="lg"

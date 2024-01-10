@@ -133,10 +133,14 @@ const useTotalSpend = (groupId: string) => {
     if (query.data) {
       // Add visited group to local storage for history
       setGroupHistory((oldHistory) => {
-        const filteredOldHistory = oldHistory.filter(
-          (group) => group !== query.data.expand.groupInfo.id
-        );
-        return [query.data.expand.groupInfo.id, ...filteredOldHistory];
+        const filteredOldHistory = oldHistory.filter((group) => {
+          const parsedGroup: GroupData = JSON.parse(group);
+          return parsedGroup.id !== query.data.expand.groupInfo.id;
+        });
+        return [
+          JSON.stringify(query.data.expand.groupInfo),
+          ...filteredOldHistory,
+        ];
       });
     }
   }, [query.data, setGroupHistory]);
