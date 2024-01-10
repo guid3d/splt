@@ -113,7 +113,7 @@ const AddGroupModal = () => {
               };
               createGroupMutation.mutate(newFormValues, {
                 onSuccess: (data) => {
-                  setGroupUrl(`/group/${data.id}`);
+                  setGroupUrl(`group/${data.id}`);
                   setConfirmSuccess(true);
                   // pageHandler.increment();
                   // router.push(`/group/${data.id}`);
@@ -127,7 +127,7 @@ const AddGroupModal = () => {
         }}
         onLastPageHandler={() => {
           setParticipants([]);
-          router.push(groupUrl);
+          router.push(`/${groupUrl}`);
         }}
         onCloseModalClick={() => {
           form.reset();

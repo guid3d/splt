@@ -20,25 +20,37 @@ import { GroupFormValues } from "@/types";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 import BigTextInput from "@/components/BigTextInput";
 import { IconCheck } from "@tabler/icons-react";
+import CopyButton from "@/components/CopyButton";
+import { IconLink } from "@tabler/icons-react";
 
 type PageNotifyFinishProps = {
   groupUrl: string;
   // form: UseFormReturnType<GroupFormValues>;
 };
 const PageNotifyFinish = ({ groupUrl }: PageNotifyFinishProps) => {
+  const urlPath = window.location.href;
+  const shareLink = urlPath + groupUrl;
   return (
     <Container>
       <Stack gap={"xl"}>
         <Center>
-          <Avatar size="lg" radius="xl">
-            <IconCheck size={rem(60)} />
+          <Avatar color="green" size="xl" radius={rem(100)}>
+            <IconCheck style={{ width: rem(60), height: rem(60) }} />
           </Avatar>
         </Center>
-        <Title order={3}>You&apos;re all set!</Title>
-        <Text>
-          Share this link with your friends to start collecting payments.
-        </Text>
-        <Text>{groupUrl}</Text>
+        <Center>
+          <Title order={3}>Your group is created!</Title>
+        </Center>
+        <Center>
+          <Text>
+            Share this link with your friends to start collecting payments.
+          </Text>
+        </Center>
+        <Center>
+          {/* <IconLink style={{ width: rem(16), marginRight: rem(5) }} /> */}
+          <Title order={5}>{shareLink}</Title>
+          <CopyButton value={shareLink} />
+        </Center>
       </Stack>
     </Container>
   );
