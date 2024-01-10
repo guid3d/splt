@@ -37,7 +37,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
         {/* <Center> */}
         {/* <Skeleton height={rem(100)} circle /> */}
         {/* </Center> */}
-        <Skeleton height={rem(60)} radius="md" my={rem(10)} />
+        <Skeleton height={rem(50)} radius="md" my={rem(10)} />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />

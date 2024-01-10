@@ -31,6 +31,7 @@ type ModalPropsType = {
   form: UseFormReturnType<any>;
   nextButtonIsPending?: boolean;
   confirmSuccess?: boolean;
+  setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
   onLastPageHandler?: () => void;
 };
 
@@ -48,7 +49,8 @@ const Modal = ({
   form,
   nextButtonIsPending,
   confirmSuccess,
-  onLastPageHandler
+  setConfirmSuccess,
+  onLastPageHandler,
 }: ModalPropsType) => {
   useEffect(() => {
     if (confirmSuccess) {
@@ -82,6 +84,7 @@ const Modal = ({
   }, [embla]);
 
   const closeModalHandler = () => {
+    setConfirmSuccess ? setConfirmSuccess(false) : null;
     close();
     pageHandler.set(0);
   };

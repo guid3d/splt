@@ -155,6 +155,7 @@ const AddGroupModal = () => {
           createGroupMutation.isPending || createParticipantMutation.isPending
         }
         confirmSuccess={confirmSuccess}
+        setConfirmSuccess={setConfirmSuccess}
       >
         <Carousel.Slide>
           <PageSetName form={form} />

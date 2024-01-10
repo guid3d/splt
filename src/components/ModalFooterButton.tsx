@@ -1,6 +1,6 @@
 import { Affix, Button } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import React from "react";
+import React, { useState } from "react";
 import { GroupFormValues } from "@/types";
 // import { useRouter } from "next/navigation";
 
@@ -33,6 +33,14 @@ const ModalFooterButton = ({
   nextButtonIsPending,
   onLastPageHandler,
 }: ModalFooterButtonProps) => {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleClick = () => {
+    setIsButtonDisabled(true);
+    setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 300); // Re-enable the button after 3 seconds
+  };
   // const router = useRouter();
 
   if (isMobile) {
@@ -47,13 +55,14 @@ const ModalFooterButton = ({
                 // variant="light"
                 fullWidth
                 onClick={() => {
+                  handleClick();
                   confirmFunction();
                   //pageIncrement();
                   // TODO: Now handle pageIncrement in the parent component (e.g. AddGroupModal), find a way to handle it here
                 }}
                 radius="xl"
                 // type="submit"
-                disabled={nextButtonDisabled}
+                disabled={nextButtonDisabled || isButtonDisabled}
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
@@ -68,10 +77,11 @@ const ModalFooterButton = ({
                 // variant="light"
                 fullWidth
                 onClick={() => {
+                  handleClick();
                   pageIncrement();
                 }}
                 radius="xl"
-                disabled={nextButtonDisabled}
+                disabled={nextButtonDisabled || isButtonDisabled}
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
@@ -90,6 +100,7 @@ const ModalFooterButton = ({
                 // variant="light"
                 fullWidth
                 onClick={() => {
+                  handleClick();
                   confirmFunction();
                   closeModalHandler();
                   //pageIncrement();
@@ -97,7 +108,7 @@ const ModalFooterButton = ({
                 }}
                 radius="xl"
                 // type="submit"
-                disabled={nextButtonDisabled}
+                disabled={nextButtonDisabled || isButtonDisabled}
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
@@ -113,12 +124,13 @@ const ModalFooterButton = ({
                 // variant="light"
                 fullWidth
                 onClick={() => {
+                  handleClick();
                   // pageIncrement();
                   closeModalHandler();
                   onLastPageHandler && onLastPageHandler();
                 }}
                 radius="xl"
-                disabled={nextButtonDisabled}
+                disabled={nextButtonDisabled || isButtonDisabled}
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
@@ -140,13 +152,14 @@ const ModalFooterButton = ({
               // variant="light"
               fullWidth
               onClick={() => {
+                handleClick();
                 confirmFunction();
                 //pageIncrement();
                 // TODO: Now handle pageIncrement in the parent component (e.g. AddGroupModal), find a way to handle it here
               }}
               radius="xl"
               // type="submit"
-              disabled={nextButtonDisabled}
+              disabled={nextButtonDisabled || isButtonDisabled}
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >
@@ -159,10 +172,11 @@ const ModalFooterButton = ({
               // variant="light"
               fullWidth
               onClick={() => {
+                handleClick();
                 pageIncrement();
               }}
               radius="xl"
-              disabled={nextButtonDisabled}
+              disabled={nextButtonDisabled || isButtonDisabled}
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >
@@ -179,6 +193,7 @@ const ModalFooterButton = ({
               // variant="light"
               fullWidth
               onClick={() => {
+                handleClick();
                 confirmFunction();
                 closeModalHandler();
                 //pageIncrement();
@@ -186,7 +201,7 @@ const ModalFooterButton = ({
               }}
               radius="xl"
               // type="submit"
-              disabled={nextButtonDisabled}
+              disabled={nextButtonDisabled || isButtonDisabled}
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >
@@ -200,12 +215,13 @@ const ModalFooterButton = ({
               // variant="light"
               fullWidth
               onClick={() => {
+                handleClick();
                 // pageIncrement();
                 closeModalHandler();
                 onLastPageHandler && onLastPageHandler();
               }}
               radius="xl"
-              disabled={nextButtonDisabled}
+              disabled={nextButtonDisabled || isButtonDisabled}
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >

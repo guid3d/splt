@@ -127,6 +127,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         }}
         nextButtonIsPending={createTransactionMutation.isPending}
         confirmSuccess={confirmSuccess}
+        setConfirmSuccess={setConfirmSuccess}
         button={
           <Text fw={600} c="blue">
             Add
