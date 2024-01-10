@@ -43,7 +43,7 @@ const ConfirmButton = ({
                   </Button>
                   <Button
                     loading={isPending}
-                    loaderProps={{ type: "oval" }}
+                    loaderProps={{ type: "dots" }}
                     // styles={{ root: { width: "40%" } }}
                     leftSection={<IconCheck />}
                     variant="filled"
