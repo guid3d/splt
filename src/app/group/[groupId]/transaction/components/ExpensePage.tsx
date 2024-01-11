@@ -23,6 +23,8 @@ import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
 import { IconTrash } from "@tabler/icons-react";
 import DeleteButton from "./DeleteButton";
+import { useDeleteExpense } from "@/api";
+
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -51,6 +53,8 @@ const ExpensePage = () => {
   const searchParams = useSearchParams();
   const expenseId = searchParams.get("e")!;
   const { data, isPending, error } = useExpense(expenseId);
+  const deleteExpenseMutation = useDeleteExpense();
+
   // console.log(data);
   if (isPending) {
     return (
@@ -144,7 +148,10 @@ const ExpensePage = () => {
             </Stack>
           </Group>
           <Center>
-            <DeleteButton id={expenseId} />
+            <DeleteButton
+              id={expenseId}
+              deleteMutation={deleteExpenseMutation}
+            />
           </Center>
         </Stack>
       </Stack>

@@ -1,16 +1,16 @@
-import { useDeleteExpense } from "@/api";
 import { Button, Group, rem } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
+import { UseMutationResult } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 type DeleteButtonProps = {
   id: string;
+  deleteMutation: UseMutationResult<boolean, Error, string, unknown>;
 };
 
-const DeleteButton = ({ id }: DeleteButtonProps) => {
+const DeleteButton = ({ id, deleteMutation }: DeleteButtonProps) => {
   const [deletePressed, setDeletePressed] = useState(false);
-  const deleteExpenseMutation = useDeleteExpense();
   const router = useRouter();
   return (
     <>
@@ -27,7 +27,7 @@ const DeleteButton = ({ id }: DeleteButtonProps) => {
       ) : (
         <Group>
           <Button
-            w={rem(150)}
+            w={rem(90)}
             // leftSection={<IconTrash stroke={1.5} style={{ width: rem(20) }} />}
             variant="light"
             color="gray"
@@ -36,14 +36,14 @@ const DeleteButton = ({ id }: DeleteButtonProps) => {
             Cancel
           </Button>
           <Button
-            w={rem(150)}
+            w={rem(140)}
             leftSection={<IconTrash stroke={1.5} style={{ width: rem(20) }} />}
             variant="light"
             color="red"
             loaderProps={{ type: "dots" }}
-            loading={deleteExpenseMutation.isPending}
+            loading={deleteMutation.isPending}
             onClick={() => {
-              deleteExpenseMutation.mutate(id, {
+              deleteMutation.mutate(id, {
                 onSuccess: () => {
                   setDeletePressed(false);
                   router.back();

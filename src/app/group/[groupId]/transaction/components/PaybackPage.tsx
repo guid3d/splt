@@ -12,7 +12,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
-import { useExpense, usePayback } from "@/api";
+import { useDeletePayback, useExpense, usePayback } from "@/api";
 import dayjs from "dayjs";
 import { IconMessage } from "@tabler/icons-react";
 import { IconCash } from "@tabler/icons-react";
@@ -22,6 +22,7 @@ import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { IconArrowRight } from "@tabler/icons-react";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import DeleteButton from "./DeleteButton";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -50,6 +51,7 @@ const PaybackPage = () => {
   const searchParams = useSearchParams();
   const paybackId = searchParams.get("p")!;
   const { data, isPending, error } = usePayback(paybackId);
+  const deletePaybackMutation = useDeletePayback();
   if (isPending) {
     return (
       <Stack gap={0}>
@@ -111,6 +113,9 @@ const PaybackPage = () => {
         <Text c="dimmed" pb="xl">
           {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
         </Text>
+        <Center>
+          <DeleteButton id={paybackId} deleteMutation={deletePaybackMutation} />
+        </Center>
       </Stack>
     );
   }

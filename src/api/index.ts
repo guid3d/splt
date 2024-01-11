@@ -312,6 +312,28 @@ const useCreatePayback = () => {
   return mutation;
 };
 
+const useDeletePayback = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<boolean, Error, string>({
+    mutationKey: ["deletePayback"],
+
+    mutationFn: (paybackId) => pb.collection("paybacks").delete(paybackId),
+    onSuccess: () => {
+      // Update all simulations query
+      queryClient.invalidateQueries({
+        queryKey: ["transactions"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["totalSpendData"],
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+  return mutation;
+};
+
 export {
   useTransactions,
   useTotalSpend,
@@ -327,4 +349,5 @@ export {
   useDebts,
   useCreatePayback,
   useDeleteExpense,
+  useDeletePayback,
 };
