@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCounter } from "@mantine/hooks";
 import { Center, Stack, Avatar, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -9,6 +9,7 @@ import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { randomPersonEmoji } from "@/utils/randomEmoji";
+import PageNotifyFinish from "./components/PageNotifyFinish";
 // import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {
@@ -46,7 +47,11 @@ const AddParticipantModal = ({
   setConfirmSuccess,
   nextButtonIsPending,
 }: AddParticipantModalProps) => {
-  const maxPage = 0;
+  useEffect(() => {
+    form.setFieldValue("avatar", { emoji: randomPersonEmoji(), unified: "" });
+  }, [confirmSuccess]);
+
+  const maxPage = 1;
   const confirmPage = 0;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
@@ -90,9 +95,11 @@ const AddParticipantModal = ({
             if (onConfirmClick) {
               onConfirmClick(form.values);
             }
-            form.reset();
           }}
           onCloseModalClick={() => {
+            form.reset();
+          }}
+          onLastPageHandler={() => {
             form.reset();
           }}
           confirmSuccess={confirmSuccess}
@@ -112,6 +119,9 @@ const AddParticipantModal = ({
               disabledPreferredPaymentMethod={disabledPreferredPaymentMethod}
               form={form}
             />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PageNotifyFinish />
           </Carousel.Slide>
         </Modal>
       </form>

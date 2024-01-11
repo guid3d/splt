@@ -134,7 +134,7 @@ const ModalFooterButton = ({
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
-                Next
+                Done
               </Button>
             </Affix>
           );
@@ -225,7 +225,7 @@ const ModalFooterButton = ({
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >
-              Next
+              Done
             </Button>
           );
         }
