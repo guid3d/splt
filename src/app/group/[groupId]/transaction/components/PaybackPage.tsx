@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ActionIcon,
+  Avatar,
   Center,
   Group,
   NumberFormatter,
@@ -69,16 +70,11 @@ const PaybackPage = () => {
         <Group>
           <Stack>
             <Center>
-              <ActionIcon
-                disabled
-                variant="default"
-                size={rem(80)}
-                radius={rem(80)}
-              >
+              <Avatar variant="light" size={rem(80)} radius={rem(80)}>
                 <Title order={1} style={{ fontSize: rem(50) }}>
                   {data.expand.fromPerson.avatar.emoji}
                 </Title>
-              </ActionIcon>
+              </Avatar>
             </Center>
             <Center>
               <Title fw={500} order={2} pb="md">
@@ -89,16 +85,11 @@ const PaybackPage = () => {
           <IconArrowNarrowRight size="3rem" stroke={1.5} />
           <Stack>
             <Center>
-              <ActionIcon
-                disabled
-                variant="default"
-                size={rem(80)}
-                radius={rem(80)}
-              >
+              <Avatar variant="light" size={rem(80)} radius={rem(80)}>
                 <Title order={1} style={{ fontSize: rem(50) }}>
                   {data.expand.toPerson.avatar.emoji}
                 </Title>
-              </ActionIcon>
+              </Avatar>
             </Center>
             <Center>
               <Title fw={500} order={2} pb="md">

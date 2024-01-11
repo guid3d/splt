@@ -26,8 +26,8 @@ const GroupPage = () => {
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
-          {selectedTab === "overview" && <TabOverview />}
-          {selectedTab === "transactions" && (
+          {selectedTab === TabType.Overview && <TabOverview />}
+          {selectedTab === TabType.Transactions && (
             <TabTransactions groupData={groupData} />
           )}
         </Stack>

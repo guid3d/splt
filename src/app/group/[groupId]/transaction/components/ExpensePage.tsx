@@ -1,6 +1,7 @@
 import React from "react";
 import {
   ActionIcon,
+  Avatar,
   Button,
   Center,
   Group,
@@ -69,16 +70,11 @@ const ExpensePage = () => {
   if (data) {
     return (
       <Stack gap="xs" pb="xl">
-        <ActionIcon
-          disabled
-          variant="default"
-          size={rem(100)}
-          radius={rem(100)}
-        >
+        <Avatar variant="light" size={rem(100)} radius={rem(100)}>
           <Title order={1} style={{ fontSize: rem(60) }}>
             {data.avatar.emoji}
           </Title>
-        </ActionIcon>
+        </Avatar>
         <Title order={2} pb="md">
           {data.name}
         </Title>

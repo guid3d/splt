@@ -105,8 +105,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                       <Group>
                         <Stack>
                           <Center>
-                            <ActionIcon
-                              disabled
+                            <Avatar
                               variant="default"
                               size={rem(80)}
                               radius={rem(80)}
@@ -114,7 +113,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                               <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.fromPerson.avatar.emoji}
                               </Title>
-                            </ActionIcon>
+                            </Avatar>
                           </Center>
                           <Center>
                             <Title fw={500} order={2} pb="md">
@@ -132,8 +131,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                         </Stack>
                         <Stack>
                           <Center>
-                            <ActionIcon
-                              disabled
+                            <Avatar
                               variant="default"
                               size={rem(80)}
                               radius={rem(80)}
@@ -141,7 +139,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                               <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.toPerson.avatar.emoji}
                               </Title>
-                            </ActionIcon>
+                            </Avatar>
                           </Center>
                           <Center>
                             <Title fw={500} order={2} pb="md">
@@ -165,7 +163,11 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                         participant={debt.toPerson}
                         button={
                           <IconPencil
-                            style={{ width: rem(18), margin: rem(3), marginTop: rem(9) }}
+                            style={{
+                              width: rem(18),
+                              margin: rem(3),
+                              marginTop: rem(9),
+                            }}
                           />
                         }
                       />
