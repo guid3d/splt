@@ -9,6 +9,7 @@ import { SPLTIconSmall } from "@/components/SPLTIcon";
 import AddTransactionModal from "@/components/AddTransactionModal";
 import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
+import MadeWithLove from "@/components/MadeWithLove";
 
 const GroupPage = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -19,7 +20,7 @@ const GroupPage = () => {
     <>
       <Container size="xs" mt="md">
         <SPLTIconSmall />
-        <Stack>
+        <Stack mb={100}>
           <Center>
             <TopSummary selectedTab={selectedTab} groupData={groupData} />
           </Center>
@@ -31,6 +32,7 @@ const GroupPage = () => {
             <TabTransactions groupData={groupData} />
           )}
         </Stack>
+        <MadeWithLove />
       </Container>
       {/* {groupData.data && (
         <AddTransactionModal groupData={groupData.data.expand.groupInfo} />

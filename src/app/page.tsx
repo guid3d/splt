@@ -25,6 +25,7 @@ import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@mantine/hooks";
 import { GroupData } from "@/types";
 import GroupHistoryList from "./components/GroupHistoryList";
+import MadeWithLove from "@/components/MadeWithLove";
 // import AddGroupModal from "@/components/AddGroupModal";
 
 // const recentlyVisited = [
@@ -69,6 +70,7 @@ const HomePage = () => {
             )}
           </Stack>
         </Stack>
+        <MadeWithLove />
       </Container>
       <AddGroupModal />
     </>

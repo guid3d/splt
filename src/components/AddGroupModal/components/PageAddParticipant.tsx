@@ -38,6 +38,7 @@ const PageAddParticipant = ({
   const { height, width } = useViewportSize();
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const modalHeight = isMobile ? rem(height - 100) : rem(500);
+  const [confirmSuccess, setConfirmSuccess] = React.useState<boolean>(false);
   return (
     <>
       <Container>
@@ -69,6 +70,11 @@ const PageAddParticipant = ({
                   participants={participants}
                   setParticipants={setParticipants}
                   disabledPreferredPaymentMethod={true}
+                  onConfirmClick={() => {
+                    setConfirmSuccess(true);
+                  }}
+                  confirmSuccess={confirmSuccess}
+                  setConfirmSuccess={setConfirmSuccess}
                 />
               </SimpleGrid>
             </Stack>
