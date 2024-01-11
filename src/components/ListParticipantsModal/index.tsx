@@ -66,6 +66,7 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
     },
   });
   const [opened, { open, close }] = useDisclosure(false);
+  const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
 
   return (
     <>
@@ -150,6 +151,7 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                             updateGroupMutation.mutate(newFormValues, {
                               onSuccess: (data) => {
                                 // router.push(`/group/${data.id}`);
+                                setConfirmSuccess(true);
                               },
                             });
                           } catch (error) {
@@ -160,6 +162,12 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                           }
                         })();
                       }}
+                      confirmSuccess={confirmSuccess}
+                      setConfirmSuccess={setConfirmSuccess}
+                      nextButtonIsPending={
+                        updateGroupMutation.isPending ||
+                        createParticipantMutation.isPending
+                      }
                     />
                   </SimpleGrid>
                 </Stack>

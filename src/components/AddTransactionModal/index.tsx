@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
   Button,
@@ -30,6 +30,7 @@ import PageSelectParticipant from "./components/PageSelectParticipant";
 import dayjs from "dayjs";
 import { useCreateExpense } from "@/api";
 import PageNotifyFinish from "./components/PageNotifyFinish";
+import { randomEmoji } from "@/utils/randomEmoji";
 
 type AddTransactionModalProps = {
   groupData: GroupData;
@@ -42,6 +43,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
 
   // const timeNow = dayjs().toISOString();
   // console.log(da)
+
   const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const { groupId } = useParams<{ groupId: string }>();
   const createExpenseMutation = useCreateExpense();
@@ -51,13 +53,18 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
     min: 0,
     max: maxPage,
   });
+
+  useEffect(() => {
+    form.setFieldValue("avatar", { emoji: randomEmoji(), unified: "" });
+  }, [confirmSuccess]);
+
   const form = useForm({
     initialValues: {
       groupInfo: groupId,
       amount: 0,
       transactionDateTime: new Date(),
       name: "",
-      avatar: { emoji: "😄", unified: "1f604" },
+      avatar: { emoji: randomEmoji(), unified: "" },
       description: "",
       paidBy: groupData.expand.participants[0].id,
       splitType: SplitType.Equal,

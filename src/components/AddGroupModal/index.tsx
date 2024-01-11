@@ -19,6 +19,7 @@ import {
 } from "@/types";
 import { useCreateGroup, useCreateParticipant } from "@/api";
 import PageNotifyFinish from "./components/PageNotifyFinish";
+import { randomEmoji } from "@/utils/randomEmoji";
 
 const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
@@ -35,7 +36,7 @@ const AddGroupModal = () => {
   const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const form = useForm<GroupFormValues>({
     initialValues: {
-      avatar: { emoji: "😄", unified: "1f604" },
+      avatar: { emoji: randomEmoji(), unified: "" },
       name: "",
       description: "",
       password: "",

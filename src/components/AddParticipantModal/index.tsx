@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useCounter } from "@mantine/hooks";
 import { Center, Stack, Avatar, Text } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -8,6 +8,7 @@ import { Carousel } from "@mantine/carousel";
 import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
+import { randomPersonEmoji } from "@/utils/randomEmoji";
 // import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {
@@ -29,6 +30,9 @@ type AddParticipantModalProps = {
   setParticipants: React.Dispatch<React.SetStateAction<Participant[]>>;
   // setNewParticipant?: React.Dispatch<React.SetStateAction<Participant>>;
   onConfirmClick?: (newParticipant: Participant) => void;
+  confirmSuccess?: boolean;
+  setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
+  nextButtonIsPending?: boolean;
 };
 
 const AddParticipantModal = ({
@@ -38,6 +42,9 @@ const AddParticipantModal = ({
   setParticipants,
   // setNewParticipant,
   onConfirmClick,
+  confirmSuccess,
+  setConfirmSuccess,
+  nextButtonIsPending,
 }: AddParticipantModalProps) => {
   const maxPage = 0;
   const confirmPage = 0;
@@ -47,7 +54,7 @@ const AddParticipantModal = ({
   });
   const form = useForm({
     initialValues: {
-      avatar: { emoji: "😄", unified: "1f604" },
+      avatar: { emoji: randomPersonEmoji(), unified: "" },
       name: "",
       accountName: "",
       selectedPaymentMethod: PaymentMethodType.Iban,
@@ -88,6 +95,9 @@ const AddParticipantModal = ({
           onCloseModalClick={() => {
             form.reset();
           }}
+          confirmSuccess={confirmSuccess}
+          setConfirmSuccess={setConfirmSuccess}
+          nextButtonIsPending={nextButtonIsPending}
           button={
             <Stack>
               <NewParticipantAvatar />
