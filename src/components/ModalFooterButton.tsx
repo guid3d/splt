@@ -85,7 +85,7 @@ const ModalFooterButton = ({
                 loading={nextButtonIsPending}
                 loaderProps={{ type: "dots" }}
               >
-                Confirm
+                Next
               </Button>
             </Affix>
           );
@@ -180,7 +180,7 @@ const ModalFooterButton = ({
               loading={nextButtonIsPending}
               loaderProps={{ type: "dots" }}
             >
-              Confirm
+              Next
             </Button>
           );
         }

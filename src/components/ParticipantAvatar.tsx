@@ -8,6 +8,7 @@ import {
   Text,
   Title,
   rem,
+  useMantineTheme,
 } from "@mantine/core";
 import React from "react";
 
@@ -24,35 +25,69 @@ const ParticipantAvatar = ({
   isSelected,
   description,
 }: ParticipantAvatarProps) => {
+  const theme = useMantineTheme();
   return (
-    <Container
-      bg={isSelected ? "#3b3b3b" : ""}
-      p="sm"
-      style={{
-        borderRadius: 20,
-      }}
-      w={rem(95)}
-    >
-      <Stack gap="xs">
-        <Center>
-          <Avatar size="lg" radius="xl">
-            <Title order={1}>{avatar.emoji}</Title>
-          </Avatar>
-        </Center>
-        <Center>
-          <Text lineClamp={2} ta="center">
-            {name}
-          </Text>
-        </Center>
-        {description && (
+    <>
+      {/* TODO: Handle light and dark mode better */}
+      <Container
+        lightHidden
+        bg={isSelected ? theme.colors.dark[6] : ""}
+        p="sm"
+        style={{
+          borderRadius: 20,
+        }}
+        w={rem(95)}
+      >
+        <Stack gap="xs">
           <Center>
-            <Text c="dimmed" lineClamp={2} ta="center">
-              {description}
+            <Avatar size="lg" radius="xl">
+              <Title order={1}>{avatar.emoji}</Title>
+            </Avatar>
+          </Center>
+          <Center>
+            <Text lineClamp={2} ta="center">
+              {name}
             </Text>
           </Center>
-        )}
-      </Stack>
-    </Container>
+          {description && (
+            <Center>
+              <Text c="dimmed" lineClamp={2} ta="center">
+                {description}
+              </Text>
+            </Center>
+          )}
+        </Stack>
+      </Container>
+      <Container
+        darkHidden
+        bg={isSelected ? theme.colors.gray[2] : ""}
+        p="sm"
+        style={{
+          borderRadius: 20,
+        }}
+        w={rem(95)}
+      >
+        <Stack gap="xs">
+          <Center>
+            <Avatar size="lg" radius="xl">
+              <Title order={1}>{avatar.emoji}</Title>
+            </Avatar>
+          </Center>
+          <Center>
+            <Text lineClamp={2} ta="center">
+              {name}
+            </Text>
+          </Center>
+          {description && (
+            <Center>
+              <Text c="dimmed" lineClamp={2} ta="center">
+                {description}
+              </Text>
+            </Center>
+          )}
+        </Stack>
+      </Container>
+    </>
   );
 };
 
