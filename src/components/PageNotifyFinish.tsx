@@ -24,10 +24,11 @@ import CopyButton from "@/components/CopyButton";
 import { IconLink } from "@tabler/icons-react";
 
 type PageNotifyFinishProps = {
+  title: string;
   // groupUrl: string;
   // form: UseFormReturnType<GroupFormValues>;
 };
-const PageNotifyFinish = ({}: PageNotifyFinishProps) => {
+const PageNotifyFinish = ({ title }: PageNotifyFinishProps) => {
   // const urlPath = window.location.href;
   // const shareLink = urlPath + groupUrl;
   return (
@@ -39,7 +40,7 @@ const PageNotifyFinish = ({}: PageNotifyFinishProps) => {
           </Avatar>
         </Center>
         <Center>
-          <Title order={3}>Transaction is Added</Title>
+          <Title order={3}>{title}</Title>
         </Center>
       </Stack>
     </Container>

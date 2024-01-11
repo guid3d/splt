@@ -29,7 +29,7 @@ import {
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import dayjs from "dayjs";
 import { useCreateExpense } from "@/api";
-import PageNotifyFinish from "./components/PageNotifyFinish";
+import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
 
 type AddTransactionModalProps = {
@@ -170,7 +170,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
           <PageSelectParticipant form={form} groupData={groupData} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageNotifyFinish />
+          <PageNotifyFinish title="Transaction is added" />
         </Carousel.Slide>
       </Modal>
     </form>

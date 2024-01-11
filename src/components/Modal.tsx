@@ -33,6 +33,7 @@ type ModalPropsType = {
   confirmSuccess?: boolean;
   setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
   onLastPageHandler?: () => void;
+  keepButtonWhenOpened?: boolean;
 };
 
 const Modal = ({
@@ -51,6 +52,7 @@ const Modal = ({
   confirmSuccess,
   setConfirmSuccess,
   onLastPageHandler,
+  keepButtonWhenOpened,
 }: ModalPropsType) => {
   useEffect(() => {
     if (confirmSuccess) {
@@ -151,7 +153,9 @@ const Modal = ({
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
-      {!opened && <UnstyledButton onClick={open}>{button}</UnstyledButton>}
+      {(!opened || keepButtonWhenOpened) && (
+        <UnstyledButton onClick={open}>{button}</UnstyledButton>
+      )}
     </>
   );
 };

@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   Title,
+  UnstyledButton,
   rem,
 } from "@mantine/core";
 import React from "react";
@@ -20,6 +21,7 @@ import { useParams } from "next/navigation";
 import { UseQueryResult } from "@tanstack/react-query";
 import ListParticipantsModal from "@/components/ListParticipantsModal";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import EditGroupModal from "./EditGroupModal";
 
 type TopSummaryProps = {
   groupData: UseQueryResult<TotalSpendData, Error>;
@@ -44,25 +46,27 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
     return (
       <Stack gap="xs">
         <Center>
-          <ActionIcon
-            disabled
-            variant="default"
-            size={rem(100)}
-            radius={rem(100)}
-          >
+          <Avatar variant="light" size={rem(100)} radius={rem(100)}>
             <Title order={1} style={{ fontSize: rem(60) }}>
               {data.expand.groupInfo.avatar.emoji}
             </Title>
-          </ActionIcon>
+          </Avatar>
         </Center>
         {selectedTab === TabType.Transactions && (
-          <Stack gap="xs" h={rem(120)}>
-            <Center>
-              <Title order={3}>{data.expand.groupInfo.name}</Title>
-            </Center>
-            <Center>
-              <Text>{data.expand.groupInfo.description}</Text>
-            </Center>
+          <Stack h={rem(120)}>
+            <EditGroupModal
+              groupInfo={data.expand.groupInfo}
+              button={
+                <Stack gap={rem(3)}>
+                  <Center>
+                    <Title order={3}>{data.expand.groupInfo.name}</Title>
+                  </Center>
+                  <Center>
+                    <Text>{data.expand.groupInfo.description}</Text>
+                  </Center>
+                </Stack>
+              }
+            />
             <Center>
               <ListParticipantsModal groupInfo={data.expand.groupInfo} />
             </Center>

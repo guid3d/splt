@@ -187,9 +187,6 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
                 <Title order={2}>{participant.avatar.emoji}</Title>
               </Avatar>
             ))}
-          <Avatar>
-            <IconPencil style={{ width: "70%", height: "70%" }} stroke={1.5} />
-          </Avatar>
         </AvatarGroup>
       </UnstyledButton>
     </>
