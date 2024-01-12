@@ -17,6 +17,7 @@ const SPLTIconBig = () => {
           alt="SPLT"
           // width={80}
           height={60}
+          quality={100}
           // layout="fixed"
           style={{ margin: rem(30) }}
         />
@@ -28,6 +29,7 @@ const SPLTIconBig = () => {
           alt="SPLT"
           // width={80}
           height={60}
+          quality={100}
           // layout="fixed"
           style={{ margin: rem(30) }}
         />
@@ -47,6 +49,7 @@ const SPLTIconSmall = () => {
           alt="SPLT"
           // width={80}
           height={20}
+          quality={100}
           // layout="fixed"
           style={{ margin: rem(5) }}
         />
@@ -58,6 +61,7 @@ const SPLTIconSmall = () => {
           alt="SPLT"
           // width={80}
           height={20}
+          quality={100}
           // layout="fixed"
           style={{ margin: rem(5) }}
         />
