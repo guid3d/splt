@@ -9,8 +9,8 @@ Open Source Bill Splitting Web Application 💸🤑👯
 - Mobile first design, sleek and minimalistic
 - Users can share link to the group with their friends
 - No need logging in
+- Automatically summarizing debts
 - Users can specify their preferred payment methods (for the friends to send back the money)
-- Lightweight for hosting
 
 ### Tech Stacks
 - NextJS (can be easily hosted on Vercel)
