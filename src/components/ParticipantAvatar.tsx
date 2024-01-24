@@ -31,7 +31,7 @@ const ParticipantAvatar = ({
       {/* TODO: Handle light and dark mode better */}
       <Container
         lightHidden
-        bg={isSelected ? theme.colors.dark[6] : ""}
+        bg={isSelected ? theme.colors.dark[4] : ""}
         p="sm"
         style={{
           borderRadius: 20,
@@ -60,7 +60,7 @@ const ParticipantAvatar = ({
       </Container>
       <Container
         darkHidden
-        bg={isSelected ? theme.colors.gray[2] : ""}
+        bg={isSelected ? theme.colors.gray[3] : ""}
         p="sm"
         style={{
           borderRadius: 20,

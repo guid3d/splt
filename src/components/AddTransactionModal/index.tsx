@@ -61,7 +61,7 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
   const form = useForm({
     initialValues: {
       groupInfo: groupId,
-      amount: 0,
+      amount: null,
       transactionDateTime: new Date(),
       name: "",
       avatar: { emoji: randomEmoji(), unified: "" },
@@ -75,7 +75,11 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
     validate: (values) => {
       if (page === 0) {
         return {
-          amount: values.amount < 0.01 ? "Amount must be > 0" : null,
+          amount: values.amount
+            ? values.amount < 0.01
+              ? "Amount must be > 0"
+              : null
+            : "Amount must be > 0",
           paidBy: values.paidBy.length < 1 ? "Paid by must be selected" : null,
         };
       }
@@ -139,25 +143,6 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
           <Text fw={600} c="blue">
             Add
           </Text>
-          // <Affix
-          //   // TODO: Find the way to center the button without cannot touching behind this button
-          //   position={{ bottom: 20, right: 20 }}
-          // >
-          //   <Center>
-          //     <ActionIcon
-          //       variant="filled"
-          //       color="gray"
-          //       size="xl"
-          //       radius="xl"
-          //       aria-label="Add Transaction"
-          //     >
-          //       <IconPlus
-          //         style={{ width: "70%", height: "70%" }}
-          //         stroke={1.5}
-          //       />
-          //     </ActionIcon>
-          //   </Center>
-          // </Affix>
         }
       >
         <Carousel.Slide>

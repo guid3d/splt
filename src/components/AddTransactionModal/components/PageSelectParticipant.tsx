@@ -148,6 +148,7 @@ const PageSelectParticipant = ({
                         active={form.values.participants.includes(item.id!)}
                         // m={0}
                         // p={0}
+                        style={{ backgroundColor: "transparent" }} // disable hover effect
                       >
                         {form.values.participants.includes(item.id!) ? (
                           <ParticipantAvatar

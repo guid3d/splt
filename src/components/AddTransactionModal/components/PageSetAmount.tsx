@@ -42,7 +42,7 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
           max={9999999}
           clampBehavior="strict"
           suffix="€"
-          defaultValue={0}
+          // defaultValue={0}
           decimalScale={2}
           decimalSeparator=","
           thousandSeparator="."
