@@ -35,18 +35,19 @@ npm run dev
 
 
 ## TODOs
+- [ ] Add Editing Transaction
+- [ ] Add non participant person in transaction view, show everyoneIsParticipant toggle
+- [ ] Enable passcode checking
 - [ ] Finishing `README.md` : Getting Started, Deploy, Banner + Screenshot, Center logo
 - [ ] Code Refractoring, Cleaning
 - [ ] Creating first release
-- [ ] Add Editing Transaction
-- [ ] Make contrast color on selecting participant when creating bill more clear
+- [x] Make contrast color on selecting participant when creating bill more clear
 - [ ] Add button to show edit Preferred Payment Method when adding participant when creating Group
 - [ ] IBAN Masking (when adding and viewing)
 - [ ] Change Emoji choosing to [Emoji-Mart](https://github.com/missive/emoji-mart)
 
 ## Future Features
 - [ ] Choosing who you are
-- [ ] Enable passcode checking
 - [ ] i18n
 - [ ] Handle Preferrred Payment Method from other country
 - [ ] Enable Authentication
