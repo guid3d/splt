@@ -32,18 +32,18 @@ import { useCreateExpense } from "@/api";
 import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
 
-type AddTransactionModalProps = {
+type AddEditTransactionModalProps = {
   groupData: GroupData;
+  button: React.ReactNode;
+  isEdit?: boolean;
+  expenseData?: TransactionFormValues;
 };
 
-const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
-  // console.log(dayjs().toISOString());
-  // const [timeNow, setTimeNow] = useState(() => dayjs().toISOString());
-  // console.log(timeNow);
-
-  // const timeNow = dayjs().toISOString();
-  // console.log(da)
-
+const AddEditTransactionModal = ({
+  groupData,
+  button,
+  isEdit,
+}: AddEditTransactionModalProps) => {
   const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const { groupId } = useParams<{ groupId: string }>();
   const createExpenseMutation = useCreateExpense();
@@ -139,11 +139,8 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
         nextButtonIsPending={createExpenseMutation.isPending}
         confirmSuccess={confirmSuccess}
         setConfirmSuccess={setConfirmSuccess}
-        button={
-          <Text fw={600} c="blue">
-            Add
-          </Text>
-        }
+        button={button}
+        headerTitle={isEdit ? "Edit Expense" : "Add Expense"}
       >
         <Carousel.Slide>
           <PageSetAmount form={form} groupData={groupData} />
@@ -162,4 +159,4 @@ const AddTransactionModal = ({ groupData }: AddTransactionModalProps) => {
   );
 };
 
-export default AddTransactionModal;
+export default AddEditTransactionModal;

@@ -9,6 +9,10 @@ import {
   rem,
   Stack,
   UnstyledButton,
+  Flex,
+  Text,
+  Group,
+  Space,
 } from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
@@ -34,6 +38,7 @@ type ModalPropsType = {
   setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
   onLastPageHandler?: () => void;
   keepButtonWhenOpened?: boolean;
+  headerTitle?: string;
 };
 
 const Modal = ({
@@ -53,6 +58,7 @@ const Modal = ({
   setConfirmSuccess,
   onLastPageHandler,
   keepButtonWhenOpened,
+  headerTitle,
 }: ModalPropsType) => {
   useEffect(() => {
     if (confirmSuccess) {
@@ -125,6 +131,10 @@ const Modal = ({
                 stroke={1.5}
               />
             </ActionIcon>
+            <Text c="dimmed" size="sm" fw={400}>
+              {headerTitle}
+            </Text>
+            <Space w="xl" h="xl" />
           </MantineModal.Header>
           <MantineModal.Body>
             <Stack h={rem(550)} justify="space-between">

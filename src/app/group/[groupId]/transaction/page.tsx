@@ -9,6 +9,7 @@ import {
   Stack,
   Indicator,
   Container,
+  Flex,
 } from "@mantine/core";
 import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
 import React, { useState } from "react";
@@ -34,17 +35,32 @@ const TransactionPage = () => {
   return (
     <>
       <Container size="xs" mt="md">
-        <ActionIcon
-          variant="transparent"
-          color="gray"
-          aria-label="Back"
-          onClick={() => router.back()}
-        >
-          <IconChevronLeft
-            style={{ width: "70%", height: "70%" }}
-            stroke={1.5}
-          />
-        </ActionIcon>
+        <Flex justify="space-between">
+          <ActionIcon
+            variant="transparent"
+            color="gray"
+            aria-label="Back"
+            onClick={() => router.back()}
+          >
+            <IconChevronLeft
+              // style={{ width: "70%", height: "70%" }}
+              stroke={1.5}
+            />
+          </ActionIcon>
+          {isExpense ? (
+            <ActionIcon
+              variant="transparent"
+              color="gray"
+              aria-label="Back"
+              // onClick={() => router.back()}
+            >
+              <IconPencil
+                // style={{ width: "120%", height: "120%" }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+          ) : null}
+        </Flex>
         <Container mx="xl">
           {isExpense ? <ExpensePage /> : isPayback ? <PaybackPage /> : null}
         </Container>

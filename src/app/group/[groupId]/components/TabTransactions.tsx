@@ -19,7 +19,7 @@ import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
-import AddTransactionModal from "@/components/AddTransactionModal";
+import AddEditTransactionModal from "@/components/AddEditTransactionModal";
 import { UseQueryResult } from "@tanstack/react-query";
 
 type TabTransactionsProps = {
@@ -39,7 +39,6 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
-        
       </Stack>
     );
   }
@@ -54,7 +53,14 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
         <Group justify="space-between">
           <Text fw={500}>Transactions</Text>
           {groupData.data && (
-            <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
+            <AddEditTransactionModal
+              groupData={groupData.data.expand.groupInfo}
+              button={
+                <Text fw={600} c="blue">
+                  Add
+                </Text>
+              }
+            />
           )}
         </Group>
         {data.transactions?.length === 0 ? (

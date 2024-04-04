@@ -6,7 +6,6 @@ import TopSummary from "./components/TopSummary";
 import TabOverview from "./components/TabOverview";
 import TabTransactions from "./components/TabTransactions";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
-import AddTransactionModal from "@/components/AddTransactionModal";
 import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
 import MadeWithLove from "@/components/MadeWithLove";
@@ -34,9 +33,6 @@ const GroupPage = () => {
         </Stack>
         <MadeWithLove />
       </Container>
-      {/* {groupData.data && (
-        <AddTransactionModal groupData={groupData.data.expand.groupInfo} />
-      )} */}
     </>
   );
 };
