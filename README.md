@@ -36,6 +36,8 @@ npm run dev
 
 ## TODOs
 - [ ] Add Editing Transaction
+- [ ] Advanced Bill Spliting
+- [ ] Loading Bar when pressing (as it slow with NextJS)
 - [ ] Add non participant person in transaction view, show everyoneIsParticipant toggle
 - [ ] Enable passcode checking
 - [ ] Finishing `README.md` : Getting Started, Deploy, Banner + Screenshot, Center logo
