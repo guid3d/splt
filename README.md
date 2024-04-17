@@ -47,6 +47,7 @@ npm run dev
 - [ ] Add button to show edit Preferred Payment Method when adding participant when creating Group
 - [ ] IBAN Masking (when adding and viewing)
 - [ ] Change Emoji choosing to [Emoji-Mart](https://github.com/missive/emoji-mart)
+- [ ] Handle Error when no data is loaded
 
 ## Future Features
 - [ ] Choosing who you are
