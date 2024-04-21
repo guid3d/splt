@@ -27,6 +27,7 @@ import { IconTrash } from "@tabler/icons-react";
 import DeleteButton from "./DeleteButton";
 import { useDeleteExpense } from "@/api";
 import AddEditTransactionModal from "@/components/AddEditTransactionModal";
+import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
 
 const textTypeStyle: TextProps = {
   // w: rem(80),
@@ -37,7 +38,12 @@ const textTypeStyle: TextProps = {
 
 const dataStyle = {
   // fw: 500,
-  maw: rem(330),
+  w: rem(330),
+};
+
+const descriptionStyle: React.CSSProperties = {
+  whiteSpace: "break-spaces",
+  overflowWrap: "break-word",
 };
 
 const iconProps = {
@@ -76,12 +82,12 @@ const ExpensePage = () => {
           <AddEditTransactionModal
             groupData={data.expand.groupInfo}
             button={
-              <ActionIcon variant="transparent" color="gray" aria-label="Back">
-                <IconPencil
-                  // style={{ width: "120%", height: "120%" }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+              // <ActionIcon variant="transparent" color="gray" aria-label="Back">
+              <IconPencil
+                // style={{ width: "120%", height: "120%" }}
+                stroke={1.5}
+              />
+              // </ActionIcon>
             }
             isEdit
             expenseData={data}
@@ -103,15 +109,18 @@ const ExpensePage = () => {
         </Text>
         <Text fw={500}>Details</Text>
         <Stack>
-          <Group align="start">
-            <IconMessage {...iconProps} />
-            <Stack gap={0}>
-              <Text {...textTypeStyle}>Description</Text>
-              <Text {...dataStyle}>
-                {data.description ? data.description : "-"}
-              </Text>
-            </Stack>
-          </Group>
+          {data.description && (
+            <Group align="start">
+              <IconMessage {...iconProps} />
+
+              <Stack gap={0}>
+                <Text {...textTypeStyle}>Description</Text>
+                <Text {...dataStyle} style={descriptionStyle}>
+                  {data.description ? data.description : "-"}
+                </Text>
+              </Stack>
+            </Group>
+          )}
           <Group align="start">
             <IconCash {...iconProps} />
             <Stack gap={0}>
@@ -123,7 +132,7 @@ const ExpensePage = () => {
             <IconUser {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Paid By</Text>
-              <ParticipantAvatar
+              <ParticipantAvatarHorizontal
                 avatar={data.expand.paidBy.avatar}
                 name={data.expand.paidBy.name}
               />
@@ -133,10 +142,10 @@ const ExpensePage = () => {
             <IconShare {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Participants</Text>
-              <Group gap="xs" {...dataStyle}>
+              <Stack gap={0} {...dataStyle}>
                 {!data.everyoneIsParticipant
                   ? data.expand.participants.map((participant, index) => (
-                      <ParticipantAvatar
+                      <ParticipantAvatarHorizontal
                         key={participant.id}
                         avatar={participant.avatar}
                         name={participant.name}
@@ -147,7 +156,7 @@ const ExpensePage = () => {
                     ))
                   : data.expand.groupInfo.expand.participants.map(
                       (participant, index) => (
-                        <ParticipantAvatar
+                        <ParticipantAvatarHorizontal
                           key={participant.id}
                           avatar={participant.avatar}
                           name={participant.name}
@@ -157,7 +166,7 @@ const ExpensePage = () => {
                         />
                       )
                     )}
-              </Group>
+              </Stack>
             </Stack>
           </Group>
           <Center>
