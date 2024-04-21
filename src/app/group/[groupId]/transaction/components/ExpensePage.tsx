@@ -166,6 +166,24 @@ const ExpensePage = () => {
                         />
                       )
                     )}
+                {
+                  // To include participants who are not included in the expense but exist in the group
+                  !data.everyoneIsParticipant
+                    ? data.expand.groupInfo.expand.participants
+                        .filter(
+                          (participant) =>
+                            !data.participants.includes(participant.id!)
+                        )
+                        .map((participant, index) => (
+                          <ParticipantAvatarHorizontal
+                            key={participant.id}
+                            avatar={participant.avatar}
+                            name={participant.name}
+                            description={<EuroNumberFormatter value={0} />}
+                          />
+                        ))
+                    : null
+                }
               </Stack>
             </Stack>
           </Group>
