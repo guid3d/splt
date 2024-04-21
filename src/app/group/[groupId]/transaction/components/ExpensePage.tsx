@@ -38,7 +38,7 @@ const textTypeStyle: TextProps = {
 
 const dataStyle = {
   // fw: 500,
-  w: rem(330),
+  w: rem(250),
 };
 
 const descriptionStyle: React.CSSProperties = {
@@ -52,8 +52,8 @@ const iconProps = {
     height: rem(30),
     marginTop: rem(5),
     marginBottom: rem(10),
-    marginLeft: rem(10),
-    marginRight: rem(10),
+    // marginLeft: rem(10),
+    // marginRight: rem(10),
   },
   stroke: 1.25,
 };
@@ -110,7 +110,7 @@ const ExpensePage = () => {
         <Text fw={500}>Details</Text>
         <Stack>
           {data.description && (
-            <Group align="start">
+            <Group align="start" wrap="nowrap">
               <IconMessage {...iconProps} />
 
               <Stack gap={0}>
@@ -121,28 +121,30 @@ const ExpensePage = () => {
               </Stack>
             </Group>
           )}
-          <Group align="start">
+          <Group align="start" wrap="nowrap">
             <IconCash {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Type</Text>
               <Text {...dataStyle}>Expense</Text>
             </Stack>
           </Group>
-          <Group align="start">
+          <Group align="start" wrap="nowrap">
             <IconUser {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Paid By</Text>
-              <ParticipantAvatarHorizontal
-                avatar={data.expand.paidBy.avatar}
-                name={data.expand.paidBy.name}
-              />
+              <Stack gap={0} {...dataStyle} align="stretch">
+                <ParticipantAvatarHorizontal
+                  avatar={data.expand.paidBy.avatar}
+                  name={data.expand.paidBy.name}
+                />
+              </Stack>
             </Stack>
           </Group>
-          <Group align="start">
+          <Group align="start" wrap="nowrap">
             <IconShare {...iconProps} />
             <Stack gap={0}>
               <Text {...textTypeStyle}>Participants</Text>
-              <Stack gap={0} {...dataStyle}>
+              <Stack gap={0} {...dataStyle} align="stretch">
                 {!data.everyoneIsParticipant
                   ? data.expand.participants.map((participant, index) => (
                       <ParticipantAvatarHorizontal

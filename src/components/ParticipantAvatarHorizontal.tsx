@@ -12,6 +12,7 @@ import {
   rem,
   useMantineTheme,
 } from "@mantine/core";
+import { useViewportSize } from "@mantine/hooks";
 import React from "react";
 
 type ParticipantAvatarProps = {
@@ -38,7 +39,7 @@ const ParticipantAvatarHorizontal = ({
         style={{
           borderRadius: 20,
         }}
-        w={rem(330)}
+        miw={rem(300)}
       >
         <Group justify="space-between" align="center" gap="xs">
           <Group>

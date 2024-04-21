@@ -50,7 +50,7 @@ const TransactionPage = () => {
             />
           </ActionIcon>
         </Flex>
-        <Container mx="xl">
+        <Container>
           {isExpense ? <ExpensePage /> : isPayback ? <PaybackPage /> : null}
         </Container>
       </Container>
