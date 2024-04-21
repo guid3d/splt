@@ -19,6 +19,7 @@ import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
 import {
+  ExpenseTransactionData,
   GroupData,
   ModifiedTransactionFormValues,
   Participant,
@@ -28,7 +29,7 @@ import {
 } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import dayjs from "dayjs";
-import { useCreateExpense } from "@/api";
+import { useCreateExpense, useUpdateExpense } from "@/api";
 import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
 
@@ -36,17 +37,19 @@ type AddEditTransactionModalProps = {
   groupData: GroupData;
   button: React.ReactNode;
   isEdit?: boolean;
-  expenseData?: TransactionFormValues;
+  expenseData?: ExpenseTransactionData;
 };
 
 const AddEditTransactionModal = ({
   groupData,
   button,
   isEdit,
+  expenseData,
 }: AddEditTransactionModalProps) => {
   const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const { groupId } = useParams<{ groupId: string }>();
   const createExpenseMutation = useCreateExpense();
+  const updateExpenseMutation = useUpdateExpense();
   const maxPage = 3;
   const confirmPage = 2;
   const [page, pageHandler] = useCounter(0, {
@@ -55,22 +58,39 @@ const AddEditTransactionModal = ({
   });
 
   useEffect(() => {
-    form.setFieldValue("avatar", { emoji: randomEmoji(), unified: "" });
+    if (!isEdit) {
+      form.setFieldValue("avatar", { emoji: randomEmoji(), unified: "" });
+    }
   }, [confirmSuccess]);
 
   const form = useForm({
-    initialValues: {
-      groupInfo: groupId,
-      amount: null,
-      transactionDateTime: new Date(),
-      name: "",
-      avatar: { emoji: randomEmoji(), unified: "" },
-      description: "",
-      paidBy: groupData.expand.participants[0].id,
-      splitType: SplitType.Equal,
-      everyoneIsParticipant: true,
-      participants: [],
-    } as TransactionFormValues,
+    initialValues:
+      isEdit && expenseData
+        ? ({
+            id: expenseData.id,
+            groupInfo: expenseData.groupInfo,
+            amount: expenseData.amount,
+            transactionDateTime: new Date(expenseData.transactionDateTime),
+            name: expenseData.name,
+            avatar: expenseData.avatar,
+            description: expenseData.description,
+            paidBy: expenseData.paidBy,
+            splitType: expenseData.splitType,
+            everyoneIsParticipant: expenseData.everyoneIsParticipant,
+            participants: expenseData.participants,
+          } as TransactionFormValues)
+        : ({
+            groupInfo: groupId,
+            amount: null,
+            transactionDateTime: new Date(),
+            name: "",
+            avatar: { emoji: randomEmoji(), unified: "" },
+            description: "",
+            paidBy: groupData.expand.participants[0].id,
+            splitType: SplitType.Equal,
+            everyoneIsParticipant: true,
+            participants: [],
+          } as TransactionFormValues),
 
     validate: (values) => {
       if (page === 0) {
@@ -123,12 +143,21 @@ const AddEditTransactionModal = ({
           };
           console.log(modifiedFormValues);
           // console.log(form.values);
-          createExpenseMutation.mutate(modifiedFormValues, {
-            onSuccess: (data) => {
-              setConfirmSuccess(true);
-              console.log(data);
-            },
-          });
+          if (isEdit) {
+            updateExpenseMutation.mutate(modifiedFormValues, {
+              onSuccess: (data) => {
+                setConfirmSuccess(true);
+                console.log(data);
+              },
+            });
+          } else {
+            createExpenseMutation.mutate(modifiedFormValues, {
+              onSuccess: (data) => {
+                setConfirmSuccess(true);
+                console.log(data);
+              },
+            });
+          }
         }}
         onLastPageHandler={() => {
           form.reset();
@@ -136,11 +165,14 @@ const AddEditTransactionModal = ({
         onCloseModalClick={() => {
           form.reset();
         }}
-        nextButtonIsPending={createExpenseMutation.isPending}
+        nextButtonIsPending={
+          createExpenseMutation.isPending || updateExpenseMutation.isPending
+        }
         confirmSuccess={confirmSuccess}
         setConfirmSuccess={setConfirmSuccess}
         button={button}
         headerTitle={isEdit ? "Edit Expense" : "Add Expense"}
+        keepButtonWhenOpened
       >
         <Carousel.Slide>
           <PageSetAmount form={form} groupData={groupData} />
@@ -152,7 +184,9 @@ const AddEditTransactionModal = ({
           <PageSelectParticipant form={form} groupData={groupData} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageNotifyFinish title="Transaction is added" />
+          <PageNotifyFinish
+            title={isEdit ? "Transaction is edited" : "Transaction is added"}
+          />
         </Carousel.Slide>
       </Modal>
     </form>

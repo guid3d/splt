@@ -28,7 +28,8 @@ type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
 
-const spltPocketHost = process.env.NEXT_PUBLIC_DB_HOST || "https://splt.pockethost.io";
+const spltPocketHost =
+  process.env.NEXT_PUBLIC_DB_HOST || "https://splt.pockethost.io";
 
 const pb = new PocketBase(spltPocketHost);
 
@@ -251,17 +252,35 @@ const useCreateExpense = () => {
       pb.collection("expenses").create(transactionForm),
     onSuccess: () => {
       // Update all simulations query
-      queryClient.invalidateQueries({
-        queryKey: ["transactions"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["totalSpendData"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
     },
     onError: (error) => {
       console.log(error);
     },
   });
+  return mutation;
+};
+
+const useUpdateExpense = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<GroupData, Error, ModifiedTransactionFormValues>(
+    {
+      mutationKey: ["updateExpense"],
+
+      mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
+        pb.collection("expenses").update(transactionForm.id!, transactionForm),
+      onSuccess: () => {
+        // Update all simulations query
+        queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+        queryClient.invalidateQueries({ queryKey: ["expense"] });
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    }
+  );
   return mutation;
 };
 
@@ -273,12 +292,8 @@ const useDeleteExpense = () => {
     mutationFn: (expenseId) => pb.collection("expenses").delete(expenseId),
     onSuccess: () => {
       // Update all simulations query
-      queryClient.invalidateQueries({
-        queryKey: ["transactions"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["totalSpendData"],
-      });
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
     },
     onError: (error) => {
       console.log(error);
@@ -349,4 +364,5 @@ export {
   useCreatePayback,
   useDeleteExpense,
   useDeletePayback,
+  useUpdateExpense,
 };

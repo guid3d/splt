@@ -21,7 +21,7 @@ import { GroupFormValues } from "@/types";
 import { IconEdit } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useExpense } from "@/api";
+import { useExpense, useTotalSpend } from "@/api";
 import ExpensePage from "./components/ExpensePage";
 import PaybackPage from "./components/PaybackPage";
 
@@ -31,6 +31,8 @@ const TransactionPage = () => {
   const searchParams = useSearchParams();
   const isExpense = searchParams.has("e");
   const isPayback = searchParams.has("p");
+  const { groupId } = useParams<{ groupId: string }>();
+  const groupData = useTotalSpend(groupId);
 
   return (
     <>
@@ -47,19 +49,6 @@ const TransactionPage = () => {
               stroke={1.5}
             />
           </ActionIcon>
-          {isExpense ? (
-            <ActionIcon
-              variant="transparent"
-              color="gray"
-              aria-label="Back"
-              // onClick={() => router.back()}
-            >
-              <IconPencil
-                // style={{ width: "120%", height: "120%" }}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          ) : null}
         </Flex>
         <Container mx="xl">
           {isExpense ? <ExpensePage /> : isPayback ? <PaybackPage /> : null}

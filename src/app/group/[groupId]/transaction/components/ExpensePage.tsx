@@ -4,6 +4,7 @@ import {
   Avatar,
   Button,
   Center,
+  Flex,
   Group,
   NumberFormatter,
   Skeleton,
@@ -16,7 +17,7 @@ import {
 import { useSearchParams } from "next/navigation";
 import { useExpense } from "@/api";
 import dayjs from "dayjs";
-import { IconMessage } from "@tabler/icons-react";
+import { IconMessage, IconPencil } from "@tabler/icons-react";
 import { IconCash } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
@@ -25,6 +26,7 @@ import { EuroNumberFormatter } from "@/components/NumberFormatter";
 import { IconTrash } from "@tabler/icons-react";
 import DeleteButton from "./DeleteButton";
 import { useDeleteExpense } from "@/api";
+import AddEditTransactionModal from "@/components/AddEditTransactionModal";
 
 const textTypeStyle: TextProps = {
   // w: rem(80),
@@ -60,7 +62,7 @@ const ExpensePage = () => {
   if (isPending) {
     return (
       <Stack gap={0}>
-        <Skeleton height={rem(100)} circle mb="md" />
+        <Skeleton height={rem(100)} circle mb="md" mt="xl" />
         <Skeleton height={rem(30)} radius="xl" mb="xl" />
         <Skeleton height={rem(50)} radius="xl" mb="md" />
         <Skeleton height={rem(20)} radius="xl" mb="sm" />
@@ -70,6 +72,21 @@ const ExpensePage = () => {
   if (data) {
     return (
       <Stack gap="xs" pb="xl">
+        <Flex justify={"end"}>
+          <AddEditTransactionModal
+            groupData={data.expand.groupInfo}
+            button={
+              <ActionIcon variant="transparent" color="gray" aria-label="Back">
+                <IconPencil
+                  // style={{ width: "120%", height: "120%" }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            }
+            isEdit
+            expenseData={data}
+          />
+        </Flex>
         <Avatar variant="light" size={rem(100)} radius={rem(100)}>
           <Title order={1} style={{ fontSize: rem(60) }}>
             {data.avatar.emoji}

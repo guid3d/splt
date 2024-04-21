@@ -37,6 +37,7 @@ export enum SplitType {
 }
 
 export type ModifiedTransactionFormValues = {
+  id?: string;
   groupInfo: string;
   amount: number | null;
   transactionDateTime: string;
@@ -51,6 +52,7 @@ export type ModifiedTransactionFormValues = {
 };
 
 export type TransactionFormValues = {
+  id?: string;
   groupInfo: string;
   amount: number | null;
   transactionDateTime: Date;
