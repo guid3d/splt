@@ -38,8 +38,11 @@ const ParticipantAvatarHorizontal = ({
         p="xs"
         style={{
           borderRadius: 20,
+          // flex: 1,
+          // display: "block",
+          // width: "100%",
         }}
-        miw={rem(300)}
+        w="100%"
       >
         <Group justify="space-between" align="center" gap="xs">
           <Group>
