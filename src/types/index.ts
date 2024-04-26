@@ -32,7 +32,7 @@ export type GroupData = {
 
 export enum SplitType {
   Equal = "equal",
-  Percent = "percent",
+  Part = "part",
   Amount = "amount",
 }
 
@@ -46,7 +46,7 @@ export type ModifiedTransactionFormValues = {
   description: string;
   // category: string;
   paidBy: string;
-  splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
+  splitType: SplitType.Equal | SplitType.Part | SplitType.Amount;
   everyoneIsParticipant: boolean;
   participants: string[];
 };
@@ -61,7 +61,7 @@ export type TransactionFormValues = {
   description: string;
   // category: string;
   paidBy: string;
-  splitType: SplitType.Equal | SplitType.Percent | SplitType.Amount;
+  splitType: SplitType.Equal | SplitType.Part | SplitType.Amount;
   everyoneIsParticipant: boolean;
   participants: string[];
 };

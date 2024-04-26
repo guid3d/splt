@@ -1,14 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import {
-  Button,
-  Affix,
-  Center,
-  ActionIcon,
-  Stack,
-  rem,
-  Text,
-} from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
@@ -32,6 +23,7 @@ import dayjs from "dayjs";
 import { useCreateExpense, useUpdateExpense } from "@/api";
 import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
+import PageSetSplit from "./components/PageSetSplit";
 
 type AddEditTransactionModalProps = {
   groupData: GroupData;
@@ -50,8 +42,8 @@ const AddEditTransactionModal = ({
   const { groupId } = useParams<{ groupId: string }>();
   const createExpenseMutation = useCreateExpense();
   const updateExpenseMutation = useUpdateExpense();
-  const maxPage = 3;
-  const confirmPage = 2;
+  const maxPage = 4;
+  const confirmPage = 3;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
     max: maxPage,
@@ -182,6 +174,9 @@ const AddEditTransactionModal = ({
         </Carousel.Slide>
         <Carousel.Slide>
           <PageSelectParticipant form={form} groupData={groupData} />
+        </Carousel.Slide>
+        <Carousel.Slide>
+          <PageSetSplit form={form} groupData={groupData} />
         </Carousel.Slide>
         <Carousel.Slide>
           <PageNotifyFinish

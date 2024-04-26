@@ -6,6 +6,7 @@ import {
   Container,
   Flex,
   Group,
+  Input,
   Stack,
   Text,
   Title,
@@ -20,6 +21,8 @@ type ParticipantAvatarProps = {
   name: string;
   isSelected?: boolean;
   description?: React.ReactNode;
+  value?: string | number;
+  isEditableValue?: boolean;
 };
 
 const ParticipantAvatarHorizontal = ({
@@ -27,6 +30,8 @@ const ParticipantAvatarHorizontal = ({
   name,
   isSelected,
   description,
+  value,
+  isEditableValue,
 }: ParticipantAvatarProps) => {
   const theme = useMantineTheme();
   return (
@@ -38,9 +43,6 @@ const ParticipantAvatarHorizontal = ({
         p="xs"
         style={{
           borderRadius: 20,
-          // flex: 1,
-          // display: "block",
-          // width: "100%",
         }}
         w="100%"
       >
@@ -58,6 +60,22 @@ const ParticipantAvatarHorizontal = ({
               {description}
             </Text>
           )}
+          {isEditableValue && value && (
+            <Input
+              styles={{
+                input: {
+                  textAlign: "end",
+                  fontSize: rem(16),
+                  // height: rem(40),
+                  width: rem(60),
+                },
+              }}
+              radius={0}
+              variant="unstyled"
+              placeholder="part"
+              value={value}
+            />
+          )}
         </Group>
       </Container>
       <Container
@@ -67,7 +85,7 @@ const ParticipantAvatarHorizontal = ({
         style={{
           borderRadius: 20,
         }}
-        w={rem(330)}
+        w="100%"
       >
         <Group justify="space-between" align="center" gap="xs">
           <Group>

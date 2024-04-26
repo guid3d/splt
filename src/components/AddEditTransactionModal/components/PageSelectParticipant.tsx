@@ -80,23 +80,6 @@ const PageSelectParticipant = ({
               Participant
             </Text>
           </Center>
-          {/* 
-        // TODO: Add split type later iteration
-        <Group justify="space-between">
-          <Text size="sm">Seperated by </Text>
-          <SegmentedControl
-            size="sm"
-            value={form.values.splitType}
-            onChange={(value) => {
-              form.setFieldValue("split", value);
-            }}
-            data={[
-              { label: "Equal", value: SplitType.Equal },
-              { label: "Percent", value: SplitType.Percent, disabled: true },
-              { label: "Amount", value: SplitType.Amount, disabled: true },
-            ]}
-          />
-        </Group> */}
           <Center>
             {/* <Text size="sm" pr="xl">Everyone</Text> */}
             <Switch
