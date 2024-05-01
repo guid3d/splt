@@ -20,19 +20,34 @@ Open Source Bill Splitting Web Application 💸🤑👯
 ### Getting Started
 // TODO
 
-First, run the development server:
+### Development Setup
 
-```bash
-npm run dev
-```
+1. Clone this repo, and navigate to this
+2. Install dependencies
 
-## Deploy Frontend on Vercel
+    ```bash
+    npm install
+    ```
+  
+3. Run the front development server:
+
+    ```bash
+    npm run dev
+    ```
+4. Open new Terminal, and navigate to db folder 
+
+    ```bash
+    cd db
+    ```
+5. Start [Pocketbase](https://pocketbase.io/) (Backend + Database)
+
+    ```bash
+    ./pocketbase serve
+    ```
+
+### Production Deployment
+
 // TODO
-
-
-## Deploy Database on Pockethost
-// TODO
-
 
 ## TODOs
 - [x] Add Editing Transaction
