@@ -1,0 +1,800 @@
+[
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "users_name",
+        "name": "name",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "users_avatar",
+        "name": "imgAvatar",
+        "type": "file",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "mimeTypes": [
+            "image/jpeg",
+            "image/png",
+            "image/svg+xml",
+            "image/gif",
+            "image/webp"
+          ],
+          "thumbs": null,
+          "maxSelect": 1,
+          "maxSize": 5242880,
+          "protected": false
+        }
+      },
+      {
+        "system": false,
+        "id": "ibv7umif",
+        "name": "avatar",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      },
+      {
+        "system": false,
+        "id": "oitcr4th",
+        "name": "accountName",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "j5rpu5ek",
+        "name": "selectPaymentMethod",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "iban",
+            "paypal",
+            "cash"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "v0i2yesx",
+        "name": "paymentMethod",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "id = @request.auth.id",
+    "viewRule": "id = @request.auth.id",
+    "createRule": "",
+    "updateRule": "id = @request.auth.id",
+    "deleteRule": "id = @request.auth.id",
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "exceptEmailDomains": null,
+      "manageRule": null,
+      "minPasswordLength": 8,
+      "onlyEmailDomains": null,
+      "onlyVerified": false,
+      "requireEmail": false
+    }
+  },
+  {
+    "id": "4u55ofdfhiy5zvr",
+    "name": "expenses",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "ov8m4xbv",
+        "name": "groupInfo",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "z19z1ymzy236wa3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "mmuhvgtu",
+        "name": "amount",
+        "type": "number",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "uktceqtp",
+        "name": "transactionDateTime",
+        "type": "date",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "fgkobj4y",
+        "name": "name",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "ogahijck",
+        "name": "avatar",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      },
+      {
+        "system": false,
+        "id": "mhmydrhm",
+        "name": "description",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "6pund6dy",
+        "name": "category",
+        "type": "select",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "Other",
+            "Foods",
+            "Transportation",
+            "Accommodation"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ri1dk8uw",
+        "name": "paidBy",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "cuo8cgcm",
+        "name": "splitType",
+        "type": "select",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "equal",
+            "percent",
+            "amount"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "m1nkjxuk",
+        "name": "everyoneIsParticipant",
+        "type": "bool",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {}
+      },
+      {
+        "system": false,
+        "id": "b265808c",
+        "name": "participants",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "z19z1ymzy236wa3",
+    "name": "groups",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "t6froda9",
+        "name": "name",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "hhln2vpj",
+        "name": "avatar",
+        "type": "json",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      },
+      {
+        "system": false,
+        "id": "x7q1j5gt",
+        "name": "description",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "ikin7eqp",
+        "name": "password",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": 4,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "isl9xlvd",
+        "name": "currency",
+        "type": "select",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "EUR",
+            "USD",
+            "THB"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "xothak36",
+        "name": "participants",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": null,
+    "options": {}
+  },
+  {
+    "id": "azdnlilk56luqv5",
+    "name": "participants",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "rgs1ik30",
+        "name": "avatar",
+        "type": "json",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      },
+      {
+        "system": false,
+        "id": "xezuqusb",
+        "name": "name",
+        "type": "text",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "lzomfjvb",
+        "name": "accountName",
+        "type": "text",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "y7jrivqc",
+        "name": "selectedPaymentMethod",
+        "type": "select",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "none",
+            "iban",
+            "paypal",
+            "cash"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "ln68vt9x",
+        "name": "paymentMethod",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 2000000
+        }
+      },
+      {
+        "system": false,
+        "id": "ndbhftjd",
+        "name": "loggedInUser",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "sx3h3uce4y0v1y8",
+    "name": "paybacks",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "uqv67iwl",
+        "name": "amount",
+        "type": "number",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": 0.01,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "rycokfhr",
+        "name": "fromPerson",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "sjgojz3r",
+        "name": "toPerson",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "lg86aqdg",
+        "name": "groupInfo",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "z19z1ymzy236wa3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "r4pquxzv",
+        "name": "transactionDateTime",
+        "type": "date",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "dzpn7uh841fqg0r",
+    "name": "transactions",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "wrcwffjp",
+        "name": "type",
+        "type": "select",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "expense",
+            "payback"
+          ]
+        }
+      },
+      {
+        "system": false,
+        "id": "6aplrmqd",
+        "name": "expenseTransaction",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "4u55ofdfhiy5zvr",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "yimhvhmr",
+        "name": "paybackTransaction",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "sx3h3uce4y0v1y8",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "lfwf4o5w",
+        "name": "transactionDateTime",
+        "type": "date",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": "",
+          "max": ""
+        }
+      },
+      {
+        "system": false,
+        "id": "s0eguflh",
+        "name": "group",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "z19z1ymzy236wa3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "rsahx49yclbiays",
+    "name": "allExpenses",
+    "type": "view",
+    "system": false,
+    "schema": [],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT id from expenses"
+    }
+  },
+  {
+    "id": "j8wj6bdee6jyrdy",
+    "name": "payBefore",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "z4tz6u6p",
+        "name": "sumAmount",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      },
+      {
+        "system": false,
+        "id": "4fukfcpk",
+        "name": "groupInfo",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "z19z1ymzy236wa3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "xpslwic7",
+        "name": "paidBy",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT (ROW_NUMBER() OVER()) as id, SUM(expenses.amount) as sumAmount, expenses.groupInfo, expenses.paidBy\nFROM expenses\nGROUP BY expenses.paidBy\n"
+    }
+  },
+  {
+    "id": "jxs2ilaogg2xm9q",
+    "name": "totalSpend",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "6vqy04nt",
+        "name": "sumExpenses",
+        "type": "json",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "maxSize": 1
+        }
+      },
+      {
+        "system": false,
+        "id": "4tbsh0tm",
+        "name": "groupInfo",
+        "type": "relation",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "z19z1ymzy236wa3",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT groups.id as id, SUM(expenses.amount) as sumExpenses, groups.id as groupInfo\nFROM expenses\nFULL JOIN groups on groups.id = expenses.groupInfo\nGROUP BY groups.id"
+    }
+  }
+]
