@@ -45,7 +45,7 @@ Open Source Bill Splitting Web Application 💸🤑👯
     ```bash
     ./pocketbase serve
     ```
-7. Visit to Admin UI `http://127.0.0.1:8090/_/` and create admin account
+7. Visit to [Admin UI](http://127.0.0.1:8090/_/) `http://127.0.0.1:8090/_/` and create admin account
 8. Go to tab Settings -> [Import collections](http://127.0.0.1:8090/_/?#/settings/import-collections)
 9. Press Load from JSON file and choose `pb_schema.json` file from this db folder
 10. Enjoy!
