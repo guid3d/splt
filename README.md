@@ -39,12 +39,17 @@ Open Source Bill Splitting Web Application 💸🤑👯
     ```bash
     cd db
     ```
-5. Start [Pocketbase](https://pocketbase.io/) (Backend + Database)
+5. Download [Pocketbase](https://pocketbase.io/docs/) based on your system and copy `pocketbase` executable file to this db folder.
+6. Start [Pocketbase](https://pocketbase.io/) (Backend + Database)
 
     ```bash
     ./pocketbase serve
     ```
-
+7. Visit to Admin UI `http://127.0.0.1:8090/_/` and create admin account
+8. Go to tab Settings -> [Import collections](http://127.0.0.1:8090/_/?#/settings/import-collections)
+9. Press Load from JSON file and choose `pb_schema.json` file from this db folder
+10. Enjoy!
+    
 ### Production Deployment
 
 // TODO
