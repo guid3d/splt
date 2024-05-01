@@ -1,14 +1,12 @@
 
-/pb_data/storage
-/pb_data/data.db
-/pb_data/data.db-shm
-/pb_data/data.db-wal
-/pb_data/logs.db
-/pb_data/logs.db-shm
-/pb_data/logs.db-wal
+/pb_data/
 /pb_migrations/
 pocketbase
 /pb_data/types.d.ts
+
+# CHANGELOG.md
+LICENSE.md
+CHANGELOG*.md
 # # Ignore everything
 # *
 
