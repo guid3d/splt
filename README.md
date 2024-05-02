@@ -68,6 +68,8 @@ Open Source Bill Splitting Web Application 💸🤑👯
 - [ ] IBAN Masking (when adding and viewing)
 - [ ] Change Emoji choosing to [Emoji-Mart](https://github.com/missive/emoji-mart)
 - [ ] Handle Error when no data is loaded
+- [ ] Choose currency
+- [ ] Summary page of how much per person
 
 ## Future Features
 - [ ] Choosing who you are
@@ -75,4 +77,6 @@ Open Source Bill Splitting Web Application 💸🤑👯
 - [ ] Handle Preferrred Payment Method from other country
 - [ ] Enable Authentication
 - [ ] Bill Uploading: Store in S3, Extracting out information
-- [ ] Bank fetching from IBAN
+- [ ] Bank name fetching from IBAN
+- [ ] Dockerfile for easier deployment
+- [ ] Email notification
