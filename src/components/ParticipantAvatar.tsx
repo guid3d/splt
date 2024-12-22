@@ -1,4 +1,3 @@
-import { theme } from "@/theme";
 import { StoreEmojiData } from "@/types";
 import {
   Avatar,
@@ -8,6 +7,7 @@ import {
   Text,
   Title,
   rem,
+  useComputedColorScheme,
   useMantineTheme,
 } from "@mantine/core";
 import React from "react";
@@ -26,68 +26,47 @@ const ParticipantAvatar = ({
   description,
 }: ParticipantAvatarProps) => {
   const theme = useMantineTheme();
+  const computedColorScheme = useComputedColorScheme();
+
+  const renderColor = () => {
+    if (isSelected) {
+      if (computedColorScheme === "dark") {
+        return theme.colors.dark[4];
+      }
+      return theme.colors.gray[3];
+    }
+    return "";
+  };
+
   return (
-    <>
-      {/* TODO: Handle light and dark mode better */}
-      <Container
-        lightHidden
-        bg={isSelected ? theme.colors.dark[4] : ""}
-        p="sm"
-        style={{
-          borderRadius: 20,
-        }}
-        w={rem(95)}
-      >
-        <Stack gap="xs">
+    <Container
+      bg={renderColor()}
+      p="sm"
+      style={{
+        borderRadius: 20,
+      }}
+      w={rem(95)}
+    >
+      <Stack gap="xs">
+        <Center>
+          <Avatar size="lg" radius="xl">
+            <Title order={1}>{avatar.emoji}</Title>
+          </Avatar>
+        </Center>
+        <Center>
+          <Text lineClamp={2} ta="center">
+            {name}
+          </Text>
+        </Center>
+        {description && (
           <Center>
-            <Avatar size="lg" radius="xl">
-              <Title order={1}>{avatar.emoji}</Title>
-            </Avatar>
-          </Center>
-          <Center>
-            <Text lineClamp={2} ta="center">
-              {name}
+            <Text c="dimmed" lineClamp={2} ta="center">
+              {description}
             </Text>
           </Center>
-          {description && (
-            <Center>
-              <Text c="dimmed" lineClamp={2} ta="center">
-                {description}
-              </Text>
-            </Center>
-          )}
-        </Stack>
-      </Container>
-      <Container
-        darkHidden
-        bg={isSelected ? theme.colors.gray[3] : ""}
-        p="sm"
-        style={{
-          borderRadius: 20,
-        }}
-        w={rem(95)}
-      >
-        <Stack gap="xs">
-          <Center>
-            <Avatar size="lg" radius="xl">
-              <Title order={1}>{avatar.emoji}</Title>
-            </Avatar>
-          </Center>
-          <Center>
-            <Text lineClamp={2} ta="center">
-              {name}
-            </Text>
-          </Center>
-          {description && (
-            <Center>
-              <Text c="dimmed" lineClamp={2} ta="center">
-                {description}
-              </Text>
-            </Center>
-          )}
-        </Stack>
-      </Container>
-    </>
+        )}
+      </Stack>
+    </Container>
   );
 };
 

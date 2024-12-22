@@ -1,23 +1,8 @@
-import EmojiActionButtion from "@/components/EmojiActionButtion";
 import {
-  Center,
-  CheckIcon,
-  Combobox,
-  Container,
-  Group,
-  ScrollArea,
-  SegmentedControl,
-  SimpleGrid,
-  Stack,
-  Switch,
-  Text,
-  TextInput,
-  rem,
-  useCombobox,
+  Center, Container, ScrollArea,
+  SegmentedControl, Stack, Text, rem
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
 import { UseFormReturnType } from "@mantine/form";
-import ParticipantAvatar from "@/components/ParticipantAvatar";
 import { GroupData, SplitType, TransactionFormValues } from "@/types";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
@@ -67,17 +52,21 @@ const PageSetSplit = ({ groupData, form }: PageSetSplitProps) => {
                   key={participant.id}
                   avatar={participant.avatar}
                   name={participant.name}
-                  description={EuroNumberFormatter({
-                    value: form.values.amount
-                      ? form.values.amount /
-                        groupData.expand.participants.length
-                      : 0,
-                  })}
+                  description={
+                    <Text c="dimmed" lineClamp={2} ta="center">
+                      {EuroNumberFormatter({
+                        value: form.values.amount
+                          ? form.values.amount /
+                            groupData.expand.participants.length
+                          : 0,
+                      })}
+                    </Text>
+                  }
                 />
               ))}
           </div>
           <div>
-            {form.values.splitType === SplitType.Part &&
+            {/* {form.values.splitType === SplitType.Part &&
               groupData.expand.participants.map((participant) => (
                 <ParticipantAvatarHorizontal
                   key={participant.id}
@@ -86,7 +75,7 @@ const PageSetSplit = ({ groupData, form }: PageSetSplitProps) => {
                   value={1}
                   isEditableValue
                 />
-              ))}
+              ))} */}
           </div>
           {/* </Group> */}
         </Stack>
