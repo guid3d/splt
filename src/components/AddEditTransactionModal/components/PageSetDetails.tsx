@@ -25,7 +25,7 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
           <EmojiActionButtion form={form} />
         </Center>
         <BigTextInput
-          placeholder="Dinner at LeDu"
+          placeholder="Name"
           {...form.getInputProps("name")}
         />
         <Textarea

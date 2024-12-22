@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Affix, Button, Center, Group } from "@mantine/core";
 import { useMediaQuery } from "@mantine/hooks";
 import { IconCheck } from "@tabler/icons-react";
-import { IconCross } from "@tabler/icons-react";
 import { IconX } from "@tabler/icons-react";
 
 type ConfirmButtonProps = {
@@ -27,7 +26,7 @@ const ConfirmButton = ({
           <>
             {!confirmPressed ? (
               <Button fullWidth onClick={() => setConfirmPressed(true)}>
-                I have sent the money
+                Transaction is completed
               </Button>
             ) : (
               <Center>
@@ -66,7 +65,7 @@ const ConfirmButton = ({
         <>
           {!confirmPressed ? (
             <Button fullWidth onClick={() => setConfirmPressed(true)}>
-              I have sent the money
+              Transaction is completed
             </Button>
           ) : (
             <Center>

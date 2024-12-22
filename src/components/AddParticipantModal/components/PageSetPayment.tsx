@@ -31,7 +31,7 @@ const PageSetPayment = ({
         <Center>
           <BigTextInput
             mb={"md"}
-            placeholder="Elon Musk"
+            placeholder="Name of Participant"
             maxLength={15}
             {...form.getInputProps("name")}
           />
@@ -65,7 +65,7 @@ const PageSetPayment = ({
                   variant="unstyled"
                   size="md"
                   label="Account Name"
-                  placeholder="Elon Zuckerberg"
+                  placeholder="John Doe"
                   {...form.getInputProps("accountName")}
                 />
                 <Input.Wrapper label="IBAN">
@@ -93,7 +93,7 @@ const PageSetPayment = ({
                   variant="unstyled"
                   size="md"
                   label="Paypal Email / Account"
-                  placeholder="@elonmusk"
+                  placeholder="@johndoe"
                   {...form.getInputProps("paymentMethod.paypal")}
                 />
               </>
