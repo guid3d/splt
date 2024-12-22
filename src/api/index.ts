@@ -28,7 +28,9 @@ type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
 
-const spltPocketHost = process.env.POCKETHOST_DB || "http://127.0.0.1:8090";
+const spltPocketHost =
+  process.env.NEXT_PUBLIC_POCKETHOST_DB || "http://127.0.0.1:8090";
+// process.env.NEXT_PUBLIC_DB_HOST || "https://splt.pockethost.io";
 
 const pb = new PocketBase(spltPocketHost);
 
