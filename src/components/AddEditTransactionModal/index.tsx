@@ -9,13 +9,14 @@ import Modal from "@/components/Modal";
 import {
   ExpenseTransactionData,
   GroupData,
-  ModifiedTransactionFormValues, SplitType, TransactionFormValues
+  ModifiedTransactionFormValues,
+  SplitType,
+  TransactionFormValues,
 } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import { useCreateExpense, useUpdateExpense } from "@/api";
 import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
-import PageSetSplit from "./components/PageSetSplit";
 
 type AddEditTransactionModalProps = {
   groupData: GroupData;
@@ -34,8 +35,8 @@ const AddEditTransactionModal = ({
   const { groupId } = useParams<{ groupId: string }>();
   const createExpenseMutation = useCreateExpense();
   const updateExpenseMutation = useUpdateExpense();
-  const maxPage = 4;
-  const confirmPage = 3;
+  const maxPage = 3;
+  const confirmPage = 2;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
     max: maxPage,
@@ -50,8 +51,8 @@ const AddEditTransactionModal = ({
   const form = useForm({
     initialValues:
       isEdit && expenseData
-      // TODO: Change this to form.initialize from mantine
-        ? ({
+        ? // TODO: Change this to form.initialize from mantine
+          ({
             id: expenseData.id,
             groupInfo: expenseData.groupInfo,
             amount: expenseData.amount,
@@ -168,9 +169,9 @@ const AddEditTransactionModal = ({
         <Carousel.Slide>
           <PageSelectParticipant form={form} groupData={groupData} />
         </Carousel.Slide>
-        <Carousel.Slide>
+        {/* <Carousel.Slide>
           <PageSetSplit form={form} groupData={groupData} />
-        </Carousel.Slide>
+        </Carousel.Slide> */}
         <Carousel.Slide>
           <PageNotifyFinish
             title={isEdit ? "Transaction is edited" : "Transaction is added"}
