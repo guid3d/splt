@@ -1,29 +1,20 @@
-import React from "react";
 import {
-  ActionIcon,
   Avatar,
   Center,
-  Group,
-  NumberFormatter,
-  Skeleton,
+  Group, Skeleton,
   Stack,
   Text,
   TextProps,
   Title,
-  rem,
+  rem
 } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
-import { useDeletePayback, useExpense, usePayback } from "@/api";
+import { useDeletePayback, usePayback } from "@/api";
 import dayjs from "dayjs";
-import { IconMessage } from "@tabler/icons-react";
-import { IconCash } from "@tabler/icons-react";
-import { IconUser } from "@tabler/icons-react";
-import { IconShare } from "@tabler/icons-react";
-import ParticipantAvatar from "@/components/ParticipantAvatar";
-import { IconArrowRight } from "@tabler/icons-react";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
 import DeleteButton from "./DeleteButton";
+import Metadata from "@/components/Metadata";
 const textTypeStyle: TextProps = {
   // w: rem(80),
   // fw: 500,
@@ -66,48 +57,57 @@ const PaybackPage = () => {
 
   if (data) {
     return (
-      <Stack gap="xs">
-        <Group>
-          <Stack>
-            <Center>
-              <Avatar variant="light" size={rem(80)} radius={rem(80)}>
-                <Title order={1} style={{ fontSize: rem(50) }}>
-                  {data.expand.fromPerson.avatar.emoji}
+      <>
+        <Metadata
+          seoTitle={`${data.expand.fromPerson.name} to ${data.expand.toPerson.name} -- SPLT`}
+          seoDescription={`${data.expand.groupInfo.name}`}
+        />
+        <Stack gap="xs">
+          <Group>
+            <Stack>
+              <Center>
+                <Avatar variant="light" size={rem(80)} radius={rem(80)}>
+                  <Title order={1} style={{ fontSize: rem(50) }}>
+                    {data.expand.fromPerson.avatar.emoji}
+                  </Title>
+                </Avatar>
+              </Center>
+              <Center>
+                <Title fw={500} order={2} pb="md">
+                  {data.expand.fromPerson.name}
                 </Title>
-              </Avatar>
-            </Center>
-            <Center>
-              <Title fw={500} order={2} pb="md">
-                {data.expand.fromPerson.name}
-              </Title>
-            </Center>
-          </Stack>
-          <IconArrowNarrowRight size="3rem" stroke={1.5} />
-          <Stack>
-            <Center>
-              <Avatar variant="light" size={rem(80)} radius={rem(80)}>
-                <Title order={1} style={{ fontSize: rem(50) }}>
-                  {data.expand.toPerson.avatar.emoji}
+              </Center>
+            </Stack>
+            <IconArrowNarrowRight size="3rem" stroke={1.5} />
+            <Stack>
+              <Center>
+                <Avatar variant="light" size={rem(80)} radius={rem(80)}>
+                  <Title order={1} style={{ fontSize: rem(50) }}>
+                    {data.expand.toPerson.avatar.emoji}
+                  </Title>
+                </Avatar>
+              </Center>
+              <Center>
+                <Title fw={500} order={2} pb="md">
+                  {data.expand.toPerson.name}
                 </Title>
-              </Avatar>
-            </Center>
-            <Center>
-              <Title fw={500} order={2} pb="md">
-                {data.expand.toPerson.name}
-              </Title>
-            </Center>
-          </Stack>
-        </Group>
-        <Title order={1} style={{ fontSize: rem(40) }}>
-          <EuroNumberFormatter value={data.amount} />
-        </Title>
-        <Text c="dimmed" pb="xl">
-          {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
-        </Text>
-        <Center>
-          <DeleteButton id={paybackId} deleteMutation={deletePaybackMutation} />
-        </Center>
-      </Stack>
+              </Center>
+            </Stack>
+          </Group>
+          <Title order={1} style={{ fontSize: rem(40) }}>
+            <EuroNumberFormatter value={data.amount} />
+          </Title>
+          <Text c="dimmed" pb="xl">
+            {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
+          </Text>
+          <Center>
+            <DeleteButton
+              id={paybackId}
+              deleteMutation={deletePaybackMutation}
+            />
+          </Center>
+        </Stack>
+      </>
     );
   }
 };
