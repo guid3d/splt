@@ -35,6 +35,7 @@ routerAdd("GET", "/api/splt/transactions", (c) => {
     { groupId: groupId }
   );
   $app.dao().expandRecords(paybacks, ["fromPerson", "toPerson"]);
+  $app.dao().expandRecords(expenses, ["paidBy"]);
 
   const notSortedTransactions = [...expenses, ...paybacks];
 

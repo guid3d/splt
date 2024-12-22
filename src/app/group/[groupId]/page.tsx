@@ -1,5 +1,5 @@
 "use client";
-import { Center, Container, Stack } from "@mantine/core";
+import { Center, Container, Group, Stack } from "@mantine/core";
 import { useState } from "react";
 import Tab, { TabType } from "./components/Tab";
 import TopSummary from "./components/TopSummary";
@@ -9,6 +9,7 @@ import { SPLTIconSmall } from "@/components/SPLTIcon";
 import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
 import MadeWithLove from "@/components/MadeWithLove";
+import ToggleDarkLightMode from "@/components/ToggleDarkLightMode";
 
 const GroupPage = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -18,7 +19,10 @@ const GroupPage = () => {
   return (
     <>
       <Container size="xs" mt="md">
-        <SPLTIconSmall />
+        <Group justify="space-between">
+          <SPLTIconSmall />
+          <ToggleDarkLightMode />
+        </Group>
         <Stack mb={100}>
           <Center>
             <TopSummary selectedTab={selectedTab} groupData={groupData} />

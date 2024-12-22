@@ -1,20 +1,17 @@
 import {
   Avatar,
-  AvatarGroup,
-  Button,
   Center,
   Group,
+  Indicator,
   NavLink,
-  NumberFormatter,
   Skeleton,
   Stack,
   Text,
   Title,
   rem,
+  useMantineColorScheme,
 } from "@mantine/core";
-import React from "react";
-import { GroupData, TotalSpendData, TransactionsData } from "@/types";
-import { DatesProvider } from "@mantine/dates";
+import { TotalSpendData } from "@/types";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
@@ -28,6 +25,7 @@ type TabTransactionsProps = {
 };
 
 const TabTransactions = ({ groupData }: TabTransactionsProps) => {
+  const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
@@ -43,6 +41,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
     );
   }
   if (data) {
+    console.log(data.transactions);
     data.transactions.sort((a, b) => {
       return (
         Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime)
@@ -83,9 +82,22 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
                     date: trans.transactionDateTime,
                   })}
                   leftSection={
-                    <Avatar>
-                      <Title order={3}>{trans.avatar.emoji}</Title>
-                    </Avatar>
+                    <Indicator
+                      color={colorScheme === "dark" ? "dark.8" : "gray.4"}
+                      offset={3}
+                      position="bottom-end"
+                      size={22}
+                      // withBorder
+                      label={
+                        <Text size="xs">
+                          {trans.expand.paidBy.avatar.emoji}
+                        </Text>
+                      }
+                    >
+                      <Avatar>
+                        <Title order={2}>{trans.avatar.emoji}</Title>
+                      </Avatar>
+                    </Indicator>
                   }
                   rightSection={
                     <Title order={5}>

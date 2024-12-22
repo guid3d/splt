@@ -2,7 +2,6 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 
-import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { theme } from "../theme";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
