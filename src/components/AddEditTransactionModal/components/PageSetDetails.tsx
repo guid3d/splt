@@ -1,21 +1,8 @@
 import EmojiActionButtion from "@/components/EmojiActionButtion";
-import {
-  Center,
-  Container,
-  Input,
-  SegmentedControl,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-  rem,
-} from "@mantine/core";
-import React from "react";
+import { Center, Container, Stack, Text, Textarea } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { TransactionFormValues } from "@/types";
 import { DateTimePicker } from "@mantine/dates";
-import dayjs from "dayjs";
-import { IconCalendarEvent } from "@tabler/icons-react";
 import BigTextInput from "@/components/BigTextInput";
 import { useMediaQuery } from "@mantine/hooks";
 
@@ -28,7 +15,7 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
 
   return (
     <Container>
-      <Stack gap="s">
+      <Stack gap="sm">
         <Center>
           <Text fw={500} mb="sm">
             Transaction Detail

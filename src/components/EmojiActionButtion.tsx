@@ -7,14 +7,11 @@ import {
   Stack,
   Indicator,
 } from "@mantine/core";
-import EmojiPicker, { EmojiClickData, Theme } from "emoji-picker-react";
-import React, { useState } from "react";
+import { Theme } from "emoji-picker-react";
 import dynamic from "next/dynamic";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { UseFormReturnType } from "@mantine/form";
-import { GroupFormValues } from "@/types";
-import { IconEdit } from "@tabler/icons-react";
 import { IconPencil } from "@tabler/icons-react";
 
 const Picker = dynamic(
@@ -46,7 +43,7 @@ const EmojiActionButtion = ({ form }: EmojiActionButtionProps) => {
         zIndex={201}
       >
         <MantineModal.Overlay />
-        <MantineModal.Content radius={isMobile ? 0 : "l"}>
+        <MantineModal.Content radius={isMobile ? 0 : "lg"}>
           <MantineModal.Header>
             <ActionIcon
               variant="transparent"

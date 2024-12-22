@@ -82,7 +82,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
         // zIndex={201}
       >
         <MantineModal.Overlay />
-        <MantineModal.Content radius={isMobile ? 0 : "l"}>
+        <MantineModal.Content radius={isMobile ? 0 : "lg"}>
           <MantineModal.Header>
             <ActionIcon
               variant="transparent"

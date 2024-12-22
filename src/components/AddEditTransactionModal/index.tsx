@@ -1,25 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
-import { UseFormReturnType, useForm } from "@mantine/form";
-import { IconPlus } from "@tabler/icons-react";
-import { IconChevronLeft } from "@tabler/icons-react";
-import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
-import ModalFooterButton from "../ModalFooterButton";
-import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useCounter } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+import { Carousel } from "@mantine/carousel";
+import { useParams } from "next/navigation";
 import PageSetAmount from "./components/PageSetAmount";
 import PageSetDetails from "./components/PageSetDetails";
 import Modal from "@/components/Modal";
 import {
   ExpenseTransactionData,
   GroupData,
-  ModifiedTransactionFormValues,
-  Participant,
-  SplitType,
-  StoreEmojiData,
-  TransactionFormValues,
+  ModifiedTransactionFormValues, SplitType, TransactionFormValues
 } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
-import dayjs from "dayjs";
 import { useCreateExpense, useUpdateExpense } from "@/api";
 import PageNotifyFinish from "@/components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
@@ -58,6 +50,7 @@ const AddEditTransactionModal = ({
   const form = useForm({
     initialValues:
       isEdit && expenseData
+      // TODO: Change this to form.initialize from mantine
         ? ({
             id: expenseData.id,
             groupInfo: expenseData.groupInfo,

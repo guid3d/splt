@@ -17,7 +17,6 @@ import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 import { GroupFormValues, GroupData, Participant } from "@/types";
-import { IconPencil } from "@tabler/icons-react";
 import AddParticipantModal from "@/components/AddParticipantModal";
 import ViewParticipantModal from "@/components/ViewParticipantModal";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
@@ -79,7 +78,7 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
         // zIndex={201}
       >
         <MantineModal.Overlay />
-        <MantineModal.Content radius={isMobile ? 0 : "l"}>
+        <MantineModal.Content radius={isMobile ? 0 : "lg"}>
           <MantineModal.Header>
             <ActionIcon
               variant="transparent"

@@ -1,24 +1,15 @@
-import EmojiActionButtion from "@/components/EmojiActionButtion";
 import {
-  Center,
-  CheckIcon,
-  Combobox,
-  Container,
-  Group,
-  ScrollArea,
-  SegmentedControl,
-  SimpleGrid,
+  Center, Combobox,
+  Container, ScrollArea, SimpleGrid,
   Stack,
   Switch,
-  Text,
-  TextInput,
-  rem,
-  useCombobox,
+  Text, rem,
+  useCombobox
 } from "@mantine/core";
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { UseFormReturnType } from "@mantine/form";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
-import { GroupData, SplitType, TransactionFormValues } from "@/types";
+import { GroupData, TransactionFormValues } from "@/types";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 
 type PageSelectParticipantProps = {
@@ -74,7 +65,7 @@ const PageSelectParticipant = ({
   return (
     <Container>
       <ScrollArea h={modalHeight}>
-        <Stack gap="s">
+        <Stack gap="sm">
           <Center>
             <Text fw={500} mb="sm">
               Participant

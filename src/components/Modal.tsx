@@ -1,25 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useCounter, useDisclosure, useMediaQuery } from "@mantine/hooks";
+import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
-  Modal as MantineModal,
-  Button,
-  Affix,
-  Center,
-  ActionIcon,
+  Modal as MantineModal, ActionIcon,
   rem,
   Stack,
-  UnstyledButton,
-  Flex,
-  Text,
-  Group,
-  Space,
+  UnstyledButton, Text, Space
 } from "@mantine/core";
-import { UseFormReturnType, useForm } from "@mantine/form";
-import { IconPlus } from "@tabler/icons-react";
+import { UseFormReturnType } from "@mantine/form";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
+import { Carousel, Embla } from "@mantine/carousel";
 import ModalFooterButton from "./ModalFooterButton";
-import { GroupFormValues } from "@/types";
 
 type ModalPropsType = {
   children: React.ReactNode;
@@ -118,7 +108,7 @@ const Modal = ({
         centered
       >
         <MantineModal.Overlay />
-        <MantineModal.Content radius={isMobile ? 0 : "l"}>
+        <MantineModal.Content radius={isMobile ? 0 : "lg"}>
           <MantineModal.Header>
             <ActionIcon
               variant="transparent"
