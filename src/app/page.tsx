@@ -1,27 +1,12 @@
 "use client";
 
 import {
-  Box,
   Stack,
-  Center,
-  rem,
-  Container,
-  Title,
-  NavLink,
-  Text,
-  Affix,
-  ActionIcon,
+  Center, Container,
+  Title, Text
 } from "@mantine/core";
-import React from "react";
-import {
-  IconReportMoney,
-  IconChevronRight,
-  IconArrowUp,
-  IconPlus,
-} from "@tabler/icons-react";
 import AddGroupModal from "@/components/AddGroupModal";
 import { SPLTIconBig } from "@/components/SPLTIcon";
-import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@mantine/hooks";
 import { GroupData } from "@/types";
 import GroupHistoryList from "./components/GroupHistoryList";

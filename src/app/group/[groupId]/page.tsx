@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
 import MadeWithLove from "@/components/MadeWithLove";
 import ToggleDarkLightMode from "@/components/ToggleDarkLightMode";
+import Metadata from "@/components/Metadata";
 
 const GroupPage = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -18,6 +19,12 @@ const GroupPage = () => {
 
   return (
     <>
+      {groupData.data && (
+        <Metadata
+          seoTitle={`${groupData.data?.expand.groupInfo.name} -- SPLT`}
+          seoDescription={`${groupData.data?.expand.groupInfo.avatar.emoji} ${groupData.data?.expand.groupInfo.description}`}
+        />
+      )}
       <Container size="xs" mt="md">
         <Group justify="space-between">
           <SPLTIconSmall />
