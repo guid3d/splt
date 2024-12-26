@@ -9,7 +9,10 @@ import Modal from "@/components/Modal";
 import {
   ExpenseTransactionData,
   GroupData,
-  ModifiedTransactionFormValues, SplitType, TransactionFormValues
+  ModifiedTransactionFormValues,
+  SplitData,
+  SplitType,
+  TransactionFormValues,
 } from "@/types";
 import PageSelectParticipant from "./components/PageSelectParticipant";
 import { useCreateExpense, useUpdateExpense } from "@/api";
@@ -50,8 +53,8 @@ const AddEditTransactionModal = ({
   const form = useForm({
     initialValues:
       isEdit && expenseData
-      // TODO: Change this to form.initialize from mantine
-        ? ({
+        ? // TODO: Change this to form.initialize from mantine
+          ({
             id: expenseData.id,
             groupInfo: expenseData.groupInfo,
             amount: expenseData.amount,
@@ -113,6 +116,15 @@ const AddEditTransactionModal = ({
     },
   });
 
+  const [splitData, setSplitData] = useState<SplitData[]>([
+    {
+      expenseId: "1234",
+      participantId: "1234",
+      part: 0,
+      amount: 0,
+    },
+  ]);
+
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
       <Modal
@@ -166,10 +178,20 @@ const AddEditTransactionModal = ({
           <PageSetDetails form={form} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSelectParticipant form={form} groupData={groupData} />
+          <PageSelectParticipant
+            form={form}
+            groupData={groupData}
+            splitData={splitData}
+            setSplitData={setSplitData}
+          />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSetSplit form={form} groupData={groupData} />
+          <PageSetSplit
+            form={form}
+            groupData={groupData}
+            splitData={splitData}
+            setSplitData={setSplitData}
+          />
         </Carousel.Slide>
         <Carousel.Slide>
           <PageNotifyFinish

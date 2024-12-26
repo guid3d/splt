@@ -66,6 +66,13 @@ export type TransactionFormValues = {
   participants: string[];
 };
 
+export type SplitData = {
+  expenseId: string;
+  participantId: string;
+  part: number | null;
+  amount: number | null;
+};
+
 export type TotalSpendData = {
   id: string;
   groupInfo: string;
