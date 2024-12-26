@@ -1,12 +1,16 @@
 import {
   Center,
+  Combobox,
   Container,
+  Group,
   Input,
   ScrollArea,
   SegmentedControl,
   Stack,
+  Switch,
   Text,
   rem,
+  useCombobox,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import {
@@ -18,6 +22,7 @@ import {
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { useEffect } from "react";
 
 type PageSetSplitProps = {
   groupData: GroupData;
@@ -35,6 +40,67 @@ const PageSetSplit = ({
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const { height, width } = useViewportSize();
   const modalHeight = isMobile ? rem(height - 100) : rem(500);
+
+  useEffect(() => {
+    // Select all participant when toggle on
+    if (form.values.everyoneIsParticipant) {
+      selectAllParticipant();
+    }
+  }, []);
+
+  const combobox = useCombobox();
+  // const [value, setValue] = useState<string[]>([...form.values.participant]);
+
+  const selectAllParticipant = () => {
+    // console.log(groupData);
+    const allParticipant = groupData.expand.participants.map(
+      (participant) => participant.id
+    ) as string[];
+    form.setFieldValue("participants", allParticipant);
+
+    const allParticipantInSplitDataFormat = groupData.expand.participants.map(
+      (participant) => ({
+        expenseId: "",
+        participantId: participant.id!,
+        part: 1,
+        amount: 0,
+      })
+    );
+    setSplitData(allParticipantInSplitDataFormat);
+  };
+
+  const handleValueSelect = (val: string) => {
+    // setValue((current) =>
+    //   current.includes(val)
+    //     ? current.filter((v) => v !== val)
+    //     : [...current, val]
+    // );
+    const currentParticipants = form.values.participants;
+    // Filter out the selected participant if already selected
+    form.setFieldValue(
+      "participants",
+      currentParticipants.includes(val)
+        ? currentParticipants.filter((v) => v !== val)
+        : [...currentParticipants, val]
+    );
+    form.setFieldValue("everyoneIsParticipant", false);
+    // -------------------------
+
+    // Update split data
+    const newSplitData = currentParticipants.includes(val)
+      ? splitData.filter((v) => v.participantId !== val)
+      : [
+          ...splitData,
+          {
+            expenseId: "",
+            participantId: val,
+            part: 1,
+            amount: 0,
+          },
+        ];
+    setSplitData(newSplitData);
+    // -------------------------
+  };
 
   const calculateEqualSplit = () => {
     // Amount / number of participants
@@ -59,22 +125,45 @@ const PageSetSplit = ({
     return amount;
   };
 
-  console.log(splitData);
-
   return (
     <Container>
       <ScrollArea h={modalHeight}>
         <Stack gap={0}>
           <Center>
             <Text fw={500} mb="sm">
-              Split Type
+              Participant
             </Text>
           </Center>
 
-          {/* // TODO: Add split type later iteration */}
-          {/* <Group justify="space-between"> */}
-          {/* <Text size="sm">Seperated by </Text> */}
           <Center>
+            {/* <Text size="sm" pr="xl">Everyone</Text> */}
+            <Switch
+              // size="md"
+              // {...form.getInputProps("everyoneIsParticipant")}
+              // maw={rem(300)}
+              checked={form.values.everyoneIsParticipant}
+              onChange={(event) => {
+                form.setFieldValue(
+                  "everyoneIsParticipant",
+                  event.currentTarget.checked
+                );
+                // Select all participant when toggle on
+                selectAllParticipant();
+              }}
+              label="Everyone in the group"
+              description="When new participant is later added, he/she will also be included"
+            />
+          </Center>
+          {form.errors.participants && (
+            <Center>
+              <Text c="red" size="sm">
+                {form.errors.participants}
+              </Text>
+            </Center>
+          )}
+          {/* <Center> */}
+          <Group mt={20} mb={10} justify="space-between">
+            <Text size="sm">Split type</Text>
             <SegmentedControl
               size="sm"
               value={form.values.splitType}
@@ -87,84 +176,128 @@ const PageSetSplit = ({
                 { label: "Amount", value: SplitType.Amount, disabled: true },
               ]}
             />
-          </Center>
-          <div>
-            {form.values.splitType === SplitType.Equal &&
-              groupData.expand.participants.map(
-                (participant) =>
-                  form.values.participants.includes(participant.id!) && (
-                    <ParticipantAvatarHorizontal
+          </Group>
+          {/* </Center> */}
+
+          <Combobox
+            store={combobox}
+            onOptionSubmit={handleValueSelect}
+            withinPortal={false}
+          >
+            <Stack>
+              {/* <Combobox.EventsTarget>
+                <TextInput
+                  placeholder="Pick value"
+                  value={form.values.participants}
+                  // onChange={(event) => {setValue(event.currentTarget.value)}}
+                />
+              </Combobox.EventsTarget> */}
+              {/* <ScrollArea.Autosize mah={isMobile ? 800 : 400}> */}
+              <Combobox.Options>
+                {form.values.splitType === SplitType.Equal &&
+                  groupData.expand.participants.map((participant) => (
+                    <Combobox.Option
+                      px={0}
+                      py={4}
                       key={participant.id}
-                      avatar={participant.avatar}
-                      name={participant.name}
-                      description={
-                        <Text c="dimmed" lineClamp={2} ta="center">
-                          {EuroNumberFormatter({
-                            value: calculateEqualSplit(),
-                          })}
-                        </Text>
-                      }
-                    />
-                  )
-              )}
-          </div>
-          <div>
-            {/* {splitData.map((split, index) => (
-              <div key={index}>{split}</div>
-            ))} */}
-            {form.values.splitType === SplitType.Part &&
-              groupData.expand.participants.map(
-                (participant) =>
-                  form.values.participants.includes(participant.id!) && (
-                    <ParticipantAvatarHorizontal
-                      key={participant.id}
-                      avatar={participant.avatar}
-                      name={participant.name}
-                      description={
-                        splitData.map(
-                          (split, index) =>
-                            split.participantId === participant.id && (
-                              <div key={index}>
-                                <Input
-                                  type="number"
-                                  value={split.part ? split.part : ""}
-                                  onChange={(e) => {
-                                    const parseInputValue = e.currentTarget
-                                      .value
-                                      ? parseInt(e.currentTarget.value)
-                                      : null;
-                                    const newSplitData = splitData.map((v) =>
-                                      v.participantId === participant.id
-                                        ? {
-                                            ...v,
-                                            part: parseInputValue,
-                                          }
-                                        : v
-                                    );
-                                    setSplitData(newSplitData);
-                                  }}
-                                ></Input>
-                                <Text c="dimmed" lineClamp={2} ta="center">
-                                  {EuroNumberFormatter({
-                                    value: calculatePartSplit(split.part || 0),
-                                  })}
-                                </Text>
-                              </div>
+                      value={participant.id!}
+                      active={form.values.participants.includes(
+                        participant.id!
+                      )}
+                      // m={0}
+                      // p={0}
+                      style={{ backgroundColor: "transparent" }} // disable hover effect
+                    >
+                      {form.values.participants.includes(participant.id!) ? (
+                        <ParticipantAvatarHorizontal
+                          key={participant.id}
+                          avatar={participant.avatar}
+                          name={participant.name}
+                          description={
+                            <Text lineClamp={2} ta="center">
+                              {EuroNumberFormatter({
+                                value: calculateEqualSplit(),
+                              })}
+                            </Text>
+                          }
+                          isSelected
+                        />
+                      ) : (
+                        <ParticipantAvatarHorizontal
+                          key={participant.id}
+                          avatar={participant.avatar}
+                          name={participant.name}
+                          // description={
+                          //   <Text c="dimmed" lineClamp={2} ta="center">
+                          //     {EuroNumberFormatter({
+                          //       value: calculateEqualSplit(),
+                          //     })}
+                          //   </Text>
+                          // }
+                        />
+                      )}
+                    </Combobox.Option>
+                  ))}
+                {form.values.splitType === SplitType.Part &&
+                  groupData.expand.participants.map(
+                    (participant) =>
+                      form.values.participants.includes(participant.id!) && (
+                        <ParticipantAvatarHorizontal
+                          key={participant.id}
+                          avatar={participant.avatar}
+                          name={participant.name}
+                          description={
+                            splitData.map(
+                              (split, index) =>
+                                split.participantId === participant.id && (
+                                  <div key={index}>
+                                    <Input
+                                      type="number"
+                                      value={split.part ? split.part : ""}
+                                      onChange={(e) => {
+                                        const parseInputValue = e.currentTarget
+                                          .value
+                                          ? parseInt(e.currentTarget.value)
+                                          : null;
+                                        const newSplitData = splitData.map(
+                                          (v) =>
+                                            v.participantId === participant.id
+                                              ? {
+                                                  ...v,
+                                                  part: parseInputValue,
+                                                }
+                                              : v
+                                        );
+                                        setSplitData(newSplitData);
+                                      }}
+                                    ></Input>
+                                    <Text c="dimmed" lineClamp={2} ta="center">
+                                      {EuroNumberFormatter({
+                                        value: calculatePartSplit(
+                                          split.part || 0
+                                        ),
+                                      })}
+                                    </Text>
+                                  </div>
+                                )
                             )
-                        )
-                        // <>
-                        //   <Input value={}></Input>
-                        //   <Text c="dimmed" lineClamp={2} ta="center">
-                        //     {EuroNumberFormatter({
-                        //       value: calculatePartSplit(participant.part),
-                        //     })}
-                        //   </Text>
-                        // </>
-                      }
-                    />
-                  )
-              )}
-          </div>
+                            // <>
+                            //   <Input value={}></Input>
+                            //   <Text c="dimmed" lineClamp={2} ta="center">
+                            //     {EuroNumberFormatter({
+                            //       value: calculatePartSplit(participant.part),
+                            //     })}
+                            //   </Text>
+                            // </>
+                          }
+                        />
+                      )
+                  )}
+              </Combobox.Options>
+              {/* </ScrollArea.Autosize> */}
+            </Stack>
+          </Combobox>
+
           {/* </Group> */}
         </Stack>
       </ScrollArea>
