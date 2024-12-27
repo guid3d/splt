@@ -5,6 +5,7 @@ import {
   Container,
   Group,
   Input,
+  NumberInput,
   ScrollArea,
   SegmentedControl,
   Stack,
@@ -75,7 +76,9 @@ const PageSetSplit = ({
         expenseId: "",
         participantId: participant.id!,
         part: 1,
-        amount: 0,
+        amount: form.values.amount
+          ? form.values.amount / groupData.expand.participants.length
+          : 0,
       })
     );
     setSplitData(allParticipantInSplitDataFormat);
@@ -127,8 +130,6 @@ const PageSetSplit = ({
     splitData.map((split) => {
       totalPart += split.part || 0;
     });
-
-    console.log(totalPart);
 
     const amount = form.values.amount
       ? form.values.amount * (part / totalPart)
@@ -185,7 +186,7 @@ const PageSetSplit = ({
               data={[
                 { label: "Equal", value: SplitType.Equal },
                 { label: "Part", value: SplitType.Part },
-                { label: "Amount", value: SplitType.Amount, disabled: true },
+                { label: "Amount", value: SplitType.Amount },
               ]}
             />
           </Group>
@@ -347,6 +348,82 @@ const PageSetSplit = ({
                                       +
                                     </Button>
                                   </Group>
+                                </Group>
+                              )
+                          )) ||
+                        // TODO: Add helper when amount change amount, suggest the recommendation amount
+                        (form.values.splitType === SplitType.Amount &&
+                          splitData.map(
+                            (split, index) =>
+                              split.participantId === participant.id && (
+                                <Group
+                                  grow
+                                  key={index}
+                                  preventGrowOverflow={false}
+                                  wrap="nowrap"
+                                  gap={1}
+                                  bg={renderInputBackgroundColor()}
+                                  style={{
+                                    borderRadius: 16,
+                                  }}
+                                >
+                                  <Combobox.Option
+                                    value={participant.id!}
+                                    active={form.values.participants.includes(
+                                      participant.id!
+                                    )}
+                                    // style={{ backgroundColor: "transparent" }} // disable hover effect
+                                  >
+                                    <ParticipantAvatarHorizontal
+                                      key={participant.id}
+                                      avatar={participant.avatar}
+                                      name={participant.name}
+                                      // description={
+                                      //   <Text
+                                      //     c="dimmed"
+                                      //     lineClamp={2}
+                                      //     ta="center"
+                                      //   >
+                                      //     {EuroNumberFormatter({
+                                      //       value: split.amount || 0,
+                                      //     })}
+                                      //   </Text>
+                                      // }
+                                      isSelected
+                                    />
+                                  </Combobox.Option>
+                                  <NumberInput
+                                    styles={{
+                                      input: {
+                                        textAlign: "end",
+                                      },
+                                    }}
+                                    maw={rem(200)}
+                                    radius={0}
+                                    size="md"
+                                    min={0}
+                                    max={9999999}
+                                    clampBehavior="strict"
+                                    placeholder="0,00"
+                                    suffix="€"
+                                    variant="unstyled"
+                                    decimalScale={2}
+                                    decimalSeparator=","
+                                    thousandSeparator="."
+                                    allowNegative={false}
+                                    value={split.amount ? split.amount : ""}
+                                    onChange={(e) => {
+                                      const newSplitData = splitData.map((v) =>
+                                        v.participantId === participant.id
+                                          ? {
+                                              ...v,
+                                              amount: parseInt(e.toString()),
+                                            }
+                                          : v
+                                      );
+                                      setSplitData(newSplitData);
+                                    }}
+                                  />
                                 </Group>
                               )
                           ))}
