@@ -71,6 +71,8 @@ const PageSetSplit = ({
     ) as string[];
     form.setFieldValue("participants", allParticipant);
 
+    form.setFieldValue("splitType", SplitType.Equal);
+
     const allParticipantInSplitDataFormat = groupData.expand.participants.map(
       (participant) => ({
         expenseId: "",
@@ -185,8 +187,8 @@ const PageSetSplit = ({
               }}
               data={[
                 { label: "Equal", value: SplitType.Equal },
-                { label: "Part", value: SplitType.Part },
-                { label: "Amount", value: SplitType.Amount },
+                { label: "Part", value: SplitType.Part, disabled: form.values.everyoneIsParticipant },
+                { label: "Amount", value: SplitType.Amount, disabled: form.values.everyoneIsParticipant},
               ]}
             />
           </Group>
