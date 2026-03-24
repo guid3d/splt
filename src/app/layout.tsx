@@ -2,7 +2,11 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 
-import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import {
+  MantineProvider,
+  ColorSchemeScript,
+  mantineHtmlProps,
+} from "@mantine/core";
 import { theme } from "../theme";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
 
@@ -11,11 +15,11 @@ export const metadata = {
   description: "Simplifying Bill Splitting",
 };
 
-const RootLayout = ({ children }: { children: any }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en">
-      <head>
-        <ColorSchemeScript />
+    <html lang="en" {...mantineHtmlProps}>
+      <head suppressHydrationWarning>
+        <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"
@@ -23,11 +27,9 @@ const RootLayout = ({ children }: { children: any }) => {
         />
       </head>
       <body>
-        <ReactQueryClientProvider>
-          <MantineProvider theme={theme} defaultColorScheme="auto">
-            {children}
-          </MantineProvider>
-        </ReactQueryClientProvider>
+        <MantineProvider theme={theme}>
+          <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
+        </MantineProvider>
       </body>
     </html>
   );

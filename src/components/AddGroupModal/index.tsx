@@ -7,8 +7,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import PageSetName from "./components/PageSetName";
 import PageAddParticipant from "./components/PageAddParticipant";
 import PageSetPassword from "./components/PageSetPassword";
-import { Carousel, CarouselSlide, Embla } from "@mantine/carousel";
-import ModalFooterButton from "../ModalFooterButton";
+import { Carousel } from "@mantine/carousel";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import {
