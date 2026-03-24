@@ -18,7 +18,7 @@ export const metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" {...mantineHtmlProps}>
-      <head>
+      <head suppressHydrationWarning>
         <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
