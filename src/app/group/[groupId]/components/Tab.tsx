@@ -1,11 +1,13 @@
 import { SegmentedControl, VisuallyHidden, rem } from "@mantine/core";
 import { IconListLetters } from "@tabler/icons-react";
 import { IconChartCandle } from "@tabler/icons-react";
+import { IconUsers } from "@tabler/icons-react";
 import React from "react";
 
 export enum TabType {
   Transactions = "transactions",
   Overview = "overview",
+  Summary = "summary",
 }
 
 type TabProps = {
@@ -40,6 +42,15 @@ const Tab = ({ selectedTab, setSelectedTab }: TabProps) => {
             <>
               <IconChartCandle {...iconProps} />
               <VisuallyHidden>Overview</VisuallyHidden>
+            </>
+          ),
+        },
+        {
+          value: TabType.Summary,
+          label: (
+            <>
+              <IconUsers {...iconProps} />
+              <VisuallyHidden>Summary</VisuallyHidden>
             </>
           ),
         },

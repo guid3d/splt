@@ -86,6 +86,19 @@ const TopSummary = ({ selectedTab, groupData }: TopSummaryProps) => {
             </Center>
           </Stack>
         )}
+        {selectedTab === TabType.Summary && (
+          <Stack gap="xs" h={rem(120)} justify="center">
+            <Center>
+              <Text>Summary</Text>
+            </Center>
+            <Center>
+              <Text c="dimmed" size="sm">
+                {data.expand.groupInfo.expand?.participants?.length ?? 0}{" "}
+                participants
+              </Text>
+            </Center>
+          </Stack>
+        )}
       </Stack>
     );
   }
