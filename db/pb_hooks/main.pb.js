@@ -175,9 +175,25 @@ routerAdd("GET", "/api/splt/hasSpent", (c) => {
     "groupInfo.participants",
   ]);
 
-  if (expensesOriginal.length === 0) {
-    return c.json(200, []);
-  }
+  // Fetch all splits for this group's expenses and build a lookup map
+  // { expenseId: { participantId: { part, amount } } }
+  const allSplits = $app.dao().findRecordsByFilter(
+    "splits",
+    "expenseId.groupInfo = {:groupId}",
+    "",
+    0,
+    0,
+    { groupId: groupId }
+  );
+  const splitsMap = {};
+  allSplits.forEach((split) => {
+    const s = JSON.parse(JSON.stringify(split));
+    if (!splitsMap[s.expenseId]) splitsMap[s.expenseId] = {};
+    splitsMap[s.expenseId][s.participantId] = {
+      part: s.part,
+      amount: s.amount,
+    };
+  });
 
   expensesOriginal.forEach((expense) => {
     const parsed = JSON.parse(JSON.stringify(expense));
@@ -188,48 +204,59 @@ routerAdd("GET", "/api/splt/hasSpent", (c) => {
     const numExpenseParticipants = parsed.participants.length;
     const totalAmount = parsed.amount;
     const everyoneIsParticipant = parsed.everyoneIsParticipant;
-    let amountPerPerson = 0;
-    if (everyoneIsParticipant) {
-      amountPerPerson = totalAmount / numGroupParticipants;
-      // const newExpense = {...expense, }
-      groupParticipants.forEach((participant) => {
-        // console.log(participant.id)
+    const splitType = parsed.splitType;
+    const expenseSplits = splitsMap[parsed.id] || {};
+    const participants = everyoneIsParticipant
+      ? groupParticipants
+      : expenseParticipants;
+
+    if (splitType === "part") {
+      let totalParts = 0;
+      Object.values(expenseSplits).forEach((s) => {
+        totalParts += s.part || 0;
+      });
+      participants.forEach((participant) => {
         if (!hashMap[participant.id]) {
           hashMap[participant.id] = {
             amount: 0,
             ...participant,
           };
         }
-        hashMap[participant.id].amount -= amountPerPerson;
+        const s = expenseSplits[participant.id];
+        const part = s ? s.part || 0 : 0;
+        hashMap[participant.id].amount -=
+          totalParts > 0 ? totalAmount * (part / totalParts) : 0;
+      });
+    } else if (splitType === "amount") {
+      participants.forEach((participant) => {
+        if (!hashMap[participant.id]) {
+          hashMap[participant.id] = { amount: 0, ...participant };
+        }
+        const s = expenseSplits[participant.id];
+        hashMap[participant.id].amount -= s ? s.amount || 0 : 0;
       });
     } else {
-      amountPerPerson = totalAmount / numExpenseParticipants;
-      expenseParticipants.forEach((participant) => {
-        // console.log(participant.id)
+      // equal (and legacy "percent")
+      const amountPerPerson = totalAmount / (everyoneIsParticipant ? numGroupParticipants : numExpenseParticipants);
+      participants.forEach((participant) => {
         if (!hashMap[participant.id]) {
-          hashMap[participant.id] = {
-            amount: 0,
-            ...participant,
-          };
+          hashMap[participant.id] = { amount: 0, ...participant };
         }
         hashMap[participant.id].amount -= amountPerPerson;
       });
     }
   });
 
-  // const sortedHashMap = Object.fromEntries(
-  //   Object.entries(hashMap).sort(([, a], [, b]) => b - a)
-  // );
+  if (Object.keys(hashMap).length === 0) {
+    return c.json(200, []);
+  }
+
   let haveTopay = [];
   let sortedArray = Object.entries(hashMap).sort(
     (a, b) => a[1].amount - b[1].amount
   );
   while (true) {
-    // const sortedObject = Object.fromEntries(sortedArray);
-    const sortedObject = Object.fromEntries(sortedArray);
-    sortedArray = Object.entries(sortedObject).sort(
-      (a, b) => a[1].amount - b[1].amount
-    );
+    sortedArray.sort((a, b) => a[1].amount - b[1].amount);
     const highestDebtie = sortedArray[0];
     const highestGiver = sortedArray[sortedArray.length - 1];
     const rest = highestGiver[1].amount + highestDebtie[1].amount;
@@ -284,19 +311,12 @@ routerAdd("GET", "/api/splt/hasSpent", (c) => {
     const toPersonId = parsed.toPerson;
     const amount = parsed.amount;
     haveTopay.forEach((pay) => {
-      if (
-        pay.fromPerson.id === fromPersonId &&
-        pay.toPerson.id === toPersonId
-      ) {
+      if (pay.fromPerson.id === fromPersonId && pay.toPerson.id === toPersonId) {
         pay.amount -= amount;
-      }
-
-      if (pay.amount < 0.01) {
-        // pay.amount = 0;
-        haveTopay.splice(haveTopay.indexOf(pay), 1);
       }
     });
   });
+  haveTopay = haveTopay.filter((pay) => pay.amount >= 0.01);
 
   // haveTopay.filter((pay) => pay.amount > 0);
 

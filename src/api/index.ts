@@ -29,8 +29,7 @@ type PbHooksTransactionsList = {
 };
 
 const spltPocketHost =
-  process.env.NEXT_PUBLIC_POCKETHOST_DB || "http://127.0.0.1:8090";
-// process.env.NEXT_PUBLIC_DB_HOST || "https://splt.pockethost.io";
+  process.env.NEXT_PUBLIC_POCKETHOST_DB || "https://splt.pockethost.io";
 
 const pb = new PocketBase(spltPocketHost);
 
@@ -39,7 +38,7 @@ const useTransactions = (groupId: string) => {
     queryKey: ["transactions", groupId],
     queryFn: async () => {
       const res = await fetch(
-        `${spltPocketHost}/api/splt/transactions?groupId=${groupId}`
+        `${spltPocketHost}/api/splt/transactions?groupId=${groupId}`,
       );
       return res.json();
     },
@@ -60,7 +59,7 @@ const useExpense = (expenseId: string) => {
     queryFn: async () => {
       // TODO: handle error when expenseId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/expense?expenseId=${expenseId}`
+        `${spltPocketHost}/api/splt/expense?expenseId=${expenseId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -75,7 +74,7 @@ const usePayback = (paybackId: string) => {
     queryFn: async () => {
       // TODO: handle error when paybackId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/payback?paybackId=${paybackId}`
+        `${spltPocketHost}/api/splt/payback?paybackId=${paybackId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -90,7 +89,7 @@ const useDebts = (groupId: string) => {
     queryFn: async () => {
       // TODO: handle error when paybackId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/hasSpent?groupId=${groupId}`
+        `${spltPocketHost}/api/splt/hasSpent?groupId=${groupId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -280,7 +279,7 @@ const useUpdateExpense = () => {
       onError: (error) => {
         console.log(error);
       },
-    }
+    },
   );
   return mutation;
 };
@@ -290,7 +289,16 @@ const useDeleteExpense = () => {
   const mutation = useMutation<boolean, Error, string>({
     mutationKey: ["deleteExpense"],
 
-    mutationFn: (expenseId) => pb.collection("expenses").delete(expenseId),
+    mutationFn: async (expenseId) => {
+      const res = await fetch(
+        `${spltPocketHost}/api/splt/expense/${expenseId}`,
+        {
+          method: "DELETE",
+        },
+      );
+      if (!res.ok) throw new Error("Failed to delete expense");
+      return res.json();
+    },
     onSuccess: () => {
       // Update all simulations query
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
