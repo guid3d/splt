@@ -49,6 +49,7 @@ export type ModifiedTransactionFormValues = {
   splitType: SplitType.Equal | SplitType.Part | SplitType.Amount;
   everyoneIsParticipant: boolean;
   participants: string[];
+  splits?: SplitData[];
 };
 
 export type TransactionFormValues = {
@@ -66,6 +67,13 @@ export type TransactionFormValues = {
   participants: string[];
 };
 
+export type SplitData = {
+  expenseId: string;
+  participantId: string;
+  part: number | null;
+  amount: number | null;
+};
+
 export type TotalSpendData = {
   id: string;
   groupInfo: string;
@@ -80,6 +88,7 @@ export type TransactionsData = ExpenseTransactionData & PaybackTransactionData;
 export type ExpenseTransactionData = {
   amount: number;
   amountPerPerson?: number;
+  participantAmounts?: Record<string, number>;
   avatar: StoreEmojiData;
   created: string;
   expand: {

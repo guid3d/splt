@@ -41,7 +41,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
     );
   }
   if (data) {
-    console.log(data.transactions);
+    console.log(data);
     data.transactions.sort((a, b) => {
       return (
         Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime)

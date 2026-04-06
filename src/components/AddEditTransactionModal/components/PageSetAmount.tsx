@@ -1,4 +1,3 @@
-import EmojiActionButtion from "@/components/EmojiActionButtion";
 import {
   Center,
   ComboboxData,
@@ -8,7 +7,6 @@ import {
   Text,
   rem,
 } from "@mantine/core";
-import React from "react";
 import { UseFormReturnType } from "@mantine/form";
 import { GroupData, TransactionFormValues } from "@/types";
 
@@ -37,7 +35,7 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
           }}
           radius={0}
           variant="unstyled"
-          placeholder="0,00"
+          placeholder="0,00€"
           min={0}
           max={9999999}
           clampBehavior="strict"
