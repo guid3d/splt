@@ -16,14 +16,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
 import { useEffect } from "react";
 
-// type PbTransactionsList = {
-//   page: number;
-//   perPage: number;
-//   totalPages: number;
-//   totalItems: number;
-//   items: TransactionsData[];
-// };
-
 type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
@@ -42,13 +34,6 @@ const useTransactions = (groupId: string) => {
       );
       return res.json();
     },
-    // pb.collection("transactions").getList(1, 50, {
-    //   sort: "-transactionDateTime",
-    //   expand:
-    //     "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
-    //   fields: "id, group, type, transactionDateTime, expand",
-    //   filter: `group.id="${groupId}"`,
-    // }),
   });
   return query;
 };
@@ -97,20 +82,6 @@ const useDebts = (groupId: string) => {
   });
   return query;
 };
-
-// const useGroup = (groupId: string) => {
-//   const query = useQuery<GroupData, Error>({
-//     queryKey: ["group", groupId],
-//     queryFn: () =>
-//       pb.collection("groups").getFirstListItem(`id="${groupId}"`, {
-//         expand: "participants",
-//         fields: "id, avatar, name, description, currency, expand",
-//         // "id, avatar, amount, name, date, description, category, expenseDateTime",
-//       }),
-//     // pb.collection("groups").getList(1, 50),
-//   });
-//   return query;
-// };
 
 const useTotalSpend = (groupId: string) => {
   const [groupHistory, setGroupHistory] = useLocalStorage({
@@ -248,10 +219,16 @@ const useCreateExpense = () => {
   const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
     mutationKey: ["createExpense"],
 
-    mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
-      pb.collection("expenses").create(transactionForm),
+    mutationFn: async (transactionForm: ModifiedTransactionFormValues) => {
+      const res = await fetch(`${spltPocketHost}/api/splt/expense`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(transactionForm),
+      });
+      if (!res.ok) throw new Error("Failed to create expense");
+      return res.json();
+    },
     onSuccess: () => {
-      // Update all simulations query
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
     },
@@ -264,10 +241,10 @@ const useCreateExpense = () => {
 
 const useUpdateExpense = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<GroupData, Error, ModifiedTransactionFormValues>(
-    {
-      mutationKey: ["updateExpense"],
+  const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
+    mutationKey: ["updateExpense"],
 
+<<<<<<< HEAD
       mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
         pb.collection("expenses").update(transactionForm.id!, transactionForm),
       onSuccess: () => {
@@ -281,6 +258,29 @@ const useUpdateExpense = () => {
       },
     },
   );
+=======
+    mutationFn: async (transactionForm: ModifiedTransactionFormValues) => {
+      const res = await fetch(
+        `${spltPocketHost}/api/splt/expense/${transactionForm.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(transactionForm),
+        },
+      );
+      if (!res.ok) throw new Error("Failed to update expense");
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+      queryClient.invalidateQueries({ queryKey: ["expense"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+>>>>>>> 6054a81d19775f9adc8fb82d00569fae2d963e5a
   return mutation;
 };
 
@@ -290,12 +290,18 @@ const useDeleteExpense = () => {
     mutationKey: ["deleteExpense"],
 
     mutationFn: async (expenseId) => {
+<<<<<<< HEAD
       const res = await fetch(
         `${spltPocketHost}/api/splt/expense/${expenseId}`,
         {
           method: "DELETE",
         },
       );
+=======
+      const res = await fetch(`${spltPocketHost}/api/splt/expense/${expenseId}`, {
+        method: "DELETE",
+      });
+>>>>>>> 6054a81d19775f9adc8fb82d00569fae2d963e5a
       if (!res.ok) throw new Error("Failed to delete expense");
       return res.json();
     },
