@@ -56,7 +56,7 @@ const TabSummary = () => {
     if (toEntry) toEntry.net += debt.amount;
   });
 
-  const sorted = [...balanceMap.values()].sort((a, b) => b.net - a.net);
+  const sorted = Array.from(balanceMap.values()).sort((a, b) => b.net - a.net);
 
   const isSettled = sorted.every((e) => Math.abs(e.net) < 0.01);
 
