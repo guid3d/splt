@@ -16,14 +16,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import PocketBase from "pocketbase";
 import { useEffect } from "react";
 
-// type PbTransactionsList = {
-//   page: number;
-//   perPage: number;
-//   totalPages: number;
-//   totalItems: number;
-//   items: TransactionsData[];
-// };
-
 type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
@@ -39,17 +31,10 @@ const useTransactions = (groupId: string) => {
     queryKey: ["transactions", groupId],
     queryFn: async () => {
       const res = await fetch(
-        `${spltPocketHost}/api/splt/transactions?groupId=${groupId}`
+        `${spltPocketHost}/api/splt/transactions?groupId=${groupId}`,
       );
       return res.json();
     },
-    // pb.collection("transactions").getList(1, 50, {
-    //   sort: "-transactionDateTime",
-    //   expand:
-    //     "expenseTransaction, paybackTransaction.fromPerson, paybackTransaction.toPerson",
-    //   fields: "id, group, type, transactionDateTime, expand",
-    //   filter: `group.id="${groupId}"`,
-    // }),
   });
   return query;
 };
@@ -60,7 +45,7 @@ const useExpense = (expenseId: string) => {
     queryFn: async () => {
       // TODO: handle error when expenseId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/expense?expenseId=${expenseId}`
+        `${spltPocketHost}/api/splt/expense?expenseId=${expenseId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -75,7 +60,7 @@ const usePayback = (paybackId: string) => {
     queryFn: async () => {
       // TODO: handle error when paybackId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/payback?paybackId=${paybackId}`
+        `${spltPocketHost}/api/splt/payback?paybackId=${paybackId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -90,7 +75,7 @@ const useDebts = (groupId: string) => {
     queryFn: async () => {
       // TODO: handle error when paybackId is not found
       const res = await fetch(
-        `${spltPocketHost}/api/splt/hasSpent?groupId=${groupId}`
+        `${spltPocketHost}/api/splt/hasSpent?groupId=${groupId}`,
       );
       // console.log(res.json());
       return res.json();
@@ -98,20 +83,6 @@ const useDebts = (groupId: string) => {
   });
   return query;
 };
-
-// const useGroup = (groupId: string) => {
-//   const query = useQuery<GroupData, Error>({
-//     queryKey: ["group", groupId],
-//     queryFn: () =>
-//       pb.collection("groups").getFirstListItem(`id="${groupId}"`, {
-//         expand: "participants",
-//         fields: "id, avatar, name, description, currency, expand",
-//         // "id, avatar, amount, name, date, description, category, expenseDateTime",
-//       }),
-//     // pb.collection("groups").getList(1, 50),
-//   });
-//   return query;
-// };
 
 const useTotalSpend = (groupId: string) => {
   const [groupHistory, setGroupHistory] = useLocalStorage({
@@ -280,7 +251,7 @@ const useUpdateExpense = () => {
       onError: (error) => {
         console.log(error);
       },
-    }
+    },
   );
   return mutation;
 };
