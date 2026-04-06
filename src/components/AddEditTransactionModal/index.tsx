@@ -136,6 +136,7 @@ const AddEditTransactionModal = ({
           const modifiedFormValues: ModifiedTransactionFormValues = {
             ...form.values,
             transactionDateTime: form.values.transactionDateTime.toISOString(),
+            splits: splitData,
           };
           console.log(modifiedFormValues);
           // console.log(form.values);

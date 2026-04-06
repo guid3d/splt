@@ -71,8 +71,6 @@ const PageSetSplit = ({
     ) as string[];
     form.setFieldValue("participants", allParticipant);
 
-    form.setFieldValue("splitType", SplitType.Equal);
-
     const allParticipantInSplitDataFormat = groupData.expand.participants.map(
       (participant) => ({
         expenseId: "",
@@ -126,6 +124,14 @@ const PageSetSplit = ({
       : 0;
   };
 
+  const calculateRemainingAmount = () => {
+    const totalEntered = splitData.reduce(
+      (sum, split) => sum + (split.amount || 0),
+      0
+    );
+    return (form.values.amount || 0) - totalEntered;
+  };
+
   const calculatePartSplit = (part: number) => {
     let totalPart = 0;
     // Amount * (part / total parts)
@@ -168,8 +174,10 @@ const PageSetSplit = ({
                   "everyoneIsParticipant",
                   event.currentTarget.checked
                 );
-                // Select all participant when toggle on
-                selectAllParticipant();
+                if (event.currentTarget.checked) {
+                  selectAllParticipant();
+                  form.setFieldValue("splitType", SplitType.Equal);
+                }
               }}
               label="Everyone in the group"
               description="When new participant is later added, he/she will also be included"
@@ -374,23 +382,11 @@ const PageSetSplit = ({
                                     active={form.values.participants.includes(
                                       participant.id!
                                     )}
-                                    // style={{ backgroundColor: "transparent" }} // disable hover effect
                                   >
                                     <ParticipantAvatarHorizontal
                                       key={participant.id}
                                       avatar={participant.avatar}
                                       name={participant.name}
-                                      // description={
-                                      //   <Text
-                                      //     c="dimmed"
-                                      //     lineClamp={2}
-                                      //     ta="center"
-                                      //   >
-                                      //     {EuroNumberFormatter({
-                                      //       value: split.amount || 0,
-                                      //     })}
-                                      //   </Text>
-                                      // }
                                       isSelected
                                     />
                                   </Combobox.Option>
@@ -413,13 +409,13 @@ const PageSetSplit = ({
                                     decimalSeparator=","
                                     thousandSeparator="."
                                     allowNegative={false}
-                                    value={split.amount ? split.amount : ""}
+                                    value={split.amount ?? ""}
                                     onChange={(e) => {
                                       const newSplitData = splitData.map((v) =>
                                         v.participantId === participant.id
                                           ? {
                                               ...v,
-                                              amount: parseInt(e.toString()),
+                                              amount: typeof e === "number" ? e : parseFloat(e) || null,
                                             }
                                           : v
                                       );
@@ -520,7 +516,18 @@ const PageSetSplit = ({
             </Stack>
           </Combobox>
 
-          {/* </Group> */}
+          {form.values.splitType === SplitType.Amount && (
+            <Group justify="space-between" mt={12} px={4}>
+              <Text size="sm" c="dimmed">Remaining</Text>
+              <Text
+                size="sm"
+                fw={500}
+                c={calculateRemainingAmount() < -0.001 ? "red" : calculateRemainingAmount() < 0.001 ? "green" : undefined}
+              >
+                {EuroNumberFormatter({ value: calculateRemainingAmount() })}
+              </Text>
+            </Group>
+          )}
         </Stack>
       </ScrollArea>
     </Container>

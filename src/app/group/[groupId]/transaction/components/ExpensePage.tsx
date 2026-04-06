@@ -16,6 +16,7 @@ import { IconMessage, IconPencil } from "@tabler/icons-react";
 import { IconCash } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
+import { SplitType } from "@/types";
 import { EuroNumberFormatter } from "@/components/NumberFormatter";
 import DeleteButton from "./DeleteButton";
 import { useDeleteExpense } from "@/api";
@@ -125,6 +126,8 @@ const ExpensePage = () => {
               <Stack gap={0}>
                 <Text {...textTypeStyle}>Type</Text>
                 <Text {...dataStyle}>Expense</Text>
+                <Text {...textTypeStyle} mt={4}>Split</Text>
+                <Text {...dataStyle} style={{ textTransform: "capitalize" }}>{data.splitType}</Text>
               </Stack>
             </Group>
             <Group align="start" wrap="nowrap">
@@ -145,25 +148,35 @@ const ExpensePage = () => {
                 <Text {...textTypeStyle}>Participants</Text>
                 <Stack gap={0} {...dataStyle} align="stretch">
                   {!data.everyoneIsParticipant
-                    ? data.expand.participants.map((participant, index) => (
+                    ? data.expand.participants.map((participant) => (
                         <ParticipantAvatarHorizontal
                           key={participant.id}
                           avatar={participant.avatar}
                           name={participant.name}
                           description={
-                            <EuroNumberFormatter value={data.amountPerPerson} />
+                            <EuroNumberFormatter
+                              value={
+                                data.splitType !== SplitType.Equal && data.participantAmounts
+                                  ? (data.participantAmounts[participant.id!] ?? 0)
+                                  : data.amountPerPerson
+                              }
+                            />
                           }
                         />
                       ))
                     : data.expand.groupInfo.expand.participants.map(
-                        (participant, index) => (
+                        (participant) => (
                           <ParticipantAvatarHorizontal
                             key={participant.id}
                             avatar={participant.avatar}
                             name={participant.name}
                             description={
                               <EuroNumberFormatter
-                                value={data.amountPerPerson}
+                                value={
+                                  data.splitType !== SplitType.Equal && data.participantAmounts
+                                    ? (data.participantAmounts[participant.id!] ?? 0)
+                                    : data.amountPerPerson
+                                }
                               />
                             }
                           />

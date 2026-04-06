@@ -220,10 +220,16 @@ const useCreateExpense = () => {
   const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
     mutationKey: ["createExpense"],
 
-    mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
-      pb.collection("expenses").create(transactionForm),
+    mutationFn: async (transactionForm: ModifiedTransactionFormValues) => {
+      const res = await fetch(`${spltPocketHost}/api/splt/expense`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(transactionForm),
+      });
+      if (!res.ok) throw new Error("Failed to create expense");
+      return res.json();
+    },
     onSuccess: () => {
-      // Update all simulations query
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
       queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
     },
@@ -236,23 +242,30 @@ const useCreateExpense = () => {
 
 const useUpdateExpense = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<GroupData, Error, ModifiedTransactionFormValues>(
-    {
-      mutationKey: ["updateExpense"],
+  const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
+    mutationKey: ["updateExpense"],
 
-      mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
-        pb.collection("expenses").update(transactionForm.id!, transactionForm),
-      onSuccess: () => {
-        // Update all simulations query
-        queryClient.invalidateQueries({ queryKey: ["transactions"] });
-        queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
-        queryClient.invalidateQueries({ queryKey: ["expense"] });
-      },
-      onError: (error) => {
-        console.log(error);
-      },
+    mutationFn: async (transactionForm: ModifiedTransactionFormValues) => {
+      const res = await fetch(
+        `${spltPocketHost}/api/splt/expense/${transactionForm.id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(transactionForm),
+        },
+      );
+      if (!res.ok) throw new Error("Failed to update expense");
+      return res.json();
     },
-  );
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["transactions"] });
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+      queryClient.invalidateQueries({ queryKey: ["expense"] });
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
   return mutation;
 };
 
@@ -261,7 +274,13 @@ const useDeleteExpense = () => {
   const mutation = useMutation<boolean, Error, string>({
     mutationKey: ["deleteExpense"],
 
-    mutationFn: (expenseId) => pb.collection("expenses").delete(expenseId),
+    mutationFn: async (expenseId) => {
+      const res = await fetch(`${spltPocketHost}/api/splt/expense/${expenseId}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete expense");
+      return res.json();
+    },
     onSuccess: () => {
       // Update all simulations query
       queryClient.invalidateQueries({ queryKey: ["transactions"] });
