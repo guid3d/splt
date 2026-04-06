@@ -244,21 +244,6 @@ const useUpdateExpense = () => {
   const mutation = useMutation<any, Error, ModifiedTransactionFormValues>({
     mutationKey: ["updateExpense"],
 
-<<<<<<< HEAD
-      mutationFn: (transactionForm: ModifiedTransactionFormValues) =>
-        pb.collection("expenses").update(transactionForm.id!, transactionForm),
-      onSuccess: () => {
-        // Update all simulations query
-        queryClient.invalidateQueries({ queryKey: ["transactions"] });
-        queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
-        queryClient.invalidateQueries({ queryKey: ["expense"] });
-      },
-      onError: (error) => {
-        console.log(error);
-      },
-    },
-  );
-=======
     mutationFn: async (transactionForm: ModifiedTransactionFormValues) => {
       const res = await fetch(
         `${spltPocketHost}/api/splt/expense/${transactionForm.id}`,
@@ -280,7 +265,6 @@ const useUpdateExpense = () => {
       console.log(error);
     },
   });
->>>>>>> 6054a81d19775f9adc8fb82d00569fae2d963e5a
   return mutation;
 };
 
@@ -290,18 +274,12 @@ const useDeleteExpense = () => {
     mutationKey: ["deleteExpense"],
 
     mutationFn: async (expenseId) => {
-<<<<<<< HEAD
       const res = await fetch(
         `${spltPocketHost}/api/splt/expense/${expenseId}`,
         {
           method: "DELETE",
         },
       );
-=======
-      const res = await fetch(`${spltPocketHost}/api/splt/expense/${expenseId}`, {
-        method: "DELETE",
-      });
->>>>>>> 6054a81d19775f9adc8fb82d00569fae2d963e5a
       if (!res.ok) throw new Error("Failed to delete expense");
       return res.json();
     },
