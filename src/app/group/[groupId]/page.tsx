@@ -11,6 +11,7 @@ import { useTotalSpend } from "@/api";
 import MadeWithLove from "@/components/MadeWithLove";
 import ToggleDarkLightMode from "@/components/ToggleDarkLightMode";
 import Metadata from "@/components/Metadata";
+import LoginModal from "@/components/LoginModal";
 
 const GroupPage = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -28,7 +29,10 @@ const GroupPage = () => {
       <Container size="xs" mt="md">
         <Group justify="space-between">
           <SPLTIconSmall />
-          <ToggleDarkLightMode />
+          <Group gap="xs">
+            <ToggleDarkLightMode />
+            <LoginModal />
+          </Group>
         </Group>
         <Stack mb={100}>
           <Center>

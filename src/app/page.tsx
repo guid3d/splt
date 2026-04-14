@@ -3,7 +3,7 @@
 import {
   Stack,
   Center, Container,
-  Title, Text
+  Title, Text, Group
 } from "@mantine/core";
 import AddGroupModal from "@/components/AddGroupModal";
 import { SPLTIconBig } from "@/components/SPLTIcon";
@@ -11,7 +11,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import { GroupData } from "@/types";
 import GroupHistoryList from "./components/GroupHistoryList";
 import MadeWithLove from "@/components/MadeWithLove";
-// import AddGroupModal from "@/components/AddGroupModal";
+import ToggleDarkLightMode from "@/components/ToggleDarkLightMode";
+import LoginModal from "@/components/LoginModal";
 
 // const recentlyVisited = [
 //   { id: "xyz", name: "Group 1", numPeople: 3, icon: "🍕" },
@@ -31,9 +32,13 @@ const HomePage = () => {
     <>
       <Container size="xs">
         <Stack gap="xs">
-          <Center>
+          <Group justify="space-between" mt="md">
             <SPLTIconBig />
-          </Center>
+            <Group gap="xs">
+              <ToggleDarkLightMode />
+              <LoginModal />
+            </Group>
+          </Group>
           <Title order={5}>Recent Visited Groups</Title>
           <Stack mb={100} gap="xs">
             {recentlyVisited.length > 0 ? (

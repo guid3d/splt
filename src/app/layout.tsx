@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { theme } from "../theme";
 import ReactQueryClientProvider from "@/providers/ReactQueryClientProvider";
+import AuthProvider from "@/providers/AuthProvider";
 
 export const metadata = {
   title: "SPLT",
@@ -28,7 +29,9 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </head>
       <body>
         <MantineProvider theme={theme}>
-          <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
+          <ReactQueryClientProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ReactQueryClientProvider>
         </MantineProvider>
       </body>
     </html>

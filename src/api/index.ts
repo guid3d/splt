@@ -13,17 +13,12 @@ import {
 } from "@/types";
 import { useLocalStorage } from "@mantine/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import PocketBase from "pocketbase";
 import { useEffect } from "react";
+import { pb, spltPocketHost } from "@/lib/pocketbase";
 
 type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
-
-const spltPocketHost =
-  process.env.NEXT_PUBLIC_POCKETHOST_DB || "http://127.0.0.1:8090";
-
-const pb = new PocketBase(spltPocketHost);
 
 const useTransactions = (groupId: string) => {
   const query = useQuery<PbHooksTransactionsList, Error>({
@@ -338,6 +333,38 @@ const useDeletePayback = () => {
   return mutation;
 };
 
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+type RegisterFormValues = {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+};
+
+const useLogin = () => {
+  const mutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: ({ email, password }: LoginFormValues) =>
+      pb.collection("users").authWithPassword(email, password),
+  });
+  return mutation;
+};
+
+const useRegister = () => {
+  const mutation = useMutation({
+    mutationKey: ["register"],
+    mutationFn: async ({ name, email, password, passwordConfirm }: RegisterFormValues) => {
+      await pb.collection("users").create({ name, email, password, passwordConfirm });
+      return pb.collection("users").authWithPassword(email, password);
+    },
+  });
+  return mutation;
+};
+
 export {
   useTransactions,
   useTotalSpend,
@@ -355,4 +382,6 @@ export {
   useDeleteExpense,
   useDeletePayback,
   useUpdateExpense,
+  useLogin,
+  useRegister,
 };

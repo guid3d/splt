@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Next.js Frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/guid3d/Coding/splt", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "PocketBase Backend",
+      "runtimeExecutable": "/Users/guid3d/Coding/splt/db/pocketbase",
+      "runtimeArgs": ["serve", "--dir", "/Users/guid3d/Coding/splt/db"],
+      "port": 8090
+    }
+  ]
+}
