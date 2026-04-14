@@ -251,6 +251,7 @@
           "values": [
             "equal",
             "percent",
+            "part",
             "amount"
           ]
         }
@@ -584,98 +585,6 @@
     "options": {}
   },
   {
-    "id": "dzpn7uh841fqg0r",
-    "name": "transactions",
-    "type": "base",
-    "system": false,
-    "schema": [
-      {
-        "system": false,
-        "id": "wrcwffjp",
-        "name": "type",
-        "type": "select",
-        "required": true,
-        "presentable": false,
-        "unique": false,
-        "options": {
-          "maxSelect": 1,
-          "values": [
-            "expense",
-            "payback"
-          ]
-        }
-      },
-      {
-        "system": false,
-        "id": "6aplrmqd",
-        "name": "expenseTransaction",
-        "type": "relation",
-        "required": false,
-        "presentable": false,
-        "unique": false,
-        "options": {
-          "collectionId": "4u55ofdfhiy5zvr",
-          "cascadeDelete": false,
-          "minSelect": null,
-          "maxSelect": 1,
-          "displayFields": null
-        }
-      },
-      {
-        "system": false,
-        "id": "yimhvhmr",
-        "name": "paybackTransaction",
-        "type": "relation",
-        "required": false,
-        "presentable": false,
-        "unique": false,
-        "options": {
-          "collectionId": "sx3h3uce4y0v1y8",
-          "cascadeDelete": false,
-          "minSelect": null,
-          "maxSelect": 1,
-          "displayFields": null
-        }
-      },
-      {
-        "system": false,
-        "id": "lfwf4o5w",
-        "name": "transactionDateTime",
-        "type": "date",
-        "required": true,
-        "presentable": false,
-        "unique": false,
-        "options": {
-          "min": "",
-          "max": ""
-        }
-      },
-      {
-        "system": false,
-        "id": "s0eguflh",
-        "name": "group",
-        "type": "relation",
-        "required": true,
-        "presentable": false,
-        "unique": false,
-        "options": {
-          "collectionId": "z19z1ymzy236wa3",
-          "cascadeDelete": false,
-          "minSelect": null,
-          "maxSelect": 1,
-          "displayFields": null
-        }
-      }
-    ],
-    "indexes": [],
-    "listRule": "",
-    "viewRule": "",
-    "createRule": "",
-    "updateRule": "",
-    "deleteRule": "",
-    "options": {}
-  },
-  {
     "id": "rsahx49yclbiays",
     "name": "allExpenses",
     "type": "view",
@@ -751,6 +660,83 @@
     "options": {
       "query": "SELECT (ROW_NUMBER() OVER()) as id, SUM(expenses.amount) as sumAmount, expenses.groupInfo, expenses.paidBy\nFROM expenses\nGROUP BY expenses.paidBy\n"
     }
+  },
+  {
+    "id": "zsim7vf2cvcsbu7",
+    "name": "splits",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "system": false,
+        "id": "ivkczagb",
+        "name": "expenseId",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "4u55ofdfhiy5zvr",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "6ebrbwfo",
+        "name": "participantId",
+        "type": "relation",
+        "required": true,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "collectionId": "azdnlilk56luqv5",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": null
+        }
+      },
+      {
+        "system": false,
+        "id": "vcb7vq69",
+        "name": "part",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      },
+      {
+        "system": false,
+        "id": "pilgojjw",
+        "name": "amount",
+        "type": "number",
+        "required": false,
+        "presentable": false,
+        "unique": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "noDecimal": false
+        }
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_Nx0ggdl` ON `splits` (\n  `expenseId`,\n  `participantId`\n)"
+    ],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
   },
   {
     "id": "jxs2ilaogg2xm9q",
