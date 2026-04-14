@@ -1,25 +1,33 @@
 import {
-  Center, Combobox,
-  Container, ScrollArea, SimpleGrid,
+  Center,
+  Combobox,
+  Container,
+  ScrollArea,
+  SimpleGrid,
   Stack,
   Switch,
-  Text, rem,
-  useCombobox
+  Text,
+  rem,
+  useCombobox,
 } from "@mantine/core";
 import { useEffect } from "react";
 import { UseFormReturnType } from "@mantine/form";
 import ParticipantAvatar from "@/components/ParticipantAvatar";
-import { GroupData, TransactionFormValues } from "@/types";
+import { GroupData, SplitData, TransactionFormValues } from "@/types";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 
 type PageSelectParticipantProps = {
   groupData: GroupData;
   form: UseFormReturnType<TransactionFormValues>;
+  splitData: SplitData[];
+  setSplitData: (splitData: SplitData[]) => void;
 };
 
 const PageSelectParticipant = ({
   groupData,
   form,
+  splitData,
+  setSplitData,
 }: PageSelectParticipantProps) => {
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const { height, width } = useViewportSize();
@@ -40,6 +48,16 @@ const PageSelectParticipant = ({
       (participant) => participant.id
     ) as string[];
     form.setFieldValue("participants", allParticipant);
+
+    const allParticipantInSplitDataFormat = groupData.expand.participants.map(
+      (participant) => ({
+        expenseId: "",
+        participantId: participant.id!,
+        part: 1,
+        amount: 0,
+      })
+    );
+    setSplitData(allParticipantInSplitDataFormat);
   };
 
   const handleValueSelect = (val: string) => {
@@ -49,14 +67,30 @@ const PageSelectParticipant = ({
     //     : [...current, val]
     // );
     const currentParticipants = form.values.participants;
+    // Filter out the selected participant if already selected
     form.setFieldValue(
       "participants",
       currentParticipants.includes(val)
         ? currentParticipants.filter((v) => v !== val)
         : [...currentParticipants, val]
     );
-
     form.setFieldValue("everyoneIsParticipant", false);
+    // -------------------------
+
+    // Update split data
+    const newSplitData = currentParticipants.includes(val)
+      ? splitData.filter((v) => v.participantId !== val)
+      : [
+          ...splitData,
+          {
+            expenseId: "",
+            participantId: val,
+            part: 1,
+            amount: 0,
+          },
+        ];
+    setSplitData(newSplitData);
+    // -------------------------
   };
 
   // const handleValueRemove = (val: string) =>

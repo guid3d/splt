@@ -1,14 +1,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import {
-  Modal as MantineModal, ActionIcon,
+  Modal as MantineModal,
+  ActionIcon,
   rem,
   Stack,
-  UnstyledButton, Text, Space
+  UnstyledButton,
+  Text,
+  Space,
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { IconChevronLeft } from "@tabler/icons-react";
-import { Carousel, Embla } from "@mantine/carousel";
+import { Carousel } from "@mantine/carousel";
+import type { EmblaCarouselType } from "embla-carousel";
 import ModalFooterButton from "./ModalFooterButton";
 
 type ModalPropsType = {
@@ -62,7 +66,7 @@ const Modal = ({
   //   min: 0,
   //   max: maxPage,
   // });
-  const [embla, setEmbla] = useState<Embla | null>(null);
+  const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
   const pageDecrement = () => {
     scrollPrev();
     pageHandler.decrement();

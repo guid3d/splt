@@ -31,9 +31,9 @@ const ParticipantAvatar = ({
   const renderColor = () => {
     if (isSelected) {
       if (computedColorScheme === "dark") {
-        return theme.colors.dark[4];
+        return theme.colors.dark[6];
       }
-      return theme.colors.gray[3];
+      return theme.colors.gray[2];
     }
     return "";
   };

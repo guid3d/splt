@@ -29,9 +29,9 @@ const ParticipantAvatarHorizontal = ({
   const renderColor = () => {
     if (isSelected) {
       if (computedColorScheme === "dark") {
-        return theme.colors.dark[4];
+        return theme.colors.dark[6];
       }
-      return theme.colors.gray[3];
+      return theme.colors.gray[2];
     }
     return "";
   };
@@ -41,7 +41,7 @@ const ParticipantAvatarHorizontal = ({
       bg={renderColor()}
       p="xs"
       style={{
-        borderRadius: 20,
+        borderRadius: 16,
       }}
       w="100%"
     >
