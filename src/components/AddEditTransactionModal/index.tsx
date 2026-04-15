@@ -102,11 +102,26 @@ const AddEditTransactionModal = ({
       }
 
       if (page === 2) {
+        let splitAmountError: string | null = null;
+        if (values.splitType === SplitType.Amount) {
+          const totalEntered = splitData.reduce(
+            (sum, split) => sum + (split.amount || 0),
+            0
+          );
+          const remaining = (values.amount || 0) - totalEntered;
+          if (remaining > 0.001) {
+            splitAmountError = "Remaining amount must be fully distributed";
+          } else if (remaining < -0.001) {
+            splitAmountError = "Total split amount exceeds the transaction amount";
+          }
+        }
+
         return {
           participants:
             values.participants.length < 1
               ? "Participants must include at least 1 person"
               : null,
+          splitAmountError,
         };
       }
 
