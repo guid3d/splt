@@ -53,6 +53,7 @@ routerAdd("GET", "/api/splt/expense", (c) => {
 
   let amountPerPerson = 0;
   let participantAmounts = {}; // { participantId: amount } — populated for part/amount types
+  let rawSplits = []; // [{ participantId, part, amount }] — original split records
 
   if (splitType === "part" || splitType === "amount") {
     const splits = $app.dao().findRecordsByFilter(
@@ -64,21 +65,21 @@ routerAdd("GET", "/api/splt/expense", (c) => {
       { expenseId: expenseId }
     );
 
+    splits.forEach((split) => {
+      const s = JSON.parse(JSON.stringify(split));
+      rawSplits.push({ participantId: s.participantId, part: s.part, amount: s.amount });
+    });
+
     if (splitType === "part") {
       let totalParts = 0;
-      splits.forEach((split) => {
-        const s = JSON.parse(JSON.stringify(split));
-        totalParts += s.part || 0;
-      });
-      splits.forEach((split) => {
-        const s = JSON.parse(JSON.stringify(split));
+      rawSplits.forEach((s) => { totalParts += s.part || 0; });
+      rawSplits.forEach((s) => {
         participantAmounts[s.participantId] =
           totalParts > 0 ? totalAmount * ((s.part || 0) / totalParts) : 0;
       });
     } else {
       // amount — use stored value directly
-      splits.forEach((split) => {
-        const s = JSON.parse(JSON.stringify(split));
+      rawSplits.forEach((s) => {
         participantAmounts[s.participantId] = s.amount || 0;
       });
     }
@@ -94,7 +95,7 @@ routerAdd("GET", "/api/splt/expense", (c) => {
       : totalAmount / numExpenseParticipants;
   }
 
-  return c.json(200, { ...expense, amountPerPerson, participantAmounts });
+  return c.json(200, { ...expense, amountPerPerson, participantAmounts, splits: rawSplits });
 });
 
 // POST /api/splt/expense — create expense + splits atomically

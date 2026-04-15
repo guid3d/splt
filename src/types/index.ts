@@ -89,6 +89,7 @@ export type ExpenseTransactionData = {
   amount: number;
   amountPerPerson?: number;
   participantAmounts?: Record<string, number>;
+  splits?: Array<{ participantId: string; part: number | null; amount: number | null }>;
   avatar: StoreEmojiData;
   created: string;
   expand: {

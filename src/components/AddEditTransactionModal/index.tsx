@@ -130,14 +130,23 @@ const AddEditTransactionModal = ({
     },
   });
 
-  const [splitData, setSplitData] = useState<SplitData[]>([
-    {
-      expenseId: "1234",
-      participantId: "1234",
-      part: 0,
-      amount: 0,
-    },
-  ]);
+  const [splitData, setSplitData] = useState<SplitData[]>(
+    isEdit && expenseData && expenseData.splits && expenseData.splits.length > 0
+      ? expenseData.splits.map((s) => ({
+          expenseId: expenseData.id,
+          participantId: s.participantId,
+          part: s.part,
+          amount: s.amount,
+        }))
+      : [
+          {
+            expenseId: "",
+            participantId: "",
+            part: 0,
+            amount: 0,
+          },
+        ]
+  );
 
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>
