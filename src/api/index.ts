@@ -90,6 +90,7 @@ const useDebts = (groupId: string) => {
 };
 
 const useUpsertGroupHistory = () => {
+  const queryClient = useQueryClient();
   return useMutation<unknown, Error, { groupId: string }>({
     mutationKey: ["upsertGroupHistory"],
     mutationFn: async ({ groupId }) => {
@@ -103,6 +104,9 @@ const useUpsertGroupHistory = () => {
       });
       if (!res.ok) throw new Error("Failed to upsert group history");
       return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["serverGroupHistory"] });
     },
   });
 };
@@ -428,4 +432,5 @@ export {
   useServerGroupHistory,
   useClaimGroup,
   useVerifyGroupPin,
+  useUpsertGroupHistory,
 };

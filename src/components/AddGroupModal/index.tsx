@@ -6,7 +6,6 @@ import { IconPlus } from "@tabler/icons-react";
 import { IconChevronLeft } from "@tabler/icons-react";
 import PageSetName from "./components/PageSetName";
 import PageAddParticipant from "./components/PageAddParticipant";
-import PageSetPassword from "./components/PageSetPassword";
 import { Carousel } from "@mantine/carousel";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
@@ -18,6 +17,8 @@ import {
   StoreEmojiData,
 } from "@/types";
 import { useCreateGroup, useCreateParticipant } from "@/api";
+import { useQueryClient } from "@tanstack/react-query";
+import { pb } from "@/lib/pb";
 import PageNotifyFinish from "./components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
 import { useAuth } from "@/providers/AuthProvider";
@@ -25,6 +26,7 @@ import { useAuth } from "@/providers/AuthProvider";
 const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
   const createParticipantMutation = useCreateParticipant();
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { isAuthenticated, currentUser } = useAuth();
 
@@ -44,10 +46,8 @@ const AddGroupModal = () => {
 
   const [participants, setParticipants] = useState<Participant[]>(initialParticipants);
 
-  // When logged in: 3 pages (name → participants → PIN → finish)
-  // When not logged in: 2 pages (name → participants → finish)
-  const maxPage = isAuthenticated ? 3 : 2;
-  const confirmPage = isAuthenticated ? 2 : 1;
+  const maxPage = 2;
+  const confirmPage = 1;
 
   const [page, pageHandler] = useCounter(0, {
     min: 0,
@@ -120,16 +120,22 @@ const AddGroupModal = () => {
                 ...form.values,
                 participants: participantIds,
               };
-              // When logged in, attach owner and isPrivate
               if (isAuthenticated && currentUser) {
                 newFormValues.owner = currentUser.id;
-                newFormValues.isPrivate =
-                  (form.values.password?.length ?? 0) > 0;
               }
               createGroupMutation.mutate(newFormValues, {
                 onSuccess: (data) => {
                   setGroupUrl(`group/${data.id}`);
                   setConfirmSuccess(true);
+                  if (isAuthenticated && currentUser) {
+                    pb.collection("userGroupHistory").create({
+                      userId: currentUser.id,
+                      groupId: data.id,
+                      visitedAt: new Date().toISOString(),
+                    }).then(() => {
+                      queryClient.invalidateQueries({ queryKey: ["serverGroupHistory"] });
+                    }).catch(console.error);
+                  }
                 },
               });
             } catch (error) {
@@ -177,11 +183,6 @@ const AddGroupModal = () => {
             setParticipants={setParticipants}
           />
         </Carousel.Slide>
-        {isAuthenticated && (
-          <Carousel.Slide>
-            <PageSetPassword form={form} />
-          </Carousel.Slide>
-        )}
         <Carousel.Slide>
           <PageNotifyFinish groupUrl={groupUrl} />
         </Carousel.Slide>

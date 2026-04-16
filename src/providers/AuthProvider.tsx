@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       password,
       passwordConfirm: password,
     });
-    await pb.collection("users").authWithPassword(email, password);
+    // Do not auto-login here — caller is responsible for logging in after profile setup
   };
 
   const logout = () => {

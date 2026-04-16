@@ -59,7 +59,6 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
       avatar: groupInfo.avatar,
       name: groupInfo.name,
       description: groupInfo.description,
-      password: groupInfo.password,
       currency: groupInfo.currency,
       participants: groupInfo.participants,
     },

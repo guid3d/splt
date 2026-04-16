@@ -1,187 +1,373 @@
 "use client";
 import React, { useState } from "react";
+import { useCounter } from "@mantine/hooks";
 import {
-  Modal,
-  Tabs,
   TextInput,
   PasswordInput,
   Button,
   Stack,
-  Text,
   Divider,
   Group,
   Alert,
+  Container,
+  Center,
+  Affix,
+  Text,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useForm } from "@mantine/form";
+import { Carousel } from "@mantine/carousel";
 import { useAuth } from "@/providers/AuthProvider";
 import { pb } from "@/lib/pb";
-import { IconBrandGithub, IconBrandGoogle, IconAlertCircle } from "@tabler/icons-react";
+import {
+  IconBrandGithub,
+  IconBrandGoogle,
+  IconAlertCircle,
+} from "@tabler/icons-react";
+import Modal from "@/components/Modal";
+import EmojiActionButtion from "@/components/EmojiActionButtion";
+import BigTextInput from "@/components/BigTextInput";
+import { randomPersonEmoji } from "@/utils/randomEmoji";
 
 type LoginModalProps = {
   button: React.ReactNode;
 };
 
 const LoginModal = ({ button }: LoginModalProps) => {
-  const [opened, { open, close }] = useDisclosure(false);
   const { login, register } = useAuth();
 
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [loginError, setLoginError] = useState<string | null>(null);
-  const [loginLoading, setLoginLoading] = useState(false);
+  const [mode, setMode] = useState<"login" | "register" | null>(null);
 
-  const [regEmail, setRegEmail] = useState("");
-  const [regUsername, setRegUsername] = useState("");
+  // Page 0
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Page 1 – shared
+  const [credError, setCredError] = useState<string | null>(null);
+  const [credLoading, setCredLoading] = useState(false);
+
+  // Page 1 – login
+  const [password, setPassword] = useState("");
+
+  // Page 1 – register
+  const [username, setUsername] = useState("");
   const [regPassword, setRegPassword] = useState("");
   const [regConfirm, setRegConfirm] = useState("");
-  const [regError, setRegError] = useState<string | null>(null);
-  const [regLoading, setRegLoading] = useState(false);
 
-  const handleLogin = async () => {
-    setLoginError(null);
-    setLoginLoading(true);
-    try {
-      await login(loginEmail, loginPassword);
-      close();
-    } catch (e: any) {
-      setLoginError(e?.message ?? "Login failed");
-    } finally {
-      setLoginLoading(false);
-    }
+  // Page 2 – profile setup (register only)
+  const [profileLoading, setProfileLoading] = useState(false);
+  const profileForm = useForm({
+    initialValues: {
+      avatar: { emoji: randomPersonEmoji(), unified: "" },
+      name: "",
+    },
+    validate: {
+      name: (v: string) =>
+        v.trim().length < 1 ? "Display name is required" : null,
+    },
+  });
+
+  const maxPage = 2;
+  const [page, pageHandler] = useCounter(0, { min: 0, max: maxPage });
+
+  const resetAll = () => {
+    setMode(null);
+    setEmail("");
+    setEmailError(null);
+    setPassword("");
+    setUsername("");
+    setRegPassword("");
+    setRegConfirm("");
+    setCredError(null);
+    profileForm.reset();
+    profileForm.setFieldValue("avatar", {
+      emoji: randomPersonEmoji(),
+      unified: "",
+    });
   };
 
-  const handleRegister = async () => {
-    setRegError(null);
-    if (regPassword !== regConfirm) {
-      setRegError("Passwords do not match");
-      return;
-    }
-    setRegLoading(true);
-    try {
-      await register(regEmail, regUsername, regPassword);
-      close();
-    } catch (e: any) {
-      setRegError(e?.message ?? "Registration failed");
-    } finally {
-      setRegLoading(false);
-    }
-  };
-
-  const handleOAuth2 = async (provider: string) => {
+  const handleOAuth2 = async (provider: string, close: () => void) => {
     try {
       await pb.collection("users").authWithOAuth2({ provider });
       close();
-    } catch (e: any) {
+    } catch {
       // OAuth2 window closed or failed — silently ignore
     }
   };
 
-  return (
-    <>
-      <span onClick={open} style={{ cursor: "pointer" }}>
-        {button}
-      </span>
-      <Modal opened={opened} onClose={close} title="Account" centered>
-        <Tabs defaultValue="login">
-          <Tabs.List>
-            <Tabs.Tab value="login">Login</Tabs.Tab>
-            <Tabs.Tab value="register">Register</Tabs.Tab>
-          </Tabs.List>
+  const handleChoose = (
+    chosen: "login" | "register",
+    pageIncrement: () => void
+  ) => {
+    if (!email.trim()) {
+      setEmailError("Email is required");
+      return;
+    }
+    setEmailError(null);
+    setCredError(null);
+    setMode(chosen);
+    pageIncrement();
+  };
 
-          <Tabs.Panel value="login" pt="md">
-            <Stack gap="sm">
+  const handleLogin = async (close: () => void) => {
+    if (!password) {
+      setCredError("Password is required");
+      return;
+    }
+    setCredError(null);
+    setCredLoading(true);
+    try {
+      await login(email, password);
+      close();
+    } catch (e: any) {
+      setCredError(e?.message ?? "Login failed");
+    } finally {
+      setCredLoading(false);
+    }
+  };
+
+  const handleRegister = async (pageIncrement: () => void) => {
+    if (!username.trim()) {
+      setCredError("Username is required");
+      return;
+    }
+    if (!regPassword) {
+      setCredError("Password is required");
+      return;
+    }
+    if (regPassword !== regConfirm) {
+      setCredError("Passwords do not match");
+      return;
+    }
+    setCredError(null);
+    setCredLoading(true);
+    try {
+      await register(email, username, regPassword);
+      pageIncrement();
+    } catch (e: any) {
+      setCredError(e?.message ?? "Registration failed");
+    } finally {
+      setCredLoading(false);
+    }
+  };
+
+  const handleProfileDone = async (close: () => void) => {
+    if (profileForm.validate().hasErrors) return;
+    setProfileLoading(true);
+    try {
+      // Login first so we have auth context to update the profile
+      await login(email, regPassword);
+      const userId = pb.authStore.record?.id;
+      if (userId) {
+        await pb.collection("users").update(userId, {
+          name: profileForm.values.name,
+          avatar: profileForm.values.avatar,
+        });
+      }
+    } catch {
+      // profile update is best-effort
+    } finally {
+      setProfileLoading(false);
+    }
+    close();
+  };
+
+  return (
+    <Modal
+      button={button}
+      headerTitle="Account"
+      page={page}
+      pageHandler={pageHandler}
+      maxPage={maxPage}
+      onCloseModalClick={resetAll}
+      renderFooter={({ page: p, pageIncrement, closeModalHandler, isMobile }) => {
+        const content = (
+          <Stack gap="xs">
+            {p === 0 && (
               <Group grow>
                 <Button
                   variant="default"
-                  leftSection={<IconBrandGoogle size={16} />}
-                  onClick={() => handleOAuth2("google")}
+                  radius="xl"
+                  onClick={() => handleChoose("login", pageIncrement)}
                 >
-                  Google
+                  Login
                 </Button>
                 <Button
-                  variant="default"
-                  leftSection={<IconBrandGithub size={16} />}
-                  onClick={() => handleOAuth2("github")}
+                  radius="xl"
+                  onClick={() => handleChoose("register", pageIncrement)}
                 >
-                  GitHub
+                  Register
                 </Button>
               </Group>
-              <Divider label="or" labelPosition="center" />
-              {loginError && (
-                <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
-                  {loginError}
-                </Alert>
-              )}
-              <TextInput
-                label="Email or username"
-                value={loginEmail}
-                onChange={(e) => setLoginEmail(e.currentTarget.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              />
-              <PasswordInput
-                label="Password"
-                value={loginPassword}
-                onChange={(e) => setLoginPassword(e.currentTarget.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              />
-              <Button onClick={handleLogin} loading={loginLoading}>
+            )}
+            {p === 1 && mode === "login" && (
+              <Button
+                fullWidth
+                radius="xl"
+                loading={credLoading}
+                onClick={() => handleLogin(closeModalHandler)}
+              >
                 Login
               </Button>
-            </Stack>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="register" pt="md">
-            <Stack gap="sm">
-              <Group grow>
-                <Button
-                  variant="default"
-                  leftSection={<IconBrandGoogle size={16} />}
-                  onClick={() => handleOAuth2("google")}
-                >
-                  Google
-                </Button>
-                <Button
-                  variant="default"
-                  leftSection={<IconBrandGithub size={16} />}
-                  onClick={() => handleOAuth2("github")}
-                >
-                  GitHub
-                </Button>
-              </Group>
-              <Divider label="or" labelPosition="center" />
-              {regError && (
-                <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
-                  {regError}
-                </Alert>
-              )}
-              <TextInput
-                label="Email"
-                value={regEmail}
-                onChange={(e) => setRegEmail(e.currentTarget.value)}
-              />
-              <TextInput
-                label="Username"
-                value={regUsername}
-                onChange={(e) => setRegUsername(e.currentTarget.value)}
-              />
-              <PasswordInput
-                label="Password"
-                value={regPassword}
-                onChange={(e) => setRegPassword(e.currentTarget.value)}
-              />
-              <PasswordInput
-                label="Confirm password"
-                value={regConfirm}
-                onChange={(e) => setRegConfirm(e.currentTarget.value)}
-              />
-              <Button onClick={handleRegister} loading={regLoading}>
-                Register
+            )}
+            {p === 1 && mode === "register" && (
+              <Button
+                fullWidth
+                radius="xl"
+                loading={credLoading}
+                onClick={() => handleRegister(pageIncrement)}
+              >
+                Create Account
               </Button>
-            </Stack>
-          </Tabs.Panel>
-        </Tabs>
-      </Modal>
-    </>
+            )}
+            {p === 2 && (
+              <Button
+                fullWidth
+                radius="xl"
+                loading={profileLoading}
+                onClick={() => handleProfileDone(closeModalHandler)}
+              >
+                Done
+              </Button>
+            )}
+          </Stack>
+        );
+
+        return isMobile ? (
+          <Affix style={{ bottom: 20, left: 20, right: 20 }} zIndex={200}>
+            {content}
+          </Affix>
+        ) : (
+          content
+        );
+      }}
+    >
+      {(close) => (
+        <>
+          {/* Page 0 – Email */}
+          <Carousel.Slide>
+            <Container h="100%">
+              <Stack gap="sm" justify="center" h="100%">
+                <Group grow>
+                  <Button
+                    variant="default"
+                    leftSection={<IconBrandGoogle size={16} />}
+                    onClick={() => handleOAuth2("google", close)}
+                  >
+                    Google
+                  </Button>
+                  <Button
+                    variant="default"
+                    leftSection={<IconBrandGithub size={16} />}
+                    onClick={() => handleOAuth2("github", close)}
+                  >
+                    GitHub
+                  </Button>
+                </Group>
+                <Divider label="or" labelPosition="center" />
+                {emailError && (
+                  <Alert
+                    icon={<IconAlertCircle size={16} />}
+                    color="red"
+                    variant="light"
+                  >
+                    {emailError}
+                  </Alert>
+                )}
+                <TextInput
+                  variant="unstyled"
+                  radius={0}
+                  size="md"
+                  label="Email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                />
+              </Stack>
+            </Container>
+          </Carousel.Slide>
+
+          {/* Page 1 – Credentials */}
+          <Carousel.Slide>
+            <Container h="100%">
+              <Stack gap="sm" justify="center" h="100%">
+                {credError && (
+                  <Alert
+                    icon={<IconAlertCircle size={16} />}
+                    color="red"
+                    variant="light"
+                  >
+                    {credError}
+                  </Alert>
+                )}
+                {mode === "login" && (
+                  <PasswordInput
+                    variant="unstyled"
+                    radius={0}
+                    size="md"
+                    label="Password"
+                    placeholder="Your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.currentTarget.value)}
+                    onKeyDown={(e) =>
+                      e.key === "Enter" && handleLogin(close)
+                    }
+                  />
+                )}
+                {mode === "register" && (
+                  <>
+                    <TextInput
+                      variant="unstyled"
+                      radius={0}
+                      size="md"
+                      label="Username"
+                      placeholder="Choose a username"
+                      value={username}
+                      onChange={(e) => setUsername(e.currentTarget.value)}
+                    />
+                    <PasswordInput
+                      variant="unstyled"
+                      radius={0}
+                      size="md"
+                      label="Password"
+                      placeholder="Choose a password"
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.currentTarget.value)}
+                    />
+                    <PasswordInput
+                      variant="unstyled"
+                      radius={0}
+                      size="md"
+                      label="Confirm password"
+                      placeholder="Re-enter your password"
+                      value={regConfirm}
+                      onChange={(e) => setRegConfirm(e.currentTarget.value)}
+                    />
+                  </>
+                )}
+              </Stack>
+            </Container>
+          </Carousel.Slide>
+
+          {/* Page 2 – Profile setup (after register) */}
+          <Carousel.Slide>
+            <Container h="100%">
+              <Stack gap="xs" justify="center" align="center" h="100%">
+                <Center>
+                  <EmojiActionButtion form={profileForm} />
+                </Center>
+                <BigTextInput
+                  placeholder="Your Name"
+                  {...profileForm.getInputProps("name")}
+                />
+                <Text size="xs" c="dimmed" ta="center">
+                  Used as your name when creating groups
+                </Text>
+              </Stack>
+            </Container>
+          </Carousel.Slide>
+        </>
+      )}
+    </Modal>
   );
 };
 

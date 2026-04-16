@@ -12,6 +12,7 @@ export type User = {
   email: string;
   username: string;
   name: string;
+  avatar?: StoreEmojiData;
 };
 
 export type GroupFormValues = {
@@ -19,7 +20,7 @@ export type GroupFormValues = {
   name: string;
   avatar: StoreEmojiData;
   description: string;
-  password: string;
+  password?: string;
   currency: string;
   participants: string[];
   isPrivate?: boolean;

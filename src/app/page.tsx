@@ -15,17 +15,19 @@ import {
 } from "@mantine/core";
 import AddGroupModal from "@/components/AddGroupModal";
 import { SPLTIconBig } from "@/components/SPLTIcon";
-import { useLocalStorage } from "@mantine/hooks";
+import { useDisclosure, useLocalStorage } from "@mantine/hooks";
 import { GroupData } from "@/types";
 import GroupHistoryList from "./components/GroupHistoryList";
 import MadeWithLove from "@/components/MadeWithLove";
 import LoginModal from "@/components/LoginModal";
+import EditProfileModal from "@/components/EditProfileModal";
 import { useAuth } from "@/providers/AuthProvider";
 import { useServerGroupHistory } from "@/api";
-import { IconUser, IconLogout } from "@tabler/icons-react";
+import { IconUser, IconLogout, IconPencil } from "@tabler/icons-react";
 
 const HomePage = () => {
   const { isAuthenticated, currentUser, logout } = useAuth();
+  const [editProfileOpened, { open: openEditProfile, close: closeEditProfile }] = useDisclosure(false);
   const [localHistory] = useLocalStorage({
     key: "splt-group-history",
     defaultValue: [] as string[],
@@ -46,9 +48,11 @@ const HomePage = () => {
       <Container size="xs">
         <Stack gap="xs">
           <Group justify="space-between" align="center">
+            <div style={{ flex: 1 }} />
             <SPLTIconBig />
+            <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             {isAuthenticated && currentUser ? (
-              <Menu shadow="md" width={160}>
+              <Menu shadow="md" width={160} radius="lg">
                 <Menu.Target>
                   <Avatar
                     style={{ cursor: "pointer" }}
@@ -57,14 +61,21 @@ const HomePage = () => {
                     size="md"
                     title={currentUser.username}
                   >
-                    {currentUser.username?.charAt(0).toUpperCase() ?? (
+                    {currentUser.avatar?.emoji ?? currentUser.username?.charAt(0).toUpperCase() ?? (
                       <IconUser size={16} />
                     )}
                   </Avatar>
                 </Menu.Target>
                 <Menu.Dropdown>
-                  <Menu.Label>{currentUser.username}</Menu.Label>
+                  {currentUser.name && <Menu.Label>{currentUser.name}</Menu.Label>}
+                  <Menu.Label c="dimmed">@{currentUser.username}</Menu.Label>
                   <Menu.Divider />
+                  <Menu.Item
+                    leftSection={<IconPencil size={14} />}
+                    onClick={openEditProfile}
+                  >
+                    Edit Profile
+                  </Menu.Item>
                   <Menu.Item
                     leftSection={<IconLogout size={14} />}
                     onClick={logout}
@@ -83,6 +94,7 @@ const HomePage = () => {
                 }
               />
             )}
+            </div>
           </Group>
           <Title order={5}>
             {isAuthenticated ? "Your Groups" : "Recently Visited Groups"}
@@ -109,6 +121,7 @@ const HomePage = () => {
         <MadeWithLove />
       </Container>
       <AddGroupModal />
+      <EditProfileModal opened={editProfileOpened} onClose={closeEditProfile} />
     </>
   );
 };

@@ -16,23 +16,31 @@ import type { EmblaCarouselType } from "embla-carousel";
 import ModalFooterButton from "./ModalFooterButton";
 
 type ModalPropsType = {
-  children: React.ReactNode;
-  maxPage: number;
-  confirmPage: number;
+  children: React.ReactNode | ((close: () => void) => React.ReactNode);
+  maxPage?: number;
+  confirmPage?: number;
   // isActionIcon?: boolean;
-  onConfirmClick: () => void;
+  onConfirmClick?: () => void;
   onCloseModalClick?: () => void;
   // buttonTitle?: string;
   button: React.ReactNode;
-  page: number;
-  pageHandler: any;
-  form: UseFormReturnType<any>;
+  page?: number;
+  pageHandler?: any;
+  form?: UseFormReturnType<any>;
   nextButtonIsPending?: boolean;
   confirmSuccess?: boolean;
   setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
   onLastPageHandler?: () => void;
   keepButtonWhenOpened?: boolean;
   headerTitle?: string;
+  hideFooter?: boolean;
+  renderFooter?: (opts: {
+    page: number;
+    pageIncrement: () => void;
+    confirmFunction: () => void;
+    closeModalHandler: () => void;
+    isMobile: boolean;
+  }) => React.ReactNode;
 };
 
 const Modal = ({
@@ -53,6 +61,8 @@ const Modal = ({
   onLastPageHandler,
   keepButtonWhenOpened,
   headerTitle,
+  hideFooter,
+  renderFooter,
 }: ModalPropsType) => {
   useEffect(() => {
     if (confirmSuccess) {
@@ -69,12 +79,12 @@ const Modal = ({
   const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
   const pageDecrement = () => {
     scrollPrev();
-    pageHandler.decrement();
+    pageHandler?.decrement();
   };
   const pageIncrement = () => {
-    if (!form.validate().hasErrors) {
+    if (!form?.validate()?.hasErrors) {
       scrollNext();
-      pageHandler.increment();
+      pageHandler?.increment();
     }
   };
   const scrollPrev = useCallback(() => {
@@ -88,7 +98,7 @@ const Modal = ({
   const closeModalHandler = () => {
     setConfirmSuccess ? setConfirmSuccess(false) : null;
     close();
-    pageHandler.set(0);
+    pageHandler?.set(0);
   };
 
   const onCloseModal = () => {
@@ -97,10 +107,13 @@ const Modal = ({
   };
 
   const confirmFunction = () => {
-    if (!form.validate().hasErrors) {
-      onConfirmClick();
+    if (!form?.validate()?.hasErrors) {
+      onConfirmClick?.();
     }
   };
+
+  const renderedChildren =
+    typeof children === "function" ? children(closeModalHandler) : children;
 
   return (
     <>
@@ -131,34 +144,43 @@ const Modal = ({
             <Space w="xl" h="xl" />
           </MantineModal.Header>
           <MantineModal.Body>
-            <Stack h={rem(550)} justify="space-between">
-              <Carousel
-                draggable={false}
-                withControls={false}
-                getEmblaApi={setEmbla}
-                withKeyboardEvents={false}
-                pb={isMobile ? "xl" : "none"}
-              >
-                {children}
-              </Carousel>
-              <ModalFooterButton
-                isMobile={isMobile}
-                isModalOpened={opened}
-                page={page}
-                maxPage={maxPage}
-                confirmPage={confirmPage}
-                pageIncrement={pageIncrement}
-                confirmFunction={confirmFunction}
-                closeModalHandler={closeModalHandler}
-                nextButtonIsPending={nextButtonIsPending}
-                onLastPageHandler={onLastPageHandler}
-              />
-            </Stack>
+            {hideFooter ? (
+              renderedChildren
+            ) : (
+              <Stack h={rem(550)} justify="space-between">
+                <Carousel
+                  draggable={false}
+                  withControls={false}
+                  getEmblaApi={setEmbla}
+                  withKeyboardEvents={false}
+                  pb={isMobile ? "xl" : "none"}
+                  height={rem(430)}
+                >
+                  {renderedChildren}
+                </Carousel>
+                {renderFooter ? (
+                renderFooter({ page: page ?? 0, pageIncrement, confirmFunction, closeModalHandler, isMobile })
+              ) : (
+                <ModalFooterButton
+                  isMobile={isMobile}
+                  isModalOpened={opened}
+                  page={page ?? 0}
+                  maxPage={maxPage ?? 0}
+                  confirmPage={confirmPage ?? 0}
+                  pageIncrement={pageIncrement}
+                  confirmFunction={confirmFunction}
+                  closeModalHandler={closeModalHandler}
+                  nextButtonIsPending={nextButtonIsPending}
+                  onLastPageHandler={onLastPageHandler}
+                />
+              )}
+              </Stack>
+            )}
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
       {(!opened || keepButtonWhenOpened) && (
-        <UnstyledButton onClick={open}>{button}</UnstyledButton>
+        <UnstyledButton component="span" onClick={open}>{button}</UnstyledButton>
       )}
     </>
   );
