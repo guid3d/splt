@@ -13,6 +13,11 @@ export type User = {
   username: string;
   name: string;
   avatar?: StoreEmojiData;
+  selectedPaymentMethod?: PaymentMethodType;
+  paymentMethod?: {
+    iban: string;
+    paypal: string;
+  };
 };
 
 export type GroupFormValues = {
@@ -208,6 +213,7 @@ export type Participant = {
     iban: string;
     paypal: string;
   };
+  userId?: string;
 };
 
 export type ParticipantFormValues = {
@@ -219,6 +225,7 @@ export type ParticipantFormValues = {
     iban: string;
     paypal: string;
   };
+  userId?: string;
 };
 
 export enum PaymentMethodType {

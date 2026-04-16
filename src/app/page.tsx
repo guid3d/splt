@@ -34,12 +34,21 @@ const HomePage = () => {
   });
   const serverHistory = useServerGroupHistory();
 
-  // Build the list to display: server history when logged in, localStorage otherwise
-  const historyGroups: GroupData[] = isAuthenticated
+  const serverGroups: GroupData[] = isAuthenticated
     ? (serverHistory.data ?? [])
         .filter((item) => item.expand?.groupId)
         .map((item) => item.expand.groupId)
-    : localHistory.map((g) => JSON.parse(g) as GroupData);
+    : [];
+
+  const localGroups: GroupData[] = localHistory.map((g) => JSON.parse(g) as GroupData);
+
+  // When logged in: show server groups as primary, local-only groups as "recently visited"
+  const serverGroupIds = new Set(serverGroups.map((g) => g.id));
+  const localOnlyGroups = isAuthenticated
+    ? localGroups.filter((g) => !serverGroupIds.has(g.id))
+    : localGroups;
+
+  const historyGroups = isAuthenticated ? serverGroups : localGroups;
 
   const historyLoading = isAuthenticated && serverHistory.isPending;
 
@@ -115,6 +124,14 @@ const HomePage = () => {
                   Press + to create new group
                 </Text>
               </Center>
+            )}
+            {isAuthenticated && localOnlyGroups.length > 0 && (
+              <>
+                <Title order={5} mt="sm">Recently Visited</Title>
+                {localOnlyGroups.map((group) => (
+                  <GroupHistoryList key={group.id} group={group} />
+                ))}
+              </>
             )}
           </Stack>
         </Stack>

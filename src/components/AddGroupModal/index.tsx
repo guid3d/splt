@@ -30,16 +30,17 @@ const AddGroupModal = () => {
   const router = useRouter();
   const { isAuthenticated, currentUser } = useAuth();
 
-  // When logged in, pre-fill participants with the user's username
+  // When logged in, pre-fill participants with the user's account info
   const initialParticipants: Participant[] =
     isAuthenticated && currentUser
       ? [
           {
-            avatar: { emoji: randomEmoji(), unified: "" },
-            name: currentUser.username || currentUser.name || "",
+            avatar: currentUser.avatar ?? { emoji: randomEmoji(), unified: "" },
+            name: currentUser.name || currentUser.username || "",
             accountName: currentUser.username || "",
-            selectedPaymentMethod: PaymentMethodType.None,
-            paymentMethod: { iban: "", paypal: "" },
+            selectedPaymentMethod: currentUser.selectedPaymentMethod ?? PaymentMethodType.None,
+            paymentMethod: currentUser.paymentMethod ?? { iban: "", paypal: "" },
+            userId: currentUser.id,
           },
         ]
       : [];

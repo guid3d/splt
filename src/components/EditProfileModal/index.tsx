@@ -1,20 +1,26 @@
 "use client";
-import React from "react";
+import { useState } from "react";
 import {
   ActionIcon,
+  Alert,
   Center,
   Container,
+  Input,
   Modal as MantineModal,
+  ScrollArea,
+  SegmentedControl,
   Stack,
+  Text,
   TextInput,
   rem,
 } from "@mantine/core";
 import { useCounter, useMediaQuery } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { Carousel } from "@mantine/carousel";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconAlertCircle, IconChevronLeft, IconInfoCircle } from "@tabler/icons-react";
 import { pb } from "@/lib/pb";
 import { useAuth } from "@/providers/AuthProvider";
+import { PaymentMethodType } from "@/types";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 import BigTextInput from "@/components/BigTextInput";
 import ModalFooterButton from "@/components/ModalFooterButton";
@@ -31,13 +37,26 @@ const EditProfileModal = ({ opened, onClose }: EditProfileModalProps) => {
   const confirmPage = 0;
   const [page, pageHandler] = useCounter(0, { min: 0, max: maxPage });
 
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [emailChangeRequested, setEmailChangeRequested] = useState(false);
+
   const form = useForm({
     initialValues: {
       avatar: currentUser?.avatar ?? { emoji: "👤", unified: "" },
       name: currentUser?.name ?? "",
+      username: currentUser?.username ?? "",
+      email: currentUser?.email ?? "",
+      selectedPaymentMethod: currentUser?.selectedPaymentMethod ?? PaymentMethodType.Cash,
+      paymentMethod: {
+        iban: currentUser?.paymentMethod?.iban ?? "",
+        paypal: currentUser?.paymentMethod?.paypal ?? "",
+      },
+      accountName: "",
     },
     validate: {
       name: (v: string) => v.trim().length < 1 ? "Name is required" : null,
+      username: (v: string) => v.trim().length < 1 ? "Username is required" : null,
+      email: (v: string) => /^\S+@\S+\.\S+$/.test(v) ? null : "Valid email required",
     },
   });
 
@@ -45,20 +64,54 @@ const EditProfileModal = ({ opened, onClose }: EditProfileModalProps) => {
     form.setValues({
       avatar: currentUser?.avatar ?? { emoji: "👤", unified: "" },
       name: currentUser?.name ?? "",
+      username: currentUser?.username ?? "",
+      email: currentUser?.email ?? "",
+      selectedPaymentMethod: currentUser?.selectedPaymentMethod ?? PaymentMethodType.Cash,
+      paymentMethod: {
+        iban: currentUser?.paymentMethod?.iban ?? "",
+        paypal: currentUser?.paymentMethod?.paypal ?? "",
+      },
+      accountName: "",
     });
+    setSaveError(null);
+    setEmailChangeRequested(false);
     pageHandler.set(0);
     onClose();
   };
 
   const handleSave = async () => {
     if (form.validate().hasErrors) return;
+    setSaveError(null);
     const userId = pb.authStore.record?.id;
-    if (userId) {
+    if (!userId) return;
+    try {
       await pb.collection("users").update(userId, {
         name: form.values.name,
         avatar: form.values.avatar,
+        username: form.values.username,
+        selectedPaymentMethod: form.values.selectedPaymentMethod,
+        paymentMethod: form.values.paymentMethod,
       });
+      if (form.values.email !== currentUser?.email) {
+        await pb.collection("users").requestEmailChange(form.values.email);
+        setEmailChangeRequested(true);
+      }
+      // Sync payment method to all linked participant records
+      const linkedParticipants = await pb.collection("participants").getFullList({
+        filter: `userId="${userId}"`,
+      });
+      await Promise.all(
+        linkedParticipants.map((p) =>
+          pb.collection("participants").update(p.id, {
+            selectedPaymentMethod: form.values.selectedPaymentMethod,
+            paymentMethod: form.values.paymentMethod,
+            accountName: form.values.username,
+          })
+        )
+      );
       await pb.collection("users").authRefresh();
+    } catch (e: any) {
+      setSaveError(e?.message ?? "Save failed");
     }
   };
 
@@ -88,9 +141,10 @@ const EditProfileModal = ({ opened, onClose }: EditProfileModalProps) => {
               draggable={false}
               withControls={false}
               withKeyboardEvents={false}
-              height={rem(430)}
+              height={rem(500)}
             >
               <Carousel.Slide>
+                <ScrollArea h={rem(500)}>
                 <Container>
                   <Stack gap="xs">
                     <Center>
@@ -109,19 +163,75 @@ const EditProfileModal = ({ opened, onClose }: EditProfileModalProps) => {
                       variant="unstyled"
                       size="md"
                       label="Username"
-                      value={currentUser?.username ?? ""}
-                      disabled
+                      placeholder="Your username"
+                      {...form.getInputProps("username")}
                     />
                     <TextInput
                       radius={0}
                       variant="unstyled"
                       size="md"
                       label="Email"
-                      value={currentUser?.email ?? ""}
-                      disabled
+                      placeholder="you@example.com"
+                      {...form.getInputProps("email")}
                     />
+                    <Stack gap={rem(3)}>
+                      <Text size="sm">Preferred Payment Method</Text>
+                      <SegmentedControl
+                        value={form.values.selectedPaymentMethod}
+                        onChange={(value) =>
+                          form.setFieldValue("selectedPaymentMethod", value as PaymentMethodType)
+                        }
+                        data={[
+                          { label: "IBAN", value: PaymentMethodType.Iban },
+                          { label: "Paypal", value: PaymentMethodType.Paypal },
+                          { label: "Cash", value: PaymentMethodType.Cash },
+                        ]}
+                      />
+                    </Stack>
+                    {form.values.selectedPaymentMethod === PaymentMethodType.Iban && (
+                      <>
+                        <TextInput
+                          radius={0}
+                          variant="unstyled"
+                          size="md"
+                          label="Account Name"
+                          placeholder="John Doe"
+                          {...form.getInputProps("accountName")}
+                        />
+                        <Input.Wrapper label="IBAN">
+                          <Input
+                            radius={0}
+                            variant="unstyled"
+                            size="md"
+                            placeholder="DE00 0000 0000 0000 0000 00"
+                            {...form.getInputProps("paymentMethod.iban")}
+                          />
+                        </Input.Wrapper>
+                      </>
+                    )}
+                    {form.values.selectedPaymentMethod === PaymentMethodType.Paypal && (
+                      <TextInput
+                        radius={0}
+                        variant="unstyled"
+                        size="md"
+                        label="Paypal Email / Account"
+                        placeholder="@johndoe"
+                        {...form.getInputProps("paymentMethod.paypal")}
+                      />
+                    )}
+                    {saveError && (
+                      <Alert icon={<IconAlertCircle size={16} />} color="red" variant="light">
+                        {saveError}
+                      </Alert>
+                    )}
+                    {emailChangeRequested && (
+                      <Alert icon={<IconInfoCircle size={16} />} color="blue" variant="light">
+                        Check your new email inbox to confirm the change.
+                      </Alert>
+                    )}
                   </Stack>
                 </Container>
+                </ScrollArea>
               </Carousel.Slide>
             </Carousel>
             <ModalFooterButton

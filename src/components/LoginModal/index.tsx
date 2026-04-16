@@ -13,6 +13,10 @@ import {
   Center,
   Affix,
   Text,
+  Input,
+  SegmentedControl,
+  ScrollArea,
+  rem,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Carousel } from "@mantine/carousel";
@@ -27,6 +31,7 @@ import Modal from "@/components/Modal";
 import EmojiActionButtion from "@/components/EmojiActionButtion";
 import BigTextInput from "@/components/BigTextInput";
 import { randomPersonEmoji } from "@/utils/randomEmoji";
+import { PaymentMethodType } from "@/types";
 
 type LoginModalProps = {
   button: React.ReactNode;
@@ -55,6 +60,13 @@ const LoginModal = ({ button }: LoginModalProps) => {
 
   // Page 2 – profile setup (register only)
   const [profileLoading, setProfileLoading] = useState(false);
+
+  // Page 3 – payment method (register only)
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethodType>(PaymentMethodType.Cash);
+  const [paymentIban, setPaymentIban] = useState("");
+  const [paymentAccountName, setPaymentAccountName] = useState("");
+  const [paymentPaypal, setPaymentPaypal] = useState("");
+
   const profileForm = useForm({
     initialValues: {
       avatar: { emoji: randomPersonEmoji(), unified: "" },
@@ -78,6 +90,10 @@ const LoginModal = ({ button }: LoginModalProps) => {
     setRegPassword("");
     setRegConfirm("");
     setCredError(null);
+    setSelectedPaymentMethod(PaymentMethodType.Cash);
+    setPaymentIban("");
+    setPaymentAccountName("");
+    setPaymentPaypal("");
     profileForm.reset();
     profileForm.setFieldValue("avatar", {
       emoji: randomPersonEmoji(),
@@ -150,21 +166,22 @@ const LoginModal = ({ button }: LoginModalProps) => {
     }
   };
 
-  const handleProfileDone = async (close: () => void) => {
-    if (profileForm.validate().hasErrors) return;
+  const handlePaymentDone = async (close: () => void) => {
     setProfileLoading(true);
     try {
-      // Login first so we have auth context to update the profile
       await login(email, regPassword);
       const userId = pb.authStore.record?.id;
       if (userId) {
         await pb.collection("users").update(userId, {
           name: profileForm.values.name,
           avatar: profileForm.values.avatar,
+          selectedPaymentMethod,
+          paymentMethod: { iban: paymentIban, paypal: paymentPaypal },
+          accountName: paymentAccountName,
         });
       }
     } catch {
-      // profile update is best-effort
+      // best-effort
     } finally {
       setProfileLoading(false);
     }
@@ -224,7 +241,7 @@ const LoginModal = ({ button }: LoginModalProps) => {
                 fullWidth
                 radius="xl"
                 loading={profileLoading}
-                onClick={() => handleProfileDone(closeModalHandler)}
+                onClick={() => handlePaymentDone(closeModalHandler)}
               >
                 Done
               </Button>
@@ -350,20 +367,68 @@ const LoginModal = ({ button }: LoginModalProps) => {
 
           {/* Page 2 – Profile setup (after register) */}
           <Carousel.Slide>
-            <Container h="100%">
-              <Stack gap="xs" justify="center" align="center" h="100%">
+            <ScrollArea h={rem(500)}>
+            <Container>
+              <Stack gap="xs">
                 <Center>
                   <EmojiActionButtion form={profileForm} />
                 </Center>
-                <BigTextInput
-                  placeholder="Your Name"
-                  {...profileForm.getInputProps("name")}
-                />
-                <Text size="xs" c="dimmed" ta="center">
-                  Used as your name when creating groups
-                </Text>
+                <Center>
+                  <BigTextInput
+                    mb="md"
+                    placeholder="Your Name"
+                    {...profileForm.getInputProps("name")}
+                  />
+                </Center>
+                <Stack gap={rem(3)}>
+                  <Text size="sm">Preferred Payment Method</Text>
+                  <SegmentedControl
+                    value={selectedPaymentMethod}
+                    onChange={(value) => setSelectedPaymentMethod(value as PaymentMethodType)}
+                    data={[
+                      { label: "IBAN", value: PaymentMethodType.Iban },
+                      { label: "Paypal", value: PaymentMethodType.Paypal },
+                      { label: "Cash", value: PaymentMethodType.Cash },
+                    ]}
+                  />
+                </Stack>
+                {selectedPaymentMethod === PaymentMethodType.Iban && (
+                  <>
+                    <TextInput
+                      variant="unstyled"
+                      radius={0}
+                      size="md"
+                      label="Account Name"
+                      placeholder="John Doe"
+                      value={paymentAccountName}
+                      onChange={(e) => setPaymentAccountName(e.currentTarget.value)}
+                    />
+                    <Input.Wrapper label="IBAN">
+                      <Input
+                        variant="unstyled"
+                        radius={0}
+                        size="md"
+                        placeholder="DE00 0000 0000 0000 0000 00"
+                        value={paymentIban}
+                        onChange={(e) => setPaymentIban(e.currentTarget.value)}
+                      />
+                    </Input.Wrapper>
+                  </>
+                )}
+                {selectedPaymentMethod === PaymentMethodType.Paypal && (
+                  <TextInput
+                    variant="unstyled"
+                    radius={0}
+                    size="md"
+                    label="Paypal Email / Account"
+                    placeholder="@johndoe"
+                    value={paymentPaypal}
+                    onChange={(e) => setPaymentPaypal(e.currentTarget.value)}
+                  />
+                )}
               </Stack>
             </Container>
+            </ScrollArea>
           </Carousel.Slide>
         </>
       )}
