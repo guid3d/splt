@@ -102,11 +102,26 @@ const AddEditTransactionModal = ({
       }
 
       if (page === 2) {
+        let splitAmountError: string | null = null;
+        if (values.splitType === SplitType.Amount) {
+          const totalEntered = splitData.reduce(
+            (sum, split) => sum + (split.amount || 0),
+            0
+          );
+          const remaining = (values.amount || 0) - totalEntered;
+          if (remaining > 0.001) {
+            splitAmountError = "Remaining amount must be fully distributed";
+          } else if (remaining < -0.001) {
+            splitAmountError = "Total split amount exceeds the transaction amount";
+          }
+        }
+
         return {
           participants:
             values.participants.length < 1
               ? "Participants must include at least 1 person"
               : null,
+          splitAmountError,
         };
       }
 
@@ -115,14 +130,23 @@ const AddEditTransactionModal = ({
     },
   });
 
-  const [splitData, setSplitData] = useState<SplitData[]>([
-    {
-      expenseId: "1234",
-      participantId: "1234",
-      part: 0,
-      amount: 0,
-    },
-  ]);
+  const [splitData, setSplitData] = useState<SplitData[]>(
+    isEdit && expenseData && expenseData.splits && expenseData.splits.length > 0
+      ? expenseData.splits.map((s) => ({
+          expenseId: expenseData.id,
+          participantId: s.participantId,
+          part: s.part,
+          amount: s.amount,
+        }))
+      : [
+          {
+            expenseId: "",
+            participantId: "",
+            part: 0,
+            amount: 0,
+          },
+        ]
+  );
 
   return (
     <form onSubmit={form.onSubmit((values) => console.log(values))}>

@@ -517,16 +517,25 @@ const PageSetSplit = ({
           </Combobox>
 
           {form.values.splitType === SplitType.Amount && (
-            <Group justify="space-between" mt={12} px={4}>
-              <Text size="sm" c="dimmed">Remaining</Text>
-              <Text
-                size="sm"
-                fw={500}
-                c={calculateRemainingAmount() < -0.001 ? "red" : calculateRemainingAmount() < 0.001 ? "green" : undefined}
-              >
-                {EuroNumberFormatter({ value: calculateRemainingAmount() })}
-              </Text>
-            </Group>
+            <>
+              <Group justify="space-between" mt={12} px={4}>
+                <Text size="sm" c="dimmed">Remaining</Text>
+                <Text
+                  size="sm"
+                  fw={500}
+                  c={calculateRemainingAmount() < -0.001 ? "red" : calculateRemainingAmount() < 0.001 ? "green" : undefined}
+                >
+                  {EuroNumberFormatter({ value: calculateRemainingAmount() })}
+                </Text>
+              </Group>
+              {form.errors.splitAmountError && (
+                <Center mt={4}>
+                  <Text c="red" size="sm">
+                    {form.errors.splitAmountError}
+                  </Text>
+                </Center>
+              )}
+            </>
           )}
         </Stack>
       </ScrollArea>
