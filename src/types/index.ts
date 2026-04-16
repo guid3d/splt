@@ -7,6 +7,13 @@
 //   participants: string[]; // Make this string because create new record need participant id
 // };
 
+export type User = {
+  id: string;
+  email: string;
+  username: string;
+  name: string;
+};
+
 export type GroupFormValues = {
   id?: string;
   name: string;
@@ -15,6 +22,8 @@ export type GroupFormValues = {
   password: string;
   currency: string;
   participants: string[];
+  isPrivate?: boolean;
+  owner?: string;
 };
 
 export type GroupData = {
@@ -28,6 +37,8 @@ export type GroupData = {
   id: string;
   name: string;
   password: string;
+  isPrivate: boolean;
+  owner: string;
 };
 
 export enum SplitType {

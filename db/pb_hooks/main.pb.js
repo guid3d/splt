@@ -408,6 +408,42 @@ routerAdd("GET", "/api/splt/hasSpent", (c) => {
   return c.json(200, haveTopay);
 });
 
+routerAdd("POST", "/api/splt/verifyGroupPin", (c) => {
+  const data = $apis.requestInfo(c).data;
+  const group = $app.dao().findRecordById("groups", data.groupId);
+  const storedPin = group.get("password");
+  if (!storedPin) return c.json(200, { valid: true });
+  return c.json(200, { valid: storedPin === data.pin });
+});
+
+routerAdd("POST", "/api/splt/upsertGroupHistory", (c) => {
+  const info = $apis.requestInfo(c);
+  const auth = info.auth;
+  if (!auth) return c.json(401, { error: "Unauthorized" });
+  const groupId = info.data.groupId;
+  const results = $app.dao().findRecordsByFilter(
+    "userGroupHistory",
+    "userId = {:userId} && groupId = {:groupId}",
+    "",
+    1,
+    0,
+    { userId: auth.id, groupId: groupId }
+  );
+  if (results.length > 0) {
+    results[0].set("visitedAt", new Date().toISOString());
+    $app.dao().saveRecord(results[0]);
+    return c.json(200, results[0]);
+  }
+  const col = $app.dao().findCollectionByNameOrId("userGroupHistory");
+  const rec = new Record(col, {
+    userId: auth.id,
+    groupId: groupId,
+    visitedAt: new Date().toISOString(),
+  });
+  $app.dao().saveRecord(rec);
+  return c.json(200, rec);
+});
+
 onModelAfterUpdate((e) => {
   console.log("user updated...", e.model.get("email"));
 }, "users");

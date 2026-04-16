@@ -14,19 +14,41 @@ import {
   GroupFormValues,
   // ModifiedGroupFormValues,
   Participant,
+  PaymentMethodType,
   StoreEmojiData,
 } from "@/types";
 import { useCreateGroup, useCreateParticipant } from "@/api";
 import PageNotifyFinish from "./components/PageNotifyFinish";
 import { randomEmoji } from "@/utils/randomEmoji";
+import { useAuth } from "@/providers/AuthProvider";
 
 const AddGroupModal = () => {
   const createGroupMutation = useCreateGroup();
   const createParticipantMutation = useCreateParticipant();
   const router = useRouter();
-  const [participants, setParticipants] = useState<Participant[]>([]);
-  const maxPage = 2;
-  const confirmPage = 1;
+  const { isAuthenticated, currentUser } = useAuth();
+
+  // When logged in, pre-fill participants with the user's username
+  const initialParticipants: Participant[] =
+    isAuthenticated && currentUser
+      ? [
+          {
+            avatar: { emoji: randomEmoji(), unified: "" },
+            name: currentUser.username || currentUser.name || "",
+            accountName: currentUser.username || "",
+            selectedPaymentMethod: PaymentMethodType.None,
+            paymentMethod: { iban: "", paypal: "" },
+          },
+        ]
+      : [];
+
+  const [participants, setParticipants] = useState<Participant[]>(initialParticipants);
+
+  // When logged in: 3 pages (name → participants → PIN → finish)
+  // When not logged in: 2 pages (name → participants → finish)
+  const maxPage = isAuthenticated ? 3 : 2;
+  const confirmPage = isAuthenticated ? 2 : 1;
+
   const [page, pageHandler] = useCounter(0, {
     min: 0,
     max: maxPage,
@@ -41,6 +63,8 @@ const AddGroupModal = () => {
       password: "",
       currency: "EUR",
       participants: [],
+      isPrivate: false,
+      owner: "",
     },
 
     validate: (values) => {
@@ -53,15 +77,6 @@ const AddGroupModal = () => {
         };
       }
 
-      // if (page === 1) {
-      //   return {
-      //     password:
-      //       values.password.length < 4
-      //         ? "Password must include at least 4 characters"
-      //         : null,
-      //   };
-      // }
-
       if (page === 1) {
         return {
           participants:
@@ -72,7 +87,6 @@ const AddGroupModal = () => {
       }
 
       return {};
-      // email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
     },
   });
 
@@ -92,10 +106,6 @@ const AddGroupModal = () => {
                 await new Promise((resolve, reject) => {
                   createParticipantMutation.mutate(newParticipant, {
                     onSuccess: (returnNewParticipant) => {
-                      // form.setFieldValue("participants", [
-                      //   ...form.values.participants,
-                      //   returnNewParticipant.id,
-                      // ]);
                       participantIds.push(returnNewParticipant.id);
                       resolve(returnNewParticipant);
                     },
@@ -106,17 +116,20 @@ const AddGroupModal = () => {
                   });
                 });
               }
-              // console.log(form.values);
-              const newFormValues = {
+              const newFormValues: GroupFormValues = {
                 ...form.values,
                 participants: participantIds,
               };
+              // When logged in, attach owner and isPrivate
+              if (isAuthenticated && currentUser) {
+                newFormValues.owner = currentUser.id;
+                newFormValues.isPrivate =
+                  (form.values.password?.length ?? 0) > 0;
+              }
               createGroupMutation.mutate(newFormValues, {
                 onSuccess: (data) => {
                   setGroupUrl(`group/${data.id}`);
                   setConfirmSuccess(true);
-                  // pageHandler.increment();
-                  // router.push(`/group/${data.id}`);
                 },
               });
             } catch (error) {
@@ -126,24 +139,21 @@ const AddGroupModal = () => {
           form.reset();
         }}
         onLastPageHandler={() => {
-          setParticipants([]);
+          setParticipants(initialParticipants);
           router.push(`/${groupUrl}`);
         }}
         onCloseModalClick={() => {
           form.reset();
-          setParticipants([]);
+          setParticipants(initialParticipants);
         }}
         button={
           <Affix
-            // TODO: Find the way to center the button without cannot touching behind this button
             position={{ bottom: 40, right: 0, left: 0 }}
-            // style={{ transform: "translate(-50%, -50%)" }}
           >
             <Center>
               <Button
                 variant="filled"
                 leftSection={<IconPlus size={14} />}
-                // onClick={open}
                 justify="center"
               >
                 Create Group
@@ -160,10 +170,6 @@ const AddGroupModal = () => {
         <Carousel.Slide>
           <PageSetName form={form} />
         </Carousel.Slide>
-        {/* TODO: Implment Password handling */}
-        {/* <Carousel.Slide>
-          <PageSetPassword form={form} />
-        </Carousel.Slide> */}
         <Carousel.Slide>
           <PageAddParticipant
             form={form}
@@ -171,6 +177,11 @@ const AddGroupModal = () => {
             setParticipants={setParticipants}
           />
         </Carousel.Slide>
+        {isAuthenticated && (
+          <Carousel.Slide>
+            <PageSetPassword form={form} />
+          </Carousel.Slide>
+        )}
         <Carousel.Slide>
           <PageNotifyFinish groupUrl={groupUrl} />
         </Carousel.Slide>

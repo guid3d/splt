@@ -11,19 +11,25 @@ import {
   TotalSpendData,
   TransactionsData,
 } from "@/types";
+import { useAuth } from "@/providers/AuthProvider";
+import { pb, spltPocketHost } from "@/lib/pb";
 import { useLocalStorage } from "@mantine/hooks";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import PocketBase from "pocketbase";
 import { useEffect } from "react";
 
 type PbHooksTransactionsList = {
   transactions: TransactionsData[];
 };
 
-const spltPocketHost =
-  process.env.NEXT_PUBLIC_POCKETHOST_DB || "http://127.0.0.1:8090";
-
-const pb = new PocketBase(spltPocketHost);
+type ServerGroupHistoryItem = {
+  id: string;
+  userId: string;
+  groupId: string;
+  visitedAt: string;
+  expand: {
+    groupId: GroupData;
+  };
+};
 
 const useTransactions = (groupId: string) => {
   const query = useQuery<PbHooksTransactionsList, Error>({
@@ -83,7 +89,68 @@ const useDebts = (groupId: string) => {
   return query;
 };
 
+const useUpsertGroupHistory = () => {
+  return useMutation<unknown, Error, { groupId: string }>({
+    mutationKey: ["upsertGroupHistory"],
+    mutationFn: async ({ groupId }) => {
+      const res = await fetch(`${spltPocketHost}/api/splt/upsertGroupHistory`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: pb.authStore.token,
+        },
+        body: JSON.stringify({ groupId }),
+      });
+      if (!res.ok) throw new Error("Failed to upsert group history");
+      return res.json();
+    },
+  });
+};
+
+const useServerGroupHistory = () => {
+  const { isAuthenticated } = useAuth();
+  return useQuery<ServerGroupHistoryItem[], Error>({
+    queryKey: ["serverGroupHistory"],
+    queryFn: () =>
+      pb.collection("userGroupHistory").getFullList({
+        expand: "groupId",
+        sort: "-visitedAt",
+      }),
+    enabled: isAuthenticated,
+  });
+};
+
+const useClaimGroup = () => {
+  const queryClient = useQueryClient();
+  return useMutation<GroupData, Error, string>({
+    mutationKey: ["claimGroup"],
+    mutationFn: (groupId: string) =>
+      pb.collection("groups").update(groupId, { owner: pb.authStore.model!.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["totalSpendData"] });
+      queryClient.invalidateQueries({ queryKey: ["group"] });
+    },
+  });
+};
+
+const useVerifyGroupPin = () => {
+  return useMutation<{ valid: boolean }, Error, { groupId: string; pin: string }>({
+    mutationKey: ["verifyGroupPin"],
+    mutationFn: async ({ groupId, pin }) => {
+      const res = await fetch(`${spltPocketHost}/api/splt/verifyGroupPin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ groupId, pin }),
+      });
+      if (!res.ok) throw new Error("Failed to verify PIN");
+      return res.json();
+    },
+  });
+};
+
 const useTotalSpend = (groupId: string) => {
+  const { isAuthenticated } = useAuth();
+  const upsertGroupHistory = useUpsertGroupHistory();
   const [groupHistory, setGroupHistory] = useLocalStorage({
     key: "splt-group-history",
     defaultValue: [] as string[],
@@ -96,9 +163,7 @@ const useTotalSpend = (groupId: string) => {
         expand: "groupInfo, groupInfo.participants",
         fields: "id, groupInfo, expand, sumExpenses",
         filter: `groupInfo.id="${groupId}"`,
-        // "id, avatar, amount, name, date, description, category, expenseDateTime",
       }),
-    // pb.collection("groups").getList(1, 50),
   });
   useEffect(() => {
     if (query.data) {
@@ -113,8 +178,13 @@ const useTotalSpend = (groupId: string) => {
           ...filteredOldHistory,
         ];
       });
+      // Also update server-side history when logged in
+      if (isAuthenticated) {
+        upsertGroupHistory.mutate({ groupId });
+      }
     }
-  }, [query.data, setGroupHistory]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query.data, setGroupHistory, isAuthenticated]);
   return query;
 };
 
@@ -355,4 +425,7 @@ export {
   useDeleteExpense,
   useDeletePayback,
   useUpdateExpense,
+  useServerGroupHistory,
+  useClaimGroup,
+  useVerifyGroupPin,
 };
