@@ -36,7 +36,10 @@ type SelectedPerson = {
 
 const MAX_AVATARS = 5;
 
-const TabTotalSpending = ({ groupData, localUserId }: TabTotalSpendingProps) => {
+const TabTotalSpending = ({
+  groupData,
+  localUserId,
+}: TabTotalSpendingProps) => {
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending } = useTransactions(groupId);
   const [opened, { open, close }] = useDisclosure(false);
@@ -101,53 +104,68 @@ const TabTotalSpending = ({ groupData, localUserId }: TabTotalSpendingProps) => 
           <Modal.Content radius={isMobile ? 0 : "lg"}>
             <Modal.Header>
               <ActionIcon variant="transparent" color="gray" onClick={close}>
-                <IconChevronLeft style={{ width: "70%", height: "70%" }} stroke={1.5} />
+                <IconChevronLeft
+                  style={{ width: "70%", height: "70%" }}
+                  stroke={1.5}
+                />
               </ActionIcon>
             </Modal.Header>
             <Modal.Body>
               {selected && (
                 <ScrollArea h={modalHeight}>
-                <Stack>
-                  <Center>
-                    <Stack gap={rem(4)} align="center">
-                      <UserAvatar size="lg">
-                        <Title order={2}>{selected.participant.avatar.emoji}</Title>
-                      </UserAvatar>
-                      <Text fw={600}>{selected.participant.name}</Text>
-                      <Text size="sm" c="dimmed">
-                        <EuroNumberFormatter value={selected.total} /> paid
-                      </Text>
+                  <Stack>
+                    <Center>
+                      <Stack gap={rem(4)} align="center">
+                        <UserAvatar size="lg">
+                          <Title order={2}>
+                            {selected.participant.avatar.emoji}
+                          </Title>
+                        </UserAvatar>
+                        <Text size="xl" fw={600}>
+                          {selected.participant.name}
+                        </Text>
+                        <Text size="sm" c="dimmed">
+                          <EuroNumberFormatter value={selected.total} /> paid
+                        </Text>
+                      </Stack>
+                    </Center>
+                    <Stack gap="xs" mt="sm">
+                      {selected.expenses.length === 0 ? (
+                        <Center p="lg">
+                          <Text c="dimmed" size="sm">
+                            No transaction
+                          </Text>
+                        </Center>
+                      ) : (
+                        selected.expenses
+                          .sort(
+                            (a, b) =>
+                              Date.parse(b.transactionDateTime) -
+                              Date.parse(a.transactionDateTime),
+                          )
+                          .map((e) => (
+                            <NavLink
+                              key={e.id}
+                              label={e.name}
+                              description={DateToCalendar({
+                                date: e.transactionDateTime,
+                              })}
+                              leftSection={
+                                <Avatar size="sm" radius="xl">
+                                  {e.avatar.emoji}
+                                </Avatar>
+                              }
+                              rightSection={
+                                <Text fw={500} size="sm">
+                                  <EuroNumberFormatter value={e.amount} />
+                                </Text>
+                              }
+                              style={{ pointerEvents: "none" }}
+                            />
+                          ))
+                      )}
                     </Stack>
-                  </Center>
-                  <Stack gap="xs" mt="sm">
-                    {selected.expenses.length === 0 ? (
-                      <Center p="lg">
-                        <Text c="dimmed" size="sm">No transaction</Text>
-                      </Center>
-                    ) : (
-                      selected.expenses
-                        .sort((a, b) => Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime))
-                        .map((e) => (
-                          <NavLink
-                            key={e.id}
-                            label={e.name}
-                            description={DateToCalendar({ date: e.transactionDateTime })}
-                            leftSection={
-                              <Avatar size="sm" radius="xl">
-                                {e.avatar.emoji}
-                              </Avatar>
-                            }
-                            rightSection={
-                              <Text fw={500} size="sm">
-                                <EuroNumberFormatter value={e.amount} />
-                              </Text>
-                            }
-                            style={{ pointerEvents: "none" }}
-                          />
-                        ))
-                    )}
                   </Stack>
-                </Stack>
                 </ScrollArea>
               )}
             </Modal.Body>

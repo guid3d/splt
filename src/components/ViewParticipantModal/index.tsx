@@ -1,11 +1,12 @@
 import { Center } from "@mantine/core";
 import { useCounter } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
-import { Participant } from "@/types";
+import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "../AddParticipantModal/components/PageSetPayment";
 import Modal from "../Modal";
 import { Carousel } from "@mantine/carousel";
 import { useUpdateParticipant } from "@/api";
+import { validateIban } from "@/lib/validateIban";
 
 type ViewParticipantModalProps = {
   participant: Participant;
@@ -31,6 +32,10 @@ const ViewParticipantModal = ({
           name:
             values.name.trim().length < 1
               ? "Person name must include at least 1 character"
+              : null,
+          "paymentMethod.iban":
+            values.selectedPaymentMethod === PaymentMethodType.Iban
+              ? validateIban(values.paymentMethod.iban)
               : null,
         };
       }

@@ -2,13 +2,10 @@
 import {
   Button,
   Center,
-  Input,
   rem,
-  SegmentedControl,
   SimpleGrid,
   Stack,
   Text,
-  TextInput,
   UnstyledButton,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -21,6 +18,8 @@ import { useHover } from "@mantine/hooks";
 import { useUpdateParticipant } from "@/api";
 import Modal from "./Modal";
 import { getHashedSessionId, recordConsent } from "@/lib/consent";
+import { validateIban } from "@/lib/validateIban";
+import PaymentForm from "@/components/PaymentForm";
 
 type ParticipantItemProps = {
   participant: Participant;
@@ -70,6 +69,17 @@ const UserSelectionModal = ({
       selectedPaymentMethod: PaymentMethodType.Iban,
       paymentMethod: { iban: "", paypal: "" },
     },
+    validate: (values) => {
+      if (page === 1) {
+        return {
+          "paymentMethod.iban":
+            values.selectedPaymentMethod === PaymentMethodType.Iban
+              ? validateIban(values.paymentMethod.iban)
+              : null,
+        };
+      }
+      return {};
+    },
   });
 
   const hasPaymentDetails = (p: Participant): boolean => {
@@ -77,7 +87,7 @@ const UserSelectionModal = ({
       case PaymentMethodType.Cash:
         return true;
       case PaymentMethodType.Iban:
-        return p.paymentMethod.iban.trim().length > 0;
+        return validateIban(p.paymentMethod.iban) === null;
       case PaymentMethodType.Paypal:
         return p.paymentMethod.paypal.trim().length > 0;
       default:
@@ -99,6 +109,7 @@ const UserSelectionModal = ({
 
   const handleSave = async () => {
     if (!selectedParticipant?.id) return;
+    if (form.validate().hasErrors) return;
     const needsConsent =
       form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
       form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
@@ -196,56 +207,7 @@ const UserSelectionModal = ({
             </Stack>
           </Center>
 
-          <Stack gap={rem(3)}>
-            <Text size="sm">Preferred Payment By</Text>
-            <SegmentedControl
-              value={form.values.selectedPaymentMethod}
-              onChange={(value) =>
-                form.setFieldValue(
-                  "selectedPaymentMethod",
-                  value as PaymentMethodType,
-                )
-              }
-              data={[
-                { label: "IBAN", value: PaymentMethodType.Iban },
-                { label: "Paypal", value: PaymentMethodType.Paypal },
-                { label: "Cash", value: PaymentMethodType.Cash },
-              ]}
-            />
-          </Stack>
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Iban && (
-            <>
-              <TextInput
-                radius={0}
-                variant="unstyled"
-                size="md"
-                label="Account Name"
-                placeholder="John Doe"
-                {...form.getInputProps("accountName")}
-              />
-              <Input.Wrapper label="IBAN">
-                <Input
-                  radius={0}
-                  variant="unstyled"
-                  size="md"
-                  placeholder="DE00 0000 0000 0000 0000 00"
-                  {...form.getInputProps("paymentMethod.iban")}
-                />
-              </Input.Wrapper>
-            </>
-          )}
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Paypal && (
-            <TextInput
-              radius={0}
-              variant="unstyled"
-              size="md"
-              label="Paypal Email / Account"
-              placeholder="@johndoe"
-              {...form.getInputProps("paymentMethod.paypal")}
-            />
-          )}
+          <PaymentForm form={form} />
         </Stack>
       </Carousel.Slide>
     </Modal>
