@@ -77,6 +77,7 @@ const AddParticipantModal = ({
               ? "Person name must include at least 1 character"
               : null,
           "paymentMethod.iban":
+            !disabledPreferredPaymentMethod &&
             values.selectedPaymentMethod === PaymentMethodType.Iban
               ? validateIban(values.paymentMethod.iban)
               : null,
