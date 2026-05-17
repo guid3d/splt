@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 export function useEmojiSuggestions(query: string, debounceMs = 400) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
     clearTimeout(timer.current);
