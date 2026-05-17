@@ -10,6 +10,7 @@ import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { randomPersonEmoji } from "@/utils/randomEmoji";
 import PageNotifyFinish from "./components/PageNotifyFinish";
+import { validateIban } from "@/lib/validateIban";
 // import { useId } from "@mantine/hooks";
 
 const NewParticipantAvatar = () => {
@@ -74,6 +75,10 @@ const AddParticipantModal = ({
           name:
             values.name.trim().length < 1
               ? "Person name must include at least 1 character"
+              : null,
+          "paymentMethod.iban":
+            values.selectedPaymentMethod === PaymentMethodType.Iban
+              ? validateIban(values.paymentMethod.iban)
               : null,
         };
       }

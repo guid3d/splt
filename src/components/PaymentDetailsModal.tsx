@@ -18,6 +18,7 @@ import { Participant, PaymentMethodType } from "@/types";
 import { useUpdateParticipant } from "@/api";
 import ModalComponent from "./Modal";
 import { getHashedSessionId, recordConsent } from "@/lib/consent";
+import { validateIban } from "@/lib/validateIban";
 
 type PaymentDetailsModalProps = {
   opened: boolean;
@@ -41,6 +42,12 @@ const PaymentDetailsModal = ({
       selectedPaymentMethod: PaymentMethodType.Iban,
       paymentMethod: { iban: "", paypal: "" },
     },
+    validate: (values) => ({
+      "paymentMethod.iban":
+        values.selectedPaymentMethod === PaymentMethodType.Iban
+          ? validateIban(values.paymentMethod.iban)
+          : null,
+    }),
   });
 
   useEffect(() => {
@@ -51,6 +58,7 @@ const PaymentDetailsModal = ({
 
   const handleSave = async () => {
     if (!participant.id) return;
+    if (form.validate().hasErrors) return;
     const needsConsent =
       form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
       form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
@@ -130,7 +138,10 @@ const PaymentDetailsModal = ({
                 placeholder="John Doe"
                 {...form.getInputProps("accountName")}
               />
-              <Input.Wrapper label="IBAN">
+              <Input.Wrapper
+                label="IBAN"
+                error={form.errors["paymentMethod.iban"]}
+              >
                 <Input
                   radius={0}
                   variant="unstyled"

@@ -19,6 +19,7 @@
     "dayjs": "^1.11.19",
     "embla-carousel-react": "^8.6.0",
     "emoji-picker-react": "^4.16.1",
+    "ibantools": "^4.5.4",
     "next": "16.1.1",
     "pocketbase": "^0.26.5",
     "react": "19.2.3",

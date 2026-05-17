@@ -21,6 +21,7 @@ import { useHover } from "@mantine/hooks";
 import { useUpdateParticipant } from "@/api";
 import Modal from "./Modal";
 import { getHashedSessionId, recordConsent } from "@/lib/consent";
+import { validateIban } from "@/lib/validateIban";
 
 type ParticipantItemProps = {
   participant: Participant;
@@ -70,6 +71,12 @@ const UserSelectionModal = ({
       selectedPaymentMethod: PaymentMethodType.Iban,
       paymentMethod: { iban: "", paypal: "" },
     },
+    validate: (values) => ({
+      "paymentMethod.iban":
+        values.selectedPaymentMethod === PaymentMethodType.Iban
+          ? validateIban(values.paymentMethod.iban)
+          : null,
+    }),
   });
 
   const hasPaymentDetails = (p: Participant): boolean => {
@@ -77,7 +84,7 @@ const UserSelectionModal = ({
       case PaymentMethodType.Cash:
         return true;
       case PaymentMethodType.Iban:
-        return p.paymentMethod.iban.trim().length > 0;
+        return validateIban(p.paymentMethod.iban) === null;
       case PaymentMethodType.Paypal:
         return p.paymentMethod.paypal.trim().length > 0;
       default:
@@ -99,6 +106,7 @@ const UserSelectionModal = ({
 
   const handleSave = async () => {
     if (!selectedParticipant?.id) return;
+    if (form.validate().hasErrors) return;
     const needsConsent =
       form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
       form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
@@ -224,7 +232,7 @@ const UserSelectionModal = ({
                 placeholder="John Doe"
                 {...form.getInputProps("accountName")}
               />
-              <Input.Wrapper label="IBAN">
+              <Input.Wrapper label="IBAN" error={form.errors["paymentMethod.iban"]}>
                 <Input
                   radius={0}
                   variant="unstyled"
