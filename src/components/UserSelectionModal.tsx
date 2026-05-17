@@ -69,12 +69,17 @@ const UserSelectionModal = ({
       selectedPaymentMethod: PaymentMethodType.Iban,
       paymentMethod: { iban: "", paypal: "" },
     },
-    validate: (values) => ({
-      "paymentMethod.iban":
-        values.selectedPaymentMethod === PaymentMethodType.Iban
-          ? validateIban(values.paymentMethod.iban)
-          : null,
-    }),
+    validate: (values) => {
+      if (page === 1) {
+        return {
+          "paymentMethod.iban":
+            values.selectedPaymentMethod === PaymentMethodType.Iban
+              ? validateIban(values.paymentMethod.iban)
+              : null,
+        };
+      }
+      return {};
+    },
   });
 
   const hasPaymentDetails = (p: Participant): boolean => {
