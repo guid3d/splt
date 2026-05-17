@@ -1,17 +1,9 @@
 import EmojiActionButtion from "@/components/EmojiActionButtion";
-import {
-  Center,
-  Container,
-  Input,
-  SegmentedControl,
-  Stack,
-  Text,
-  TextInput,
-  rem,
-} from "@mantine/core";
+import { Center, Container, Stack } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
-import { Participant, PaymentMethodType } from "@/types";
+import { Participant } from "@/types";
 import BigTextInput from "@/components/BigTextInput";
+import PaymentForm from "@/components/PaymentForm";
 
 type PageSetPaymentProps = {
   disabledPreferredPaymentMethod?: boolean;
@@ -36,70 +28,10 @@ const PageSetPayment = ({
             {...form.getInputProps("name")}
           />
         </Center>
-        {!disabledPreferredPaymentMethod && (
-          <>
-            <Stack gap={rem(3)} mb="xs">
-              <Text>Preferred Payment By</Text>
-              <SegmentedControl
-                value={form.values.selectedPaymentMethod}
-                onChange={(value) => {
-                  form.setFieldValue(
-                    "selectedPaymentMethod",
-                    value as PaymentMethodType
-                  );
-                }}
-                data={[
-                  { label: "IBAN", value: PaymentMethodType.Iban },
-                  {
-                    label: "Paypal",
-                    value: PaymentMethodType.Paypal,
-                  },
-                  { label: "Cash", value: PaymentMethodType.Cash },
-                ]}
-              />
-            </Stack>
-            {form.values.selectedPaymentMethod === PaymentMethodType.Iban && (
-              <>
-                <TextInput
-                  radius={0}
-                  variant="unstyled"
-                  size="md"
-                  label="Account Name"
-                  placeholder="John Doe"
-                  {...form.getInputProps("accountName")}
-                />
-                <Input.Wrapper label="IBAN">
-                  <Input
-                    radius={0}
-                    variant="unstyled"
-                    size="md"
-                    placeholder="DE00 0000 0000 0000 0000 00"
-                    // TODO: Fix masking doesn't work with autofill
-                    // component={IMaskInput}
-                    // mask="aa00 0000 0000 0000 0000 00"
-                    // value={form.values.paymentMethod.iban}
-                    // onChange={(event) => {
-                    //   form.setFieldValue("paymentMethod.iban", event);
-                    // }}
-                    {...form.getInputProps("paymentMethod.iban")}
-                  />
-                </Input.Wrapper>
-              </>
-            )}
-            {form.values.selectedPaymentMethod === PaymentMethodType.Paypal && (
-              <>
-                <TextInput
-                  radius={0}
-                  variant="unstyled"
-                  size="md"
-                  label="Paypal Email / Account"
-                  placeholder="@johndoe"
-                  {...form.getInputProps("paymentMethod.paypal")}
-                />
-              </>
-            )}
-          </>
-        )}
+        <PaymentForm
+          form={form}
+          disabledPreferredPaymentMethod={disabledPreferredPaymentMethod}
+        />
       </Stack>
     </Container>
   );

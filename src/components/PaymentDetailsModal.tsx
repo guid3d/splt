@@ -1,17 +1,8 @@
 "use client";
-import {
-  Button,
-  Center,
-  Input,
-  Modal,
-  rem,
-  SegmentedControl,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core";
+import { Button, Center, rem, Stack, Text } from "@mantine/core";
+import PaymentForm from "@/components/PaymentForm";
 import { useForm } from "@mantine/form";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useCounter } from "@mantine/hooks";
 import { Carousel } from "@mantine/carousel";
 import { Participant, PaymentMethodType } from "@/types";
@@ -70,6 +61,35 @@ const PaymentDetailsModal = ({
     onClose();
   };
 
+  const handleSaveRef = useRef(handleSave);
+  handleSaveRef.current = handleSave;
+
+  const requiresConsent =
+    form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
+    form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
+
+  const footerContent = useCallback(
+    () => (
+      <Stack gap="xs" pb="md">
+        {requiresConsent && (
+          <Text size="xs" c="dimmed" ta="center">
+            By saving, you consent to your payment details being stored and visible to group members
+          </Text>
+        )}
+        <Button
+          onClick={() => handleSaveRef.current()}
+          loading={updateParticipant.isPending}
+          fullWidth
+          radius="xl"
+          loaderProps={{ type: "dots" }}
+        >
+          Save
+        </Button>
+      </Stack>
+    ),
+    [requiresConsent, updateParticipant.isPending]
+  );
+
   return (
     <ModalComponent
       opened={opened}
@@ -80,27 +100,7 @@ const PaymentDetailsModal = ({
       confirmPage={-1}
       onConfirmClick={() => {}}
       form={form}
-      footerContent={() => {
-        const requiresConsent =
-          form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
-          form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
-        return (
-          <Stack gap="xs" pb="md">
-            {requiresConsent && (
-              <Text size="xs" c="dimmed" ta="center">
-                By saving, you consent to your payment details being stored and visible to group members
-              </Text>
-            )}
-            <Button
-              onClick={handleSave}
-              loading={updateParticipant.isPending}
-              fullWidth
-            >
-              Save
-            </Button>
-          </Stack>
-        );
-      }}
+      footerContent={footerContent}
     >
       <Carousel.Slide>
         <Stack gap="md">
@@ -113,56 +113,7 @@ const PaymentDetailsModal = ({
             </Stack>
           </Center>
 
-          <Stack gap={rem(3)}>
-            <Text size="sm">Preferred Payment By</Text>
-            <SegmentedControl
-              value={form.values.selectedPaymentMethod}
-              onChange={(value) =>
-                form.setFieldValue("selectedPaymentMethod", value as PaymentMethodType)
-              }
-              data={[
-                { label: "IBAN", value: PaymentMethodType.Iban },
-                { label: "Paypal", value: PaymentMethodType.Paypal },
-                { label: "Cash", value: PaymentMethodType.Cash },
-              ]}
-            />
-          </Stack>
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Iban && (
-            <>
-              <TextInput
-                radius={0}
-                variant="unstyled"
-                size="md"
-                label="Account Name"
-                placeholder="John Doe"
-                {...form.getInputProps("accountName")}
-              />
-              <Input.Wrapper
-                label="IBAN"
-                error={form.errors["paymentMethod.iban"]}
-              >
-                <Input
-                  radius={0}
-                  variant="unstyled"
-                  size="md"
-                  placeholder="DE00 0000 0000 0000 0000 00"
-                  {...form.getInputProps("paymentMethod.iban")}
-                />
-              </Input.Wrapper>
-            </>
-          )}
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Paypal && (
-            <TextInput
-              radius={0}
-              variant="unstyled"
-              size="md"
-              label="Paypal Email / Account"
-              placeholder="@johndoe"
-              {...form.getInputProps("paymentMethod.paypal")}
-            />
-          )}
+          <PaymentForm form={form} />
         </Stack>
       </Carousel.Slide>
     </ModalComponent>

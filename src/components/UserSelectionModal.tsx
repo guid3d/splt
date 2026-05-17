@@ -2,13 +2,10 @@
 import {
   Button,
   Center,
-  Input,
   rem,
-  SegmentedControl,
   SimpleGrid,
   Stack,
   Text,
-  TextInput,
   UnstyledButton,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -22,6 +19,7 @@ import { useUpdateParticipant } from "@/api";
 import Modal from "./Modal";
 import { getHashedSessionId, recordConsent } from "@/lib/consent";
 import { validateIban } from "@/lib/validateIban";
+import PaymentForm from "@/components/PaymentForm";
 
 type ParticipantItemProps = {
   participant: Participant;
@@ -204,56 +202,7 @@ const UserSelectionModal = ({
             </Stack>
           </Center>
 
-          <Stack gap={rem(3)}>
-            <Text size="sm">Preferred Payment By</Text>
-            <SegmentedControl
-              value={form.values.selectedPaymentMethod}
-              onChange={(value) =>
-                form.setFieldValue(
-                  "selectedPaymentMethod",
-                  value as PaymentMethodType,
-                )
-              }
-              data={[
-                { label: "IBAN", value: PaymentMethodType.Iban },
-                { label: "Paypal", value: PaymentMethodType.Paypal },
-                { label: "Cash", value: PaymentMethodType.Cash },
-              ]}
-            />
-          </Stack>
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Iban && (
-            <>
-              <TextInput
-                radius={0}
-                variant="unstyled"
-                size="md"
-                label="Account Name"
-                placeholder="John Doe"
-                {...form.getInputProps("accountName")}
-              />
-              <Input.Wrapper label="IBAN" error={form.errors["paymentMethod.iban"]}>
-                <Input
-                  radius={0}
-                  variant="unstyled"
-                  size="md"
-                  placeholder="DE00 0000 0000 0000 0000 00"
-                  {...form.getInputProps("paymentMethod.iban")}
-                />
-              </Input.Wrapper>
-            </>
-          )}
-
-          {form.values.selectedPaymentMethod === PaymentMethodType.Paypal && (
-            <TextInput
-              radius={0}
-              variant="unstyled"
-              size="md"
-              label="Paypal Email / Account"
-              placeholder="@johndoe"
-              {...form.getInputProps("paymentMethod.paypal")}
-            />
-          )}
+          <PaymentForm form={form} />
         </Stack>
       </Carousel.Slide>
     </Modal>
