@@ -27,7 +27,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme="auto">
           <ReactQueryClientProvider>{children}</ReactQueryClientProvider>
         </MantineProvider>
       </body>
