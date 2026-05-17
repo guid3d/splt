@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Center,
   Group, Skeleton,
   Stack,
@@ -9,6 +8,7 @@ import {
   rem
 } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
+import UserAvatar from "@/components/UserAvatar";
 import { useDeletePayback, usePayback } from "@/api";
 import dayjs from "dayjs";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
@@ -66,11 +66,11 @@ const PaybackPage = () => {
           <Group>
             <Stack>
               <Center>
-                <Avatar variant="light" size={rem(80)} radius={rem(80)}>
+                <UserAvatar size={rem(80)} radius={rem(80)}>
                   <Title order={1} style={{ fontSize: rem(50) }}>
                     {data.expand.fromPerson.avatar.emoji}
                   </Title>
-                </Avatar>
+                </UserAvatar>
               </Center>
               <Center>
                 <Title fw={500} order={2} pb="md">
@@ -81,11 +81,11 @@ const PaybackPage = () => {
             <IconArrowNarrowRight size="3rem" stroke={1.5} />
             <Stack>
               <Center>
-                <Avatar variant="light" size={rem(80)} radius={rem(80)}>
+                <UserAvatar size={rem(80)} radius={rem(80)}>
                   <Title order={1} style={{ fontSize: rem(50) }}>
                     {data.expand.toPerson.avatar.emoji}
                   </Title>
-                </Avatar>
+                </UserAvatar>
               </Center>
               <Center>
                 <Title fw={500} order={2} pb="md">

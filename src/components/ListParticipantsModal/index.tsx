@@ -9,9 +9,9 @@ import {
   ScrollArea,
   SimpleGrid,
   AvatarGroup,
-  Avatar,
   UnstyledButton,
 } from "@mantine/core";
+import UserAvatar from "@/components/UserAvatar";
 import { useState } from "react";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { IconChevronLeft } from "@tabler/icons-react";
@@ -182,9 +182,9 @@ const ListParticipantsModal = ({ groupInfo }: ListParticipantsModalProps) => {
           {groupInfo.expand.participants
             .slice(0, 8)
             .map((participant, index) => (
-              <Avatar key={index}>
+              <UserAvatar key={index}>
                 <Title order={2}>{participant.avatar.emoji}</Title>
-              </Avatar>
+              </UserAvatar>
             ))}
         </AvatarGroup>
       </UnstyledButton>

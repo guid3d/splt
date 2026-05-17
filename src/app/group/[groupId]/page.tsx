@@ -5,6 +5,7 @@ import Tab, { TabType } from "./components/Tab";
 import TopSummary from "./components/TopSummary";
 import TabOverview from "./components/TabOverview";
 import TabTransactions from "./components/TabTransactions";
+import TabTotalSpending from "./components/TabTotalSpending";
 import { SPLTIconSmall } from "@/components/SPLTIcon";
 import { useParams } from "next/navigation";
 import { useTotalSpend } from "@/api";
@@ -57,14 +58,17 @@ const GroupPage = () => {
         </Group>
         <Stack mb={100}>
           <Center>
-            <TopSummary selectedTab={selectedTab} groupData={groupData} />
+            <TopSummary selectedTab={selectedTab} groupData={groupData} localUserId={localUserId} />
           </Center>
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
-          {selectedTab === TabType.Overview && <TabOverview />}
+          {selectedTab === TabType.Overview && <TabOverview localUserId={localUserId} />}
           {selectedTab === TabType.Transactions && (
-            <TabTransactions groupData={groupData} />
+            <TabTransactions groupData={groupData} localUserId={localUserId} />
+          )}
+          {selectedTab === TabType.TotalSpending && (
+            <TabTotalSpending groupData={groupData} localUserId={localUserId} />
           )}
         </Stack>
         <MadeWithLove />

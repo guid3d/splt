@@ -1,13 +1,14 @@
 "use client";
 import {
-  Avatar,
   Menu,
   rem,
   Stack,
   Text,
+  Title,
   useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
+import UserAvatar from "@/components/UserAvatar";
 import {
   IconMoonFilled,
   IconSunFilled,
@@ -56,9 +57,9 @@ const UserDropdown = ({
         radius="lg"
       >
         <Menu.Target>
-          <Avatar variant="light" radius="xl" size="sm" style={{ cursor: "pointer" }}>
-            {currentUser ? currentUser.avatar.emoji : <IconUserCircle size={16} />}
-          </Avatar>
+          <UserAvatar size="md" style={{ cursor: "pointer" }}>
+            {currentUser ? <Title order={3}>{currentUser.avatar.emoji}</Title> : <IconUserCircle size={16} />}
+          </UserAvatar>
         </Menu.Target>
 
         <Menu.Dropdown>

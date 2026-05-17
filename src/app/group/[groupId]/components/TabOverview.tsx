@@ -1,29 +1,17 @@
-import {
-  Avatar,
-  AvatarGroup,
-  Center,
-  NavLink,
-  NumberFormatter,
-  Skeleton,
-  Stack,
-  Text,
-  Title,
-rem,
-} from "@mantine/core";
+import { Center, Skeleton, Stack, Text, rem } from "@mantine/core";
 import React from "react";
-import { GroupData } from "@/types";
 import { useDebts } from "@/api";
 import { useParams } from "next/navigation";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
 import ViewDebtModal from "@/components/ViewDebtModal";
 
 type TabOverviewProps = {
-  // groupData: GroupData;
+  localUserId?: string | null;
 };
 
-const TabOverview = ({}: TabOverviewProps) => {
+const TabOverview = ({ localUserId }: TabOverviewProps) => {
   const { groupId } = useParams<{ groupId: string }>();
-  const { data, isPending, error } = useDebts(groupId);
+  const { data, isPending } = useDebts(groupId);
+
   if (isPending) {
     return (
       <Stack>
@@ -32,30 +20,51 @@ const TabOverview = ({}: TabOverviewProps) => {
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
         <Skeleton height={rem(30)} radius="md" />
-        
       </Stack>
     );
   }
+
   if (data) {
+    const myDebts = localUserId
+      ? data.filter((d) => d.fromPerson.id === localUserId)
+      : [];
+    const owedToMe = localUserId
+      ? data.filter((d) => d.toPerson.id === localUserId)
+      : [];
+    const otherDebts = localUserId
+      ? data.filter(
+          (d) =>
+            d.fromPerson.id !== localUserId && d.toPerson.id !== localUserId
+        )
+      : data;
+
     return (
       <>
         <Text fw={500}>Debts</Text>
         <Stack mb={100} gap="xs">
-          {data.length > 0 ? (
-            data.map((debt, index) => <ViewDebtModal key={index} debt={debt} />)
-          ) : (
-            <Center
-              p="lg"
-              // c="dimmed" style={{ border: "1px dashed" }}
-            >
+          {data.length === 0 ? (
+            <Center p="lg">
               <Text c="dimmed" size="sm">
                 No debts
               </Text>
             </Center>
+          ) : (
+            <>
+              {myDebts.map((debt, i) => (
+                <ViewDebtModal key={`my-${i}`} debt={debt} />
+              ))}
+              {owedToMe.map((debt, i) => (
+                <ViewDebtModal key={`owed-${i}`} debt={debt} />
+              ))}
+              {otherDebts.map((debt, i) => (
+                <ViewDebtModal key={`other-${i}`} debt={debt} />
+              ))}
+            </>
           )}
         </Stack>
       </>
     );
   }
 };
+
 export default TabOverview;

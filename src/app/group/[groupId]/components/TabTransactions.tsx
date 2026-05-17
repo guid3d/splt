@@ -12,6 +12,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { TotalSpendData } from "@/types";
+import UserAvatar from "@/components/UserAvatar";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
@@ -21,10 +22,10 @@ import { UseQueryResult } from "@tanstack/react-query";
 
 type TabTransactionsProps = {
   groupData: UseQueryResult<TotalSpendData, Error>;
-  // groupTransactionData: TransactionsData[];
+  localUserId?: string | null;
 };
 
-const TabTransactions = ({ groupData }: TabTransactionsProps) => {
+const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
   const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
@@ -54,6 +55,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
           {groupData.data && (
             <AddEditTransactionModal
               groupData={groupData.data.expand.groupInfo}
+              localUserId={localUserId}
               button={
                 <Text fw={600} c="blue">
                   Add
@@ -119,14 +121,14 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
                     date: trans.transactionDateTime,
                   })}
                   leftSection={
-                    <Avatar>
+                    <UserAvatar>
                       <Title style={{ transform: "translate(2px)" }} order={4}>
                         {trans.expand.fromPerson.avatar.emoji}
                       </Title>
                       <Title style={{ transform: "translate(-2px)" }} order={4}>
                         {trans.expand.toPerson.avatar.emoji}
                       </Title>
-                    </Avatar>
+                    </UserAvatar>
                   }
                   rightSection={
                     <Title order={5}>

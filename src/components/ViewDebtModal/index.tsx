@@ -8,7 +8,6 @@ import {
   Text,
   ScrollArea,
   AvatarGroup,
-  Avatar,
   UnstyledButton,
   NavLink,
   Group,
@@ -16,6 +15,7 @@ import {
   Container,
 } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
+import UserAvatar from "@/components/UserAvatar";
 import { IconChevronLeft } from "@tabler/icons-react";
 import { DebtData, PaybackFormValues, PaymentMethodType } from "@/types";
 import { useParams, useRouter } from "next/navigation";
@@ -105,15 +105,14 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                       <Group>
                         <Stack>
                           <Center>
-                            <Avatar
-                              variant="default"
+                            <UserAvatar
                               size={rem(80)}
                               radius={rem(80)}
                             >
                               <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.fromPerson.avatar.emoji}
                               </Title>
-                            </Avatar>
+                            </UserAvatar>
                           </Center>
                           <Center>
                             <Title fw={500} order={2} pb="md">
@@ -131,15 +130,14 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                         </Stack>
                         <Stack>
                           <Center>
-                            <Avatar
-                              variant="default"
+                            <UserAvatar
                               size={rem(80)}
                               radius={rem(80)}
                             >
                               <Title order={1} style={{ fontSize: rem(50) }}>
                                 {debt.toPerson.avatar.emoji}
                               </Title>
-                            </Avatar>
+                            </UserAvatar>
                           </Center>
                           <Center>
                             <Title fw={500} order={2} pb="md">
@@ -291,12 +289,12 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
           label={`${debt.fromPerson.name} → ${debt.toPerson.name}`}
           leftSection={
             <AvatarGroup>
-              <Avatar>
+              <UserAvatar>
                 <Title order={2}>{debt.fromPerson.avatar.emoji}</Title>
-              </Avatar>
-              <Avatar>
+              </UserAvatar>
+              <UserAvatar>
                 <Title order={2}>{debt.toPerson.avatar.emoji}</Title>
-              </Avatar>
+              </UserAvatar>
             </AvatarGroup>
           }
           rightSection={
