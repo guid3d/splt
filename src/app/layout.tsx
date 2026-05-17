@@ -19,7 +19,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en" {...mantineHtmlProps}>
       <head suppressHydrationWarning>
-        <ColorSchemeScript defaultColorScheme="auto" />
+        <ColorSchemeScript defaultColorScheme="auto" suppressHydrationWarning />
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"

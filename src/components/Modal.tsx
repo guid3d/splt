@@ -19,11 +19,9 @@ type ModalPropsType = {
   children: React.ReactNode;
   maxPage: number;
   confirmPage: number;
-  // isActionIcon?: boolean;
   onConfirmClick: () => void;
   onCloseModalClick?: () => void;
-  // buttonTitle?: string;
-  button: React.ReactNode;
+  button?: React.ReactNode;
   page: number;
   pageHandler: any;
   form: UseFormReturnType<any>;
@@ -33,16 +31,21 @@ type ModalPropsType = {
   onLastPageHandler?: () => void;
   keepButtonWhenOpened?: boolean;
   headerTitle?: string;
+  /** Controlled mode: pass opened + onClose to skip the trigger button */
+  opened?: boolean;
+  onClose?: () => void;
+  /** Override the footer per page. Return null to render nothing. */
+  footerContent?: (page: number) => React.ReactNode;
+  /** Ref populated with pageIncrement so slide content can advance pages */
+  pageIncrementRef?: React.RefObject<(() => void) | null>;
 };
 
 const Modal = ({
   maxPage,
   confirmPage,
-  // isActionIcon,
   children,
   onConfirmClick,
   onCloseModalClick,
-  // buttonTitle,
   button,
   page,
   pageHandler,
@@ -53,30 +56,18 @@ const Modal = ({
   onLastPageHandler,
   keepButtonWhenOpened,
   headerTitle,
+  opened: controlledOpened,
+  onClose: controlledOnClose,
+  footerContent,
+  pageIncrementRef,
 }: ModalPropsType) => {
-  useEffect(() => {
-    if (confirmSuccess) {
-      pageIncrement();
-    }
-  }, [confirmSuccess]);
-  // const maxPage = maxPage - 1;
-  const [opened, { open, close }] = useDisclosure(false);
+  const isControlled = controlledOpened !== undefined;
+  const [internalOpened, { open, close }] = useDisclosure(false);
+  const isOpen = isControlled ? controlledOpened! : internalOpened;
+
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
-  // const [page, pageHandler] = useCounter(0, {
-  //   min: 0,
-  //   max: maxPage,
-  // });
   const [embla, setEmbla] = useState<EmblaCarouselType | null>(null);
-  const pageDecrement = () => {
-    scrollPrev();
-    pageHandler.decrement();
-  };
-  const pageIncrement = () => {
-    if (!form.validate().hasErrors) {
-      scrollNext();
-      pageHandler.increment();
-    }
-  };
+
   const scrollPrev = useCallback(() => {
     if (embla) embla.scrollPrev();
   }, [embla]);
@@ -85,15 +76,42 @@ const Modal = ({
     if (embla) embla.scrollNext();
   }, [embla]);
 
+  const pageDecrement = () => {
+    scrollPrev();
+    pageHandler.decrement();
+  };
+
+  const pageIncrement = () => {
+    if (!form.validate().hasErrors) {
+      scrollNext();
+      pageHandler.increment();
+    }
+  };
+
+  // Keep ref current so callers can trigger page advance from slide content
+  useEffect(() => {
+    if (pageIncrementRef) pageIncrementRef.current = pageIncrement;
+  });
+
+  useEffect(() => {
+    if (confirmSuccess) {
+      pageIncrement();
+    }
+  }, [confirmSuccess]);
+
   const closeModalHandler = () => {
-    setConfirmSuccess ? setConfirmSuccess(false) : null;
-    close();
+    setConfirmSuccess?.(false);
+    if (isControlled) {
+      controlledOnClose?.();
+    } else {
+      close();
+    }
     pageHandler.set(0);
   };
 
   const onCloseModal = () => {
     closeModalHandler();
-    onCloseModalClick ? onCloseModalClick() : null;
+    onCloseModalClick?.();
   };
 
   const confirmFunction = () => {
@@ -105,7 +123,7 @@ const Modal = ({
   return (
     <>
       <MantineModal.Root
-        opened={opened}
+        opened={isOpen}
         onClose={onCloseModal}
         fullScreen={isMobile}
         transitionProps={{ transition: "slide-up", duration: 200 }}
@@ -118,7 +136,7 @@ const Modal = ({
               variant="transparent"
               color="gray"
               aria-label="Settings"
-              onClick={page !== 0 ? pageDecrement : close}
+              onClick={page !== 0 ? pageDecrement : (isControlled ? closeModalHandler : close)}
             >
               <IconChevronLeft
                 style={{ width: "70%", height: "70%" }}
@@ -152,23 +170,28 @@ const Modal = ({
                   });
                 })}
               </Carousel>
-              <ModalFooterButton
-                isMobile={isMobile}
-                isModalOpened={opened}
-                page={page}
-                maxPage={maxPage}
-                confirmPage={confirmPage}
-                pageIncrement={pageIncrement}
-                confirmFunction={confirmFunction}
-                closeModalHandler={closeModalHandler}
-                nextButtonIsPending={nextButtonIsPending}
-                onLastPageHandler={onLastPageHandler}
-              />
+              {footerContent !== undefined
+                ? footerContent(page)
+                : (
+                  <ModalFooterButton
+                    isMobile={isMobile}
+                    isModalOpened={isOpen}
+                    page={page}
+                    maxPage={maxPage}
+                    confirmPage={confirmPage}
+                    pageIncrement={pageIncrement}
+                    confirmFunction={confirmFunction}
+                    closeModalHandler={closeModalHandler}
+                    nextButtonIsPending={nextButtonIsPending}
+                    onLastPageHandler={onLastPageHandler}
+                  />
+                )
+              }
             </Stack>
           </MantineModal.Body>
         </MantineModal.Content>
       </MantineModal.Root>
-      {(!opened || keepButtonWhenOpened) && (
+      {!isControlled && (!internalOpened || keepButtonWhenOpened) && (
         <UnstyledButton onClick={open}>{button}</UnstyledButton>
       )}
     </>
