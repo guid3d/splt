@@ -1,6 +1,5 @@
 import { StoreEmojiData } from "@/types";
 import {
-  Avatar,
   Container,
   Group,
   Text,
@@ -8,6 +7,7 @@ import {
   useComputedColorScheme,
   useMantineTheme,
 } from "@mantine/core";
+import UserAvatar from "@/components/UserAvatar";
 import React from "react";
 
 type ParticipantAvatarProps = {
@@ -47,9 +47,9 @@ const ParticipantAvatarHorizontal = ({
     >
       <Group justify="space-between" align="center" gap="xs">
         <Group>
-          <Avatar size="md" radius="xl">
+          <UserAvatar size="md">
             <Title order={4}>{avatar.emoji}</Title>
-          </Avatar>
+          </UserAvatar>
           <Text lineClamp={2} ta="center">
             {name}
           </Text>

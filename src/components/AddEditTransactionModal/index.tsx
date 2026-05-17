@@ -24,6 +24,7 @@ type AddEditTransactionModalProps = {
   button: React.ReactNode;
   isEdit?: boolean;
   expenseData?: ExpenseTransactionData;
+  localUserId?: string | null;
 };
 
 const AddEditTransactionModal = ({
@@ -31,6 +32,7 @@ const AddEditTransactionModal = ({
   button,
   isEdit,
   expenseData,
+  localUserId,
 }: AddEditTransactionModalProps) => {
   const [confirmSuccess, setConfirmSuccess] = useState<boolean>(false);
   const { groupId } = useParams<{ groupId: string }>();
@@ -73,7 +75,7 @@ const AddEditTransactionModal = ({
             name: "",
             avatar: { emoji: randomEmoji(), unified: "" },
             description: "",
-            paidBy: groupData.expand.participants[0].id,
+            paidBy: localUserId ?? groupData.expand.participants[0].id,
             splitType: SplitType.Equal,
             everyoneIsParticipant: true,
             participants: [],
@@ -182,6 +184,7 @@ const AddEditTransactionModal = ({
         }}
         onLastPageHandler={() => {
           form.reset();
+          form.setFieldValue("transactionDateTime", new Date());
         }}
         onCloseModalClick={() => {
           form.reset();

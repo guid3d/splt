@@ -12,6 +12,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { TotalSpendData } from "@/types";
+import UserAvatar from "@/components/UserAvatar";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
@@ -21,10 +22,10 @@ import { UseQueryResult } from "@tanstack/react-query";
 
 type TabTransactionsProps = {
   groupData: UseQueryResult<TotalSpendData, Error>;
-  // groupTransactionData: TransactionsData[];
+  localUserId?: string | null;
 };
 
-const TabTransactions = ({ groupData }: TabTransactionsProps) => {
+const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
   const { colorScheme } = useMantineColorScheme();
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
@@ -42,10 +43,11 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
   }
   if (data) {
     console.log(data);
-    data.transactions.sort((a, b) => {
-      return (
-        Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime)
-      );
+    const sortedTransactions = [...data.transactions].sort((a, b) => {
+      const diff =
+        Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime);
+      if (diff !== 0) return diff;
+      return Date.parse(b.created) - Date.parse(a.created);
     });
     return (
       <>
@@ -54,6 +56,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
           {groupData.data && (
             <AddEditTransactionModal
               groupData={groupData.data.expand.groupInfo}
+              localUserId={localUserId}
               button={
                 <Text fw={600} c="blue">
                   Add
@@ -62,7 +65,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
             />
           )}
         </Group>
-        {data.transactions?.length === 0 ? (
+        {sortedTransactions.length === 0 ? (
           <Center
             p="lg"
             // c="dimmed" style={{ border: "1px dashed" }}
@@ -73,7 +76,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
           </Center>
         ) : (
           <Stack mb={100} gap="xs">
-            {data.transactions?.map((trans, index) =>
+            {sortedTransactions.map((trans, index) =>
               trans.collectionName === "expenses" ? (
                 <NavLink
                   key={index}
@@ -87,6 +90,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
                       offset={3}
                       position="bottom-end"
                       size={22}
+                      zIndex={1}
                       // withBorder
                       label={
                         <Text size="xs">
@@ -118,14 +122,14 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
                     date: trans.transactionDateTime,
                   })}
                   leftSection={
-                    <Avatar>
+                    <UserAvatar>
                       <Title style={{ transform: "translate(2px)" }} order={4}>
                         {trans.expand.fromPerson.avatar.emoji}
                       </Title>
                       <Title style={{ transform: "translate(-2px)" }} order={4}>
                         {trans.expand.toPerson.avatar.emoji}
                       </Title>
-                    </Avatar>
+                    </UserAvatar>
                   }
                   rightSection={
                     <Title order={5}>
