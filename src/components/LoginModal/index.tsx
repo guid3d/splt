@@ -42,9 +42,12 @@ const LoginModal = ({ button }: LoginModalProps) => {
 
   const [mode, setMode] = useState<"login" | "register" | null>(null);
 
-  // Page 0
+  // Page 0 – login
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Page 1 – register email
+  const [regEmail, setRegEmail] = useState("");
 
   // Page 1 – shared
   const [credError, setCredError] = useState<string | null>(null);
@@ -85,6 +88,7 @@ const LoginModal = ({ button }: LoginModalProps) => {
     setMode(null);
     setEmail("");
     setEmailError(null);
+    setRegEmail("");
     setPassword("");
     setUsername("");
     setRegPassword("");
@@ -110,22 +114,13 @@ const LoginModal = ({ button }: LoginModalProps) => {
     }
   };
 
-  const handleChoose = (
-    chosen: "login" | "register",
-    pageIncrement: () => void
-  ) => {
+  const handleLogin = async (close: () => void) => {
     if (!email.trim()) {
       setEmailError("Email is required");
       return;
     }
-    setEmailError(null);
-    setCredError(null);
-    setMode(chosen);
-    pageIncrement();
-  };
-
-  const handleLogin = async (close: () => void) => {
     if (!password) {
+      setEmailError(null);
       setCredError("Password is required");
       return;
     }
@@ -141,7 +136,11 @@ const LoginModal = ({ button }: LoginModalProps) => {
     }
   };
 
-  const handleRegister = async (pageIncrement: () => void) => {
+  const handleRegisterNext = (pageIncrement: () => void) => {
+    if (!regEmail.trim()) {
+      setCredError("Email is required");
+      return;
+    }
     if (!username.trim()) {
       setCredError("Username is required");
       return;
@@ -155,21 +154,14 @@ const LoginModal = ({ button }: LoginModalProps) => {
       return;
     }
     setCredError(null);
-    setCredLoading(true);
-    try {
-      await register(email, username, regPassword);
-      pageIncrement();
-    } catch (e: any) {
-      setCredError(e?.message ?? "Registration failed");
-    } finally {
-      setCredLoading(false);
-    }
+    pageIncrement();
   };
 
-  const handlePaymentDone = async (close: () => void) => {
+  const handleCreateAccount = async (close: () => void) => {
     setProfileLoading(true);
     try {
-      await login(email, regPassword);
+      await register(regEmail, username, regPassword);
+      await login(regEmail, regPassword);
       const userId = pb.authStore.record?.id;
       if (userId) {
         await pb.collection("users").update(userId, {
@@ -180,8 +172,8 @@ const LoginModal = ({ button }: LoginModalProps) => {
           accountName: paymentAccountName,
         });
       }
-    } catch {
-      // best-effort
+    } catch (e: any) {
+      setCredError(e?.message ?? "Registration failed");
     } finally {
       setProfileLoading(false);
     }
@@ -200,40 +192,41 @@ const LoginModal = ({ button }: LoginModalProps) => {
         const content = (
           <Stack gap="xs">
             {p === 0 && (
-              <Group grow>
+              <Stack gap="xs">
                 <Button
-                  variant="default"
+                  fullWidth
                   radius="xl"
-                  onClick={() => handleChoose("login", pageIncrement)}
+                  loading={credLoading}
+                  onClick={() => handleLogin(closeModalHandler)}
                 >
                   Login
                 </Button>
-                <Button
-                  radius="xl"
-                  onClick={() => handleChoose("register", pageIncrement)}
-                >
-                  Register
-                </Button>
-              </Group>
-            )}
-            {p === 1 && mode === "login" && (
-              <Button
-                fullWidth
-                radius="xl"
-                loading={credLoading}
-                onClick={() => handleLogin(closeModalHandler)}
-              >
-                Login
-              </Button>
+                <Text size="sm" ta="center" c="dimmed">
+                  New to Splt?{" "}
+                  <Text
+                    component="span"
+                    size="sm"
+                    td="underline"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setEmailError(null);
+                      setCredError(null);
+                      setMode("register");
+                      pageIncrement();
+                    }}
+                  >
+                    Create an account
+                  </Text>
+                </Text>
+              </Stack>
             )}
             {p === 1 && mode === "register" && (
               <Button
                 fullWidth
                 radius="xl"
-                loading={credLoading}
-                onClick={() => handleRegister(pageIncrement)}
+                onClick={() => handleRegisterNext(pageIncrement)}
               >
-                Create Account
+                Next
               </Button>
             )}
             {p === 2 && (
@@ -241,9 +234,9 @@ const LoginModal = ({ button }: LoginModalProps) => {
                 fullWidth
                 radius="xl"
                 loading={profileLoading}
-                onClick={() => handlePaymentDone(closeModalHandler)}
+                onClick={() => handleCreateAccount(closeModalHandler)}
               >
-                Done
+                Create Account
               </Button>
             )}
           </Stack>
@@ -299,6 +292,16 @@ const LoginModal = ({ button }: LoginModalProps) => {
                   value={email}
                   onChange={(e) => setEmail(e.currentTarget.value)}
                 />
+                <PasswordInput
+                  variant="unstyled"
+                  radius={0}
+                  size="md"
+                  label="Password"
+                  placeholder="Your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleLogin(close)}
+                />
               </Stack>
             </Container>
           </Carousel.Slide>
@@ -316,22 +319,17 @@ const LoginModal = ({ button }: LoginModalProps) => {
                     {credError}
                   </Alert>
                 )}
-                {mode === "login" && (
-                  <PasswordInput
-                    variant="unstyled"
-                    radius={0}
-                    size="md"
-                    label="Password"
-                    placeholder="Your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.currentTarget.value)}
-                    onKeyDown={(e) =>
-                      e.key === "Enter" && handleLogin(close)
-                    }
-                  />
-                )}
                 {mode === "register" && (
                   <>
+                    <TextInput
+                      variant="unstyled"
+                      radius={0}
+                      size="md"
+                      label="Email"
+                      placeholder="you@example.com"
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.currentTarget.value)}
+                    />
                     <TextInput
                       variant="unstyled"
                       radius={0}
