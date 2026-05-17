@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
+const FALLBACK_EMOJIS = ["💸", "🧾", "💳", "💰", "🤝"];
+
 export function useEmojiSuggestions(query: string, debounceMs = 400) {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -20,9 +22,9 @@ export function useEmojiSuggestions(query: string, debounceMs = 400) {
           body: JSON.stringify({ name: query }),
         });
         const data = await res.json();
-        setSuggestions(data.emojis ?? []);
+        setSuggestions(data.emojis?.length ? data.emojis : FALLBACK_EMOJIS);
       } catch {
-        setSuggestions([]);
+        setSuggestions(FALLBACK_EMOJIS);
       } finally {
         setLoading(false);
       }
