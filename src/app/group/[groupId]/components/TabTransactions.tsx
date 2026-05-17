@@ -87,6 +87,7 @@ const TabTransactions = ({ groupData }: TabTransactionsProps) => {
                       offset={3}
                       position="bottom-end"
                       size={22}
+                      zIndex={1}
                       // withBorder
                       label={
                         <Text size="xs">

@@ -133,13 +133,24 @@ const Modal = ({
           <MantineModal.Body>
             <Stack h={rem(550)} justify="space-between">
               <Carousel
-                draggable={false}
+                emblaOptions={{ watchDrag: false }}
                 withControls={false}
                 getEmblaApi={setEmbla}
                 withKeyboardEvents={false}
                 pb={isMobile ? "xl" : "none"}
               >
-                {children}
+                {React.Children.map(children, (child, index) => {
+                  const slide = child as React.ReactElement<{ children?: React.ReactNode }>;
+                  return React.cloneElement(slide, {
+                    children: (
+                      // inert prevents tab/focus from reaching off-screen slides,
+                      // which would otherwise trigger Embla to scroll to that slide
+                      <div inert={index !== page ? true : undefined}>
+                        {slide.props.children}
+                      </div>
+                    ),
+                  });
+                })}
               </Carousel>
               <ModalFooterButton
                 isMobile={isMobile}
