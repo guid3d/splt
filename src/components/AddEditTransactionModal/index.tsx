@@ -184,6 +184,7 @@ const AddEditTransactionModal = ({
         }}
         onLastPageHandler={() => {
           form.reset();
+          form.setFieldValue("transactionDateTime", new Date());
         }}
         onCloseModalClick={() => {
           form.reset();

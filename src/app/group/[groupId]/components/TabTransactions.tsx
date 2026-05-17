@@ -43,10 +43,11 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
   }
   if (data) {
     console.log(data);
-    data.transactions.sort((a, b) => {
-      return (
-        Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime)
-      );
+    const sortedTransactions = [...data.transactions].sort((a, b) => {
+      const diff =
+        Date.parse(b.transactionDateTime) - Date.parse(a.transactionDateTime);
+      if (diff !== 0) return diff;
+      return Date.parse(b.created) - Date.parse(a.created);
     });
     return (
       <>
@@ -64,7 +65,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
             />
           )}
         </Group>
-        {data.transactions?.length === 0 ? (
+        {sortedTransactions.length === 0 ? (
           <Center
             p="lg"
             // c="dimmed" style={{ border: "1px dashed" }}
@@ -75,7 +76,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
           </Center>
         ) : (
           <Stack mb={100} gap="xs">
-            {data.transactions?.map((trans, index) =>
+            {sortedTransactions.map((trans, index) =>
               trans.collectionName === "expenses" ? (
                 <NavLink
                   key={index}
