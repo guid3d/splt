@@ -98,11 +98,11 @@ NEXT_PUBLIC_POCKETBASE_URL=https://your-instance.pockethost.io
 ## Roadmap
 
 ### In Progress
-- [ ] Advanced bill splitting modes
+- [x] Advanced bill splitting modes
 - [ ] Loading indicators on async actions
 - [ ] Passcode-protected groups
 - [ ] Currency selection
-- [ ] Per-person expense summary page
+- [x] Per-person expense summary page
 - [ ] IBAN masking
 - [ ] Error handling when data fails to load
 
