@@ -99,6 +99,15 @@ const Modal = ({
     }
   }, [confirmSuccess]);
 
+  // Reset carousel and page when modal closes externally (controlled mode),
+  // since Mantine won't fire onClose when opened prop flips to false.
+  useEffect(() => {
+    if (!isOpen) {
+      pageHandler.set(0);
+      embla?.scrollTo(0, true);
+    }
+  }, [isOpen]);
+
   const closeModalHandler = () => {
     setConfirmSuccess?.(false);
     if (isControlled) {
@@ -130,7 +139,7 @@ const Modal = ({
         centered
       >
         <MantineModal.Overlay />
-        <MantineModal.Content radius={isMobile ? 0 : "lg"}>
+        <MantineModal.Content radius={isMobile ? 0 : "lg"} style={isMobile ? { display: "flex", flexDirection: "column", width: "100%" } : undefined}>
           <MantineModal.Header>
             <ActionIcon
               variant="transparent"
@@ -148,14 +157,14 @@ const Modal = ({
             </Text>
             <Space w="xl" h="xl" />
           </MantineModal.Header>
-          <MantineModal.Body>
-            <Stack h={rem(550)} justify="space-between">
+          <MantineModal.Body style={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0 }}>
+            <Stack h={isMobile ? undefined : rem(550)} style={isMobile ? { flex: 1 } : undefined} justify="space-between">
               <Carousel
                 emblaOptions={{ watchDrag: false }}
                 withControls={false}
                 getEmblaApi={setEmbla}
                 withKeyboardEvents={false}
-                pb={isMobile ? "xl" : "none"}
+                style={{ flex: 1, minHeight: 0 }}
               >
                 {React.Children.map(children, (child, index) => {
                   const slide = child as React.ReactElement<{ children?: React.ReactNode }>;

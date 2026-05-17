@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import UserAvatar from "@/components/UserAvatar";
 import {
+  IconCreditCard,
   IconMoonFilled,
   IconSunFilled,
   IconUserCircle,
@@ -18,6 +19,7 @@ import {
 import { Participant } from "@/types";
 import { useDisclosure } from "@mantine/hooks";
 import UserSelectionModal from "./UserSelectionModal";
+import PaymentDetailsModal from "./PaymentDetailsModal";
 
 type UserDropdownProps = {
   currentUser: Participant | null;
@@ -33,6 +35,7 @@ const UserDropdown = ({
   const { setColorScheme } = useMantineColorScheme();
   const computedColorScheme = useComputedColorScheme();
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
+  const [paymentModalOpened, { open: openPaymentModal, close: closePaymentModal }] = useDisclosure(false);
 
   const toggleColorScheme = () => {
     setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
@@ -51,6 +54,13 @@ const UserDropdown = ({
         onSelect={handleSelectUser}
         onClose={closeModal}
       />
+      {currentUser && (
+        <PaymentDetailsModal
+          opened={paymentModalOpened}
+          participant={currentUser}
+          onClose={closePaymentModal}
+        />
+      )}
       <Menu
         width={200}
         position="bottom-end"
@@ -81,6 +91,14 @@ const UserDropdown = ({
             onClick={openModal}
           >
             Switch user
+          </Menu.Item>
+
+          <Menu.Item
+            leftSection={<IconCreditCard style={{ width: rem(14) }} />}
+            onClick={openPaymentModal}
+            disabled={!currentUser}
+          >
+            Payment details
           </Menu.Item>
 
           <Menu.Item

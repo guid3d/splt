@@ -20,6 +20,7 @@ import ParticipantAvatar from "./ParticipantAvatar";
 import { useHover } from "@mantine/hooks";
 import { useUpdateParticipant } from "@/api";
 import Modal from "./Modal";
+import { getHashedSessionId, recordConsent } from "@/lib/consent";
 
 type ParticipantItemProps = {
   participant: Participant;
@@ -98,6 +99,13 @@ const UserSelectionModal = ({
 
   const handleSave = async () => {
     if (!selectedParticipant?.id) return;
+    const needsConsent =
+      form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
+      form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
+    if (needsConsent) {
+      const hashed = await getHashedSessionId();
+      recordConsent(selectedParticipant.id, hashed);
+    }
     await updateParticipant.mutateAsync({
       ...form.values,
       id: selectedParticipant.id,
@@ -122,8 +130,16 @@ const UserSelectionModal = ({
       pageIncrementRef={pageIncrementRef}
       footerContent={(currentPage) => {
         if (currentPage === 0) return null;
+        const requiresConsent =
+          form.values.selectedPaymentMethod === PaymentMethodType.Iban ||
+          form.values.selectedPaymentMethod === PaymentMethodType.Paypal;
         return (
           <Stack gap="xs" pb="md">
+            {requiresConsent && (
+              <Text size="xs" c="dimmed" ta="center">
+                By saving, you consent to your payment details being stored and visible to group members
+              </Text>
+            )}
             <Button
               onClick={handleSave}
               loading={updateParticipant.isPending}
