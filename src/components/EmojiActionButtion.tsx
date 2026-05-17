@@ -26,11 +26,13 @@ const Picker = dynamic(
 type EmojiActionButtionProps = {
   form: UseFormReturnType<any>;
   suggestionQuery?: string;
+  onRandomize?: () => void;
 };
 
 const EmojiActionButtion = ({
   form,
   suggestionQuery,
+  onRandomize,
 }: EmojiActionButtionProps) => {
   const [opened, { open, close }] = useDisclosure(false);
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
@@ -138,7 +140,7 @@ const EmojiActionButtion = ({
                 </Title>
               )}
             </ActionIcon>
-            {showCycleButton && (
+            {(showCycleButton || onRandomize) && (
               <ActionIcon
                 variant="default"
                 size={rem(28)}
@@ -151,7 +153,8 @@ const EmojiActionButtion = ({
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleCycle();
+                  if (onRandomize) onRandomize();
+                  else handleCycle();
                 }}
               >
                 <IconRefresh size={14} stroke={1.5} />
