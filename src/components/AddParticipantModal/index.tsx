@@ -78,9 +78,10 @@ const AddParticipantModal = ({
               : null,
           "paymentMethod.iban":
             !disabledPreferredPaymentMethod &&
-            values.selectedPaymentMethod === PaymentMethodType.Iban &&
-            values.paymentMethod.iban.trim().length > 0
-              ? validateIban(values.paymentMethod.iban)
+            values.selectedPaymentMethod === PaymentMethodType.Iban
+              ? values.paymentMethod.iban.trim().length < 1
+                ? "IBAN is required when IBAN is the selected payment method"
+                : validateIban(values.paymentMethod.iban)
               : null,
         };
       }

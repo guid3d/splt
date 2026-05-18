@@ -1,36 +1,25 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
+import { Redis } from "@upstash/redis";
+import { Ratelimit } from "@upstash/ratelimit";
 
 const genAI = new GoogleGenerativeAI(
   process.env.GOOGLE_GENERATIVE_AI_API_KEY!
 );
 
-// In-memory store: IP → { request count, window expiry }
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 20; // max requests per IP per window
-const WINDOW_MS = 60_000; // 1 minute
-
-// Returns true if IP has exceeded the rate limit. Prunes expired entries on each call.
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  for (const [key, val] of rateLimitMap) {
-    if (now > val.resetAt) rateLimitMap.delete(key);
-  }
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + WINDOW_MS });
-    return false;
-  }
-  if (entry.count >= RATE_LIMIT) return true;
-  entry.count++;
-  return false;
-}
+const ratelimit = new Ratelimit({
+  redis: Redis.fromEnv(),
+  limiter: Ratelimit.slidingWindow(RATE_LIMIT, "60 s"),
+  prefix: "emoji-suggest",
+});
 
 export async function POST(req: NextRequest) {
   const ip =
     req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown";
 
-  if (isRateLimited(ip)) {
+  const { success } = await ratelimit.limit(ip);
+  if (!success) {
     return NextResponse.json(
       { error: "Too many requests" },
       { status: 429 }
