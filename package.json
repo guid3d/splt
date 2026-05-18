@@ -17,8 +17,6 @@
     "@mantine/hooks": "^8.3.10",
     "@tabler/icons-react": "^3.36.0",
     "@tanstack/react-query": "^5.90.12",
-    "@upstash/ratelimit": "^2.0.8",
-    "@upstash/redis": "^1.38.0",
     "dayjs": "^1.11.19",
     "embla-carousel-react": "^8.6.0",
     "emoji-picker-react": "^4.16.1",

@@ -45,7 +45,7 @@ const EmojiActionButtion = ({
       form.setFieldValue("avatar", { emoji: suggestions[0], unified: "" });
       setSuggestionIndex(0);
     }
-  }, [form, suggestions]);
+  }, [suggestions]);
 
   const handleCycle = () => {
     if (suggestions.length < 2) return;
