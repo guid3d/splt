@@ -8,9 +8,10 @@ import { useMediaQuery } from "@mantine/hooks";
 
 type PageSetDetailsProps = {
   form: UseFormReturnType<TransactionFormValues>;
+  suggestionQuery?: string;
 };
 
-const PageSetDetails = ({ form }: PageSetDetailsProps) => {
+const PageSetDetails = ({ form, suggestionQuery }: PageSetDetailsProps) => {
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
 
   return (
@@ -22,7 +23,7 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
           </Text>
         </Center>
         <Center>
-          <EmojiActionButtion form={form} suggestionQuery={form.values.name} />
+          <EmojiActionButtion form={form} suggestionQuery={suggestionQuery} />
         </Center>
         <BigTextInput
           placeholder="Name"

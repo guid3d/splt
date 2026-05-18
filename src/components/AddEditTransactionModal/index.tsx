@@ -202,7 +202,10 @@ const AddEditTransactionModal = ({
           <PageSetAmount form={form} groupData={groupData} />
         </Carousel.Slide>
         <Carousel.Slide>
-          <PageSetDetails form={form} />
+          <PageSetDetails
+            form={form}
+            suggestionQuery={!isEdit ? form.values.name : undefined}
+          />
         </Carousel.Slide>
         {/* <Carousel.Slide>
           <PageSelectParticipant
