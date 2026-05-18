@@ -37,8 +37,14 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { name } = await req.json();
-  if (!name?.trim()) return NextResponse.json({ emojis: [] });
+  let name: unknown;
+  try {
+    ({ name } = await req.json());
+  } catch {
+    return NextResponse.json({ emojis: [] });
+  }
+
+  if (!String(name ?? "").trim()) return NextResponse.json({ emojis: [] });
 
   // Sanitize: cap length and strip quote chars to prevent prompt injection
   const safeName = String(name).trim().slice(0, 100).replace(/["\\`]/g, "");
