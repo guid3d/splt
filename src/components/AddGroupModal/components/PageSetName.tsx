@@ -26,7 +26,7 @@ const PageSetName = ({ form }: PageSetNameProps) => {
     <Container>
       <Stack gap={"xl"}>
         <Center>
-          <EmojiActionButtion form={form} />
+          <EmojiActionButtion form={form} suggestionQuery={form.values.name} />
         </Center>
         <BigTextInput
           placeholder="Name of the group"
