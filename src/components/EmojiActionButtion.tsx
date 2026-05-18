@@ -41,16 +41,8 @@ const EmojiActionButtion = ({
   const { suggestions, loading } = useEmojiSuggestions(suggestionQuery ?? "");
 
   useEffect(() => {
-    const currentAvatar = form.values.avatar;
-    const hasExistingAvatar = Boolean(
-      currentAvatar &&
-        (currentAvatar.emoji || currentAvatar.unified)
-    );
-
     if (!wasManuallySet.current && suggestions.length > 0) {
-      if (!hasExistingAvatar) {
-        form.setFieldValue("avatar", { emoji: suggestions[0], unified: "" });
-      }
+      form.setFieldValue("avatar", { emoji: suggestions[0], unified: "" });
       setSuggestionIndex(0);
     }
   }, [form, suggestions]);
