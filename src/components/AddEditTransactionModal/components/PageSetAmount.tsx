@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { GroupData, TransactionFormValues } from "@/types";
-import { currencyToSymbol } from "@/utils/currency";
+import { currencyFormat } from "@/utils/currency";
 
 type PageSetAmountProps = {
   groupData: GroupData;
@@ -17,6 +17,7 @@ type PageSetAmountProps = {
 };
 
 const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
+  const { symbol, decimalSeparator, thousandSeparator } = currencyFormat(groupData.currency);
   return (
     <Container>
       <Center>
@@ -36,15 +37,15 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
           }}
           radius={0}
           variant="unstyled"
-          placeholder={`0,00${currencyToSymbol(groupData.currency)}`}
+          placeholder={`0${decimalSeparator}00${symbol}`}
           min={0}
           max={9999999}
           clampBehavior="strict"
-          suffix={currencyToSymbol(groupData.currency)}
+          suffix={symbol}
           // defaultValue={0}
           decimalScale={2}
-          decimalSeparator=","
-          thousandSeparator="."
+          decimalSeparator={decimalSeparator}
+          thousandSeparator={thousandSeparator}
           allowNegative={false}
           // size={rem(50)}
           // mb="md"

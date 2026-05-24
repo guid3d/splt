@@ -26,7 +26,7 @@ import {
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
 import { CurrencyFormatter } from "@/components/NumberFormatter";
-import { currencyToSymbol } from "@/utils/currency";
+import { currencyFormat } from "@/utils/currency";
 import { useEffect } from "react";
 
 type PageSetSplitProps = {
@@ -45,6 +45,7 @@ const PageSetSplit = ({
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const { height, width } = useViewportSize();
   const modalHeight = isMobile ? rem(height - 100) : rem(500);
+  const { symbol, decimalSeparator, thousandSeparator } = currencyFormat(groupData.currency);
   const theme = useMantineTheme();
   const computedColorScheme = useComputedColorScheme();
 
@@ -405,12 +406,12 @@ const PageSetSplit = ({
                                     min={0}
                                     max={9999999}
                                     clampBehavior="strict"
-                                    placeholder={`0,00${currencyToSymbol(groupData.currency)}`}
-                                    suffix={currencyToSymbol(groupData.currency)}
+                                    placeholder={`0${decimalSeparator}00${symbol}`}
+                                    suffix={symbol}
                                     variant="unstyled"
                                     decimalScale={2}
-                                    decimalSeparator=","
-                                    thousandSeparator="."
+                                    decimalSeparator={decimalSeparator}
+                                    thousandSeparator={thousandSeparator}
                                     allowNegative={false}
                                     value={split.amount ?? ""}
                                     onChange={(e) => {
