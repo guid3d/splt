@@ -17,7 +17,7 @@ import { IconCash } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconShare } from "@tabler/icons-react";
 import { SplitType } from "@/types";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import DeleteButton from "./DeleteButton";
 import { useDeleteExpense } from "@/api";
 import AddEditTransactionModal from "@/components/AddEditTransactionModal";
@@ -102,7 +102,7 @@ const ExpensePage = () => {
             {data.name}
           </Title>
           <Title order={1} style={{ fontSize: rem(40) }}>
-            <EuroNumberFormatter value={data.amount} currency={data.expand.groupInfo.currency} />
+            <CurrencyFormatter value={data.amount} currency={data.expand.groupInfo.currency} />
           </Title>
           <Text c="dimmed" pb="xl">
             {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
@@ -154,7 +154,7 @@ const ExpensePage = () => {
                           avatar={participant.avatar}
                           name={participant.name}
                           description={
-                            <EuroNumberFormatter
+                            <CurrencyFormatter
                               value={
                                 data.splitType !== SplitType.Equal && data.participantAmounts
                                   ? (data.participantAmounts[participant.id!] ?? 0)
@@ -172,7 +172,7 @@ const ExpensePage = () => {
                             avatar={participant.avatar}
                             name={participant.name}
                             description={
-                              <EuroNumberFormatter
+                              <CurrencyFormatter
                                 value={
                                   data.splitType !== SplitType.Equal && data.participantAmounts
                                     ? (data.participantAmounts[participant.id!] ?? 0)
@@ -197,7 +197,7 @@ const ExpensePage = () => {
                               key={participant.id}
                               avatar={participant.avatar}
                               name={participant.name}
-                              description={<EuroNumberFormatter value={0} currency={data.expand.groupInfo.currency} />}
+                              description={<CurrencyFormatter value={0} currency={data.expand.groupInfo.currency} />}
                             />
                           ))
                       : null

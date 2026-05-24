@@ -25,7 +25,7 @@ import {
 } from "@/types";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import { currencyToSymbol } from "@/utils/currency";
 import { useEffect } from "react";
 
@@ -236,7 +236,7 @@ const PageSetSplit = ({
                             name={participant.name}
                             description={
                               <Text lineClamp={2} ta="center">
-                                {EuroNumberFormatter({
+                                {CurrencyFormatter({
                                   value: calculateEqualSplit(),
                                   currency: groupData.currency,
                                 })}
@@ -278,7 +278,7 @@ const PageSetSplit = ({
                                           lineClamp={2}
                                           ta="center"
                                         >
-                                          {EuroNumberFormatter({
+                                          {CurrencyFormatter({
                                             value: calculatePartSplit(
                                               split.part || 0
                                             ),
@@ -448,7 +448,7 @@ const PageSetSplit = ({
                         name={participant.name}
                         // description={
                         //   <Text c="dimmed" lineClamp={2} ta="center">
-                        //     {EuroNumberFormatter({
+                        //     {CurrencyFormatter({
                         //       value: calculateEqualSplit(),
                         //     })}
                         //   </Text>
@@ -493,7 +493,7 @@ const PageSetSplit = ({
                                     }}
                                   ></Input>
                                   <Text c="dimmed" lineClamp={2} ta="center">
-                                    {EuroNumberFormatter({
+                                    {CurrencyFormatter({
                                       value: calculatePartSplit(
                                         split.part || 0
                                       ),
@@ -505,7 +505,7 @@ const PageSetSplit = ({
                           // <>
                           //   <Input value={}></Input>
                           //   <Text c="dimmed" lineClamp={2} ta="center">
-                          //     {EuroNumberFormatter({
+                          //     {CurrencyFormatter({
                           //       value: calculatePartSplit(participant.part),
                           //     })}
                           //   </Text>
@@ -528,7 +528,7 @@ const PageSetSplit = ({
                   fw={500}
                   c={calculateRemainingAmount() < -0.001 ? "red" : calculateRemainingAmount() < 0.001 ? "green" : undefined}
                 >
-                  {EuroNumberFormatter({ value: calculateRemainingAmount(), currency: groupData.currency })}
+                  {CurrencyFormatter({ value: calculateRemainingAmount(), currency: groupData.currency })}
                 </Text>
               </Group>
               {form.errors.splitAmountError && (

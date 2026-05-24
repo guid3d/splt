@@ -13,7 +13,7 @@ import { TabType } from "./Tab";
 import { useParams } from "next/navigation";
 import { UseQueryResult } from "@tanstack/react-query";
 import ListParticipantsModal from "@/components/ListParticipantsModal";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import EditGroupModal from "./EditGroupModal";
 import { useDebts } from "@/api";
 
@@ -94,7 +94,7 @@ const TopSummary = ({ selectedTab, groupData, localUserId }: TopSummaryProps) =>
                     order={2}
                     c={netBalance > 0 ? "green" : netBalance < 0 ? "red" : "dimmed"}
                   >
-                    <EuroNumberFormatter value={Math.abs(netBalance)} currency={data.expand.groupInfo.currency} />
+                    <CurrencyFormatter value={Math.abs(netBalance)} currency={data.expand.groupInfo.currency} />
                   </Title>
                 </Center>
                 <Center>
@@ -124,7 +124,7 @@ const TopSummary = ({ selectedTab, groupData, localUserId }: TopSummaryProps) =>
             </Center>
             <Center>
               <Title order={2}>
-                <EuroNumberFormatter value={data.sumExpenses ?? 0} currency={data.expand.groupInfo.currency} />
+                <CurrencyFormatter value={data.sumExpenses ?? 0} currency={data.expand.groupInfo.currency} />
               </Title>
             </Center>
           </Stack>

@@ -20,7 +20,7 @@ import { IconChevronLeft } from "@tabler/icons-react";
 import { DebtData, PaybackFormValues, PaymentMethodType } from "@/types";
 import { useParams, useRouter } from "next/navigation";
 import { useViewportSize } from "@mantine/hooks";
-import { EuroNumberFormatter } from "../NumberFormatter";
+import { CurrencyFormatter } from "../NumberFormatter";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
 import { IconUser } from "@tabler/icons-react";
 import { IconCash } from "@tabler/icons-react";
@@ -150,7 +150,7 @@ const ViewDebtModal = ({ debt, currency = "EUR" }: ViewDebtModalProps) => {
                     </Center>
                     <Center>
                       <Title order={1} style={{ fontSize: rem(40) }} pb="xl">
-                        <EuroNumberFormatter value={debt.amount} currency={currency} />
+                        <CurrencyFormatter value={debt.amount} currency={currency} />
                       </Title>
                     </Center>
                     <Group gap={3} align="center">
@@ -300,7 +300,7 @@ const ViewDebtModal = ({ debt, currency = "EUR" }: ViewDebtModalProps) => {
           }
           rightSection={
             <Title order={5}>
-              <EuroNumberFormatter value={debt.amount} currency={currency} />
+              <CurrencyFormatter value={debt.amount} currency={currency} />
             </Title>
           }
         ></NavLink>

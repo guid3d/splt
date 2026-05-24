@@ -16,7 +16,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { DateToCalendar } from "@/utils/date";
 import { useTransactions } from "@/api";
 import { useParams, useRouter } from "next/navigation";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import AddEditTransactionModal from "@/components/AddEditTransactionModal";
 import { UseQueryResult } from "@tanstack/react-query";
 
@@ -105,7 +105,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <EuroNumberFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
+                      <CurrencyFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
                     </Title>
                   }
                   onClick={() =>
@@ -133,7 +133,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <EuroNumberFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
+                      <CurrencyFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
                     </Title>
                   }
                   onClick={() =>

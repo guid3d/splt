@@ -7,7 +7,7 @@ type NumberFormatterProps = {
   currency?: string;
 };
 
-const EuroNumberFormatter = ({ value, currency = "EUR" }: NumberFormatterProps) => {
+const CurrencyFormatter = ({ value, currency = "EUR" }: NumberFormatterProps) => {
   return (
     <MantineNumberFormatter
       suffix={` ${currencyToSymbol(currency)}`}
@@ -20,4 +20,4 @@ const EuroNumberFormatter = ({ value, currency = "EUR" }: NumberFormatterProps) 
   );
 };
 
-export { EuroNumberFormatter };
+export { CurrencyFormatter };
