@@ -5,8 +5,10 @@ import {
   Center,
   Container,
   Input,
+  NativeSelect,
   Space,
   Stack,
+  Text,
   TextInput,
   Textarea,
   Title,
@@ -44,6 +46,17 @@ const PageSetName = ({ form }: PageSetNameProps) => {
           // placeholder="Last weekend of March 2023"
           {...form.getInputProps("description")}
         />
+        <Center>
+          <Text fw={500} mr="sm">
+            Currency
+          </Text>
+          <NativeSelect
+            size="md"
+            variant="unstyled"
+            data={["EUR", "USD", "THB"]}
+            {...form.getInputProps("currency")}
+          />
+        </Center>
       </Stack>
     </Container>
   );
