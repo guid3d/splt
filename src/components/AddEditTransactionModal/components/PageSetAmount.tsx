@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { UseFormReturnType } from "@mantine/form";
 import { GroupData, TransactionFormValues } from "@/types";
+import { currencyToSymbol } from "@/utils/currency";
 
 type PageSetAmountProps = {
   groupData: GroupData;
@@ -35,11 +36,11 @@ const PageSetAmount = ({ form, groupData }: PageSetAmountProps) => {
           }}
           radius={0}
           variant="unstyled"
-          placeholder="0,00€"
+          placeholder={`0,00${currencyToSymbol(groupData.currency)}`}
           min={0}
           max={9999999}
           clampBehavior="strict"
-          suffix="€"
+          suffix={currencyToSymbol(groupData.currency)}
           // defaultValue={0}
           decimalScale={2}
           decimalSeparator=","

@@ -94,7 +94,7 @@ const TopSummary = ({ selectedTab, groupData, localUserId }: TopSummaryProps) =>
                     order={2}
                     c={netBalance > 0 ? "green" : netBalance < 0 ? "red" : "dimmed"}
                   >
-                    <EuroNumberFormatter value={Math.abs(netBalance)} />
+                    <EuroNumberFormatter value={Math.abs(netBalance)} currency={data.expand.groupInfo.currency} />
                   </Title>
                 </Center>
                 <Center>
@@ -124,7 +124,7 @@ const TopSummary = ({ selectedTab, groupData, localUserId }: TopSummaryProps) =>
             </Center>
             <Center>
               <Title order={2}>
-                <EuroNumberFormatter value={data.sumExpenses ?? 0} />
+                <EuroNumberFormatter value={data.sumExpenses ?? 0} currency={data.expand.groupInfo.currency} />
               </Title>
             </Center>
           </Stack>

@@ -102,7 +102,7 @@ const ExpensePage = () => {
             {data.name}
           </Title>
           <Title order={1} style={{ fontSize: rem(40) }}>
-            <EuroNumberFormatter value={data.amount} />
+            <EuroNumberFormatter value={data.amount} currency={data.expand.groupInfo.currency} />
           </Title>
           <Text c="dimmed" pb="xl">
             {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}
@@ -160,6 +160,7 @@ const ExpensePage = () => {
                                   ? (data.participantAmounts[participant.id!] ?? 0)
                                   : data.amountPerPerson
                               }
+                              currency={data.expand.groupInfo.currency}
                             />
                           }
                         />
@@ -177,6 +178,7 @@ const ExpensePage = () => {
                                     ? (data.participantAmounts[participant.id!] ?? 0)
                                     : data.amountPerPerson
                                 }
+                                currency={data.expand.groupInfo.currency}
                               />
                             }
                           />
@@ -195,7 +197,7 @@ const ExpensePage = () => {
                               key={participant.id}
                               avatar={participant.avatar}
                               name={participant.name}
-                              description={<EuroNumberFormatter value={0} />}
+                              description={<EuroNumberFormatter value={0} currency={data.expand.groupInfo.currency} />}
                             />
                           ))
                       : null

@@ -58,10 +58,11 @@ const iconProps = {
 };
 type ViewDebtModalProps = {
   debt: DebtData;
+  currency?: string;
   // form: UseFormReturnType<any>;
 };
 
-const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
+const ViewDebtModal = ({ debt, currency = "EUR" }: ViewDebtModalProps) => {
   const { groupId } = useParams<{ groupId: string }>();
   const router = useRouter();
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
@@ -149,7 +150,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
                     </Center>
                     <Center>
                       <Title order={1} style={{ fontSize: rem(40) }} pb="xl">
-                        <EuroNumberFormatter value={debt.amount} />
+                        <EuroNumberFormatter value={debt.amount} currency={currency} />
                       </Title>
                     </Center>
                     <Group gap={3} align="center">
@@ -299,7 +300,7 @@ const ViewDebtModal = ({ debt }: ViewDebtModalProps) => {
           }
           rightSection={
             <Title order={5}>
-              <EuroNumberFormatter value={debt.amount} />
+              <EuroNumberFormatter value={debt.amount} currency={currency} />
             </Title>
           }
         ></NavLink>

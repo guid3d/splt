@@ -125,7 +125,7 @@ const TabTotalSpending = ({
                           {selected.participant.name}
                         </Text>
                         <Text size="sm" c="dimmed">
-                          <EuroNumberFormatter value={selected.total} /> paid
+                          <EuroNumberFormatter value={selected.total} currency={groupData.data?.expand.groupInfo.currency} /> paid
                         </Text>
                       </Stack>
                     </Center>
@@ -157,7 +157,7 @@ const TabTotalSpending = ({
                               }
                               rightSection={
                                 <Text fw={500} size="sm">
-                                  <EuroNumberFormatter value={e.amount} />
+                                  <EuroNumberFormatter value={e.amount} currency={groupData.data?.expand.groupInfo.currency} />
                                 </Text>
                               }
                               style={{ pointerEvents: "none" }}
@@ -178,7 +178,7 @@ const TabTotalSpending = ({
             <NavLink
               key={participant.id}
               label={participant.name}
-              description={<EuroNumberFormatter value={total} />}
+              description={<EuroNumberFormatter value={total} currency={groupData.data?.expand.groupInfo.currency} />}
               leftSection={
                 <UserAvatar size="md">
                   <Title order={3}>{participant.avatar.emoji}</Title>

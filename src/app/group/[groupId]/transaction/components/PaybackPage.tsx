@@ -95,7 +95,7 @@ const PaybackPage = () => {
             </Stack>
           </Group>
           <Title order={1} style={{ fontSize: rem(40) }}>
-            <EuroNumberFormatter value={data.amount} />
+            <EuroNumberFormatter value={data.amount} currency={data.expand.groupInfo.currency} />
           </Title>
           <Text c="dimmed" pb="xl">
             {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}

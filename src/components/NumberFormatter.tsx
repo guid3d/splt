@@ -1,14 +1,16 @@
 import React from "react";
 import { NumberFormatter as MantineNumberFormatter } from "@mantine/core";
+import { currencyToSymbol } from "@/utils/currency";
 
 type NumberFormatterProps = {
   value: number | undefined;
+  currency?: string;
 };
 
-const EuroNumberFormatter = ({ value }: NumberFormatterProps) => {
+const EuroNumberFormatter = ({ value, currency = "EUR" }: NumberFormatterProps) => {
   return (
     <MantineNumberFormatter
-      suffix=" €"
+      suffix={` ${currencyToSymbol(currency)}`}
       value={value ? value : 0}
       thousandSeparator="."
       decimalSeparator=","

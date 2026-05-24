@@ -105,7 +105,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <EuroNumberFormatter value={trans.amount} />
+                      <EuroNumberFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
                     </Title>
                   }
                   onClick={() =>
@@ -133,7 +133,7 @@ const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
                   }
                   rightSection={
                     <Title order={5}>
-                      <EuroNumberFormatter value={trans.amount} />
+                      <EuroNumberFormatter value={trans.amount} currency={groupData.data?.expand.groupInfo.currency} />
                     </Title>
                   }
                   onClick={() =>
