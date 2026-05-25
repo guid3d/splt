@@ -6,9 +6,10 @@ import ViewDebtModal from "@/components/ViewDebtModal";
 
 type TabOverviewProps = {
   localUserId?: string | null;
+  currency?: string;
 };
 
-const TabOverview = ({ localUserId }: TabOverviewProps) => {
+const TabOverview = ({ localUserId, currency }: TabOverviewProps) => {
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending } = useDebts(groupId);
 
@@ -51,13 +52,13 @@ const TabOverview = ({ localUserId }: TabOverviewProps) => {
           ) : (
             <>
               {myDebts.map((debt, i) => (
-                <ViewDebtModal key={`my-${i}`} debt={debt} />
+                <ViewDebtModal key={`my-${i}`} debt={debt} currency={currency} />
               ))}
               {owedToMe.map((debt, i) => (
-                <ViewDebtModal key={`owed-${i}`} debt={debt} />
+                <ViewDebtModal key={`owed-${i}`} debt={debt} currency={currency} />
               ))}
               {otherDebts.map((debt, i) => (
-                <ViewDebtModal key={`other-${i}`} debt={debt} />
+                <ViewDebtModal key={`other-${i}`} debt={debt} currency={currency} />
               ))}
             </>
           )}

@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useParams } from "next/navigation";
 import { useTransactions } from "@/api";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import { ExpenseTransactionData, Participant, TotalSpendData } from "@/types";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useDisclosure, useMediaQuery, useViewportSize } from "@mantine/hooks";
@@ -125,7 +125,7 @@ const TabTotalSpending = ({
                           {selected.participant.name}
                         </Text>
                         <Text size="sm" c="dimmed">
-                          <EuroNumberFormatter value={selected.total} /> paid
+                          <CurrencyFormatter value={selected.total} currency={groupData.data?.expand.groupInfo.currency} /> paid
                         </Text>
                       </Stack>
                     </Center>
@@ -157,7 +157,7 @@ const TabTotalSpending = ({
                               }
                               rightSection={
                                 <Text fw={500} size="sm">
-                                  <EuroNumberFormatter value={e.amount} />
+                                  <CurrencyFormatter value={e.amount} currency={groupData.data?.expand.groupInfo.currency} />
                                 </Text>
                               }
                               style={{ pointerEvents: "none" }}
@@ -178,7 +178,7 @@ const TabTotalSpending = ({
             <NavLink
               key={participant.id}
               label={participant.name}
-              description={<EuroNumberFormatter value={total} />}
+              description={<CurrencyFormatter value={total} currency={groupData.data?.expand.groupInfo.currency} />}
               leftSection={
                 <UserAvatar size="md">
                   <Title order={3}>{participant.avatar.emoji}</Title>

@@ -12,7 +12,7 @@ import UserAvatar from "@/components/UserAvatar";
 import { useDeletePayback, usePayback } from "@/api";
 import dayjs from "dayjs";
 import { IconArrowNarrowRight } from "@tabler/icons-react";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
 import DeleteButton from "./DeleteButton";
 import Metadata from "@/components/Metadata";
 const textTypeStyle: TextProps = {
@@ -95,7 +95,7 @@ const PaybackPage = () => {
             </Stack>
           </Group>
           <Title order={1} style={{ fontSize: rem(40) }}>
-            <EuroNumberFormatter value={data.amount} />
+            <CurrencyFormatter value={data.amount} currency={data.expand.groupInfo.currency} />
           </Title>
           <Text c="dimmed" pb="xl">
             {dayjs(data.transactionDateTime).format("dddd, MMMM D, YYYY HH:mm")}

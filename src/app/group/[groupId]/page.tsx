@@ -63,7 +63,7 @@ const GroupPage = () => {
           <Center>
             <Tab selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
           </Center>
-          {selectedTab === TabType.Overview && <TabOverview localUserId={localUserId} />}
+          {selectedTab === TabType.Overview && <TabOverview localUserId={localUserId} currency={groupData.data?.expand.groupInfo.currency} />}
           {selectedTab === TabType.Transactions && (
             <TabTransactions groupData={groupData} localUserId={localUserId} />
           )}

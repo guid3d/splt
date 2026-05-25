@@ -25,7 +25,8 @@ import {
 } from "@/types";
 import { useMediaQuery, useViewportSize } from "@mantine/hooks";
 import ParticipantAvatarHorizontal from "@/components/ParticipantAvatarHorizontal";
-import { EuroNumberFormatter } from "@/components/NumberFormatter";
+import { CurrencyFormatter } from "@/components/NumberFormatter";
+import { currencyFormat } from "@/utils/currency";
 import { useEffect } from "react";
 
 type PageSetSplitProps = {
@@ -44,6 +45,7 @@ const PageSetSplit = ({
   const isMobile = useMediaQuery("(max-width: 50em)") || false;
   const { height, width } = useViewportSize();
   const modalHeight = isMobile ? rem(height - 100) : rem(500);
+  const { symbol, decimalSeparator, thousandSeparator } = currencyFormat(groupData.currency);
   const theme = useMantineTheme();
   const computedColorScheme = useComputedColorScheme();
 
@@ -235,8 +237,9 @@ const PageSetSplit = ({
                             name={participant.name}
                             description={
                               <Text lineClamp={2} ta="center">
-                                {EuroNumberFormatter({
+                                {CurrencyFormatter({
                                   value: calculateEqualSplit(),
+                                  currency: groupData.currency,
                                 })}
                               </Text>
                             }
@@ -276,10 +279,11 @@ const PageSetSplit = ({
                                           lineClamp={2}
                                           ta="center"
                                         >
-                                          {EuroNumberFormatter({
+                                          {CurrencyFormatter({
                                             value: calculatePartSplit(
                                               split.part || 0
                                             ),
+                                            currency: groupData.currency,
                                           })}
                                         </Text>
                                       }
@@ -402,12 +406,12 @@ const PageSetSplit = ({
                                     min={0}
                                     max={9999999}
                                     clampBehavior="strict"
-                                    placeholder="0,00"
-                                    suffix="€"
+                                    placeholder={`0${decimalSeparator}00${symbol}`}
+                                    suffix={symbol}
                                     variant="unstyled"
                                     decimalScale={2}
-                                    decimalSeparator=","
-                                    thousandSeparator="."
+                                    decimalSeparator={decimalSeparator}
+                                    thousandSeparator={thousandSeparator}
                                     allowNegative={false}
                                     value={split.amount ?? ""}
                                     onChange={(e) => {
@@ -445,7 +449,7 @@ const PageSetSplit = ({
                         name={participant.name}
                         // description={
                         //   <Text c="dimmed" lineClamp={2} ta="center">
-                        //     {EuroNumberFormatter({
+                        //     {CurrencyFormatter({
                         //       value: calculateEqualSplit(),
                         //     })}
                         //   </Text>
@@ -490,7 +494,7 @@ const PageSetSplit = ({
                                     }}
                                   ></Input>
                                   <Text c="dimmed" lineClamp={2} ta="center">
-                                    {EuroNumberFormatter({
+                                    {CurrencyFormatter({
                                       value: calculatePartSplit(
                                         split.part || 0
                                       ),
@@ -502,7 +506,7 @@ const PageSetSplit = ({
                           // <>
                           //   <Input value={}></Input>
                           //   <Text c="dimmed" lineClamp={2} ta="center">
-                          //     {EuroNumberFormatter({
+                          //     {CurrencyFormatter({
                           //       value: calculatePartSplit(participant.part),
                           //     })}
                           //   </Text>
@@ -525,7 +529,7 @@ const PageSetSplit = ({
                   fw={500}
                   c={calculateRemainingAmount() < -0.001 ? "red" : calculateRemainingAmount() < 0.001 ? "green" : undefined}
                 >
-                  {EuroNumberFormatter({ value: calculateRemainingAmount() })}
+                  {CurrencyFormatter({ value: calculateRemainingAmount(), currency: groupData.currency })}
                 </Text>
               </Group>
               {form.errors.splitAmountError && (
