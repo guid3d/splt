@@ -4,6 +4,7 @@ import { UseFormReturnType } from "@mantine/form";
 import { Participant } from "@/types";
 import BigTextInput from "@/components/BigTextInput";
 import PaymentForm from "@/components/PaymentForm";
+import { randomPersonEmoji } from "@/utils/randomEmoji";
 
 type PageSetPaymentProps = {
   disabledPreferredPaymentMethod?: boolean;
@@ -18,7 +19,15 @@ const PageSetPayment = ({
     <Container>
       <Stack gap="xs">
         <Center>
-          <EmojiActionButtion form={form} />
+          <EmojiActionButtion
+            form={form}
+            onRandomize={() =>
+              form.setFieldValue("avatar", {
+                emoji: randomPersonEmoji(),
+                unified: "",
+              })
+            }
+          />
         </Center>
         <Center>
           <BigTextInput

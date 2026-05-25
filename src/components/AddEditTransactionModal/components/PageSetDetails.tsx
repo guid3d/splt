@@ -22,7 +22,7 @@ const PageSetDetails = ({ form }: PageSetDetailsProps) => {
           </Text>
         </Center>
         <Center>
-          <EmojiActionButtion form={form} />
+          <EmojiActionButtion form={form} suggestionQuery={form.values.name} />
         </Center>
         <BigTextInput
           placeholder="Name"

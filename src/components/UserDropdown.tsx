@@ -5,11 +5,11 @@ import {
   Stack,
   Text,
   Title,
-  useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
 import UserAvatar from "@/components/UserAvatar";
 import {
+  IconBrightnessAutoFilled,
   IconCreditCard,
   IconMoonFilled,
   IconSunFilled,
@@ -32,13 +32,14 @@ const UserDropdown = ({
   participants,
   onSelectUser,
 }: UserDropdownProps) => {
-  const { setColorScheme } = useMantineColorScheme();
-  const computedColorScheme = useComputedColorScheme();
+  const { colorScheme, setColorScheme } = useMantineColorScheme();
   const [modalOpened, { open: openModal, close: closeModal }] = useDisclosure(false);
   const [paymentModalOpened, { open: openPaymentModal, close: closePaymentModal }] = useDisclosure(false);
 
-  const toggleColorScheme = () => {
-    setColorScheme(computedColorScheme === "dark" ? "light" : "dark");
+  const cycleColorScheme = () => {
+    if (colorScheme === "light") setColorScheme("dark");
+    else if (colorScheme === "dark") setColorScheme("auto");
+    else setColorScheme("light");
   };
 
   const handleSelectUser = (participantId: string) => {
@@ -103,15 +104,17 @@ const UserDropdown = ({
 
           <Menu.Item
             leftSection={
-              computedColorScheme === "dark" ? (
-                <IconSunFilled style={{ width: rem(14) }} />
-              ) : (
+              colorScheme === "light" ? (
                 <IconMoonFilled style={{ width: rem(14) }} />
+              ) : colorScheme === "dark" ? (
+                <IconBrightnessAutoFilled style={{ width: rem(14) }} />
+              ) : (
+                <IconSunFilled style={{ width: rem(14) }} />
               )
             }
-            onClick={toggleColorScheme}
+            onClick={cycleColorScheme}
           >
-            {computedColorScheme === "dark" ? "Light mode" : "Dark mode"}
+            {colorScheme === "light" ? "Dark mode" : colorScheme === "dark" ? "Auto mode" : "Light mode"}
           </Menu.Item>
         </Menu.Dropdown>
       </Menu>

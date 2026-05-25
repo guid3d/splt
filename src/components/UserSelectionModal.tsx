@@ -154,6 +154,7 @@ const UserSelectionModal = ({
             <Button
               onClick={handleSave}
               loading={updateParticipant.isPending}
+              loaderProps={{ type: "dots" }}
               fullWidth
             >
               Save

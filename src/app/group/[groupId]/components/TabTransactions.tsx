@@ -9,7 +9,7 @@ import {
   Text,
   Title,
   rem,
-  useMantineColorScheme,
+  useComputedColorScheme,
 } from "@mantine/core";
 import { TotalSpendData } from "@/types";
 import UserAvatar from "@/components/UserAvatar";
@@ -26,7 +26,7 @@ type TabTransactionsProps = {
 };
 
 const TabTransactions = ({ groupData, localUserId }: TabTransactionsProps) => {
-  const { colorScheme } = useMantineColorScheme();
+  const colorScheme = useComputedColorScheme();
   const router = useRouter();
   const { groupId } = useParams<{ groupId: string }>();
   const { data, isPending, error } = useTransactions(groupId);
