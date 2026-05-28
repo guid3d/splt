@@ -9,7 +9,6 @@ import Modal from "@/components/Modal";
 import { Participant, PaymentMethodType } from "@/types";
 import PageSetPayment from "./components/PageSetPayment";
 import { randomPersonEmoji } from "@/utils/randomEmoji";
-import PageNotifyFinish from "./components/PageNotifyFinish";
 import { validateIban } from "@/lib/validateIban";
 // import { useId } from "@mantine/hooks";
 
@@ -27,32 +26,45 @@ const NewParticipantAvatar = () => {
 
 type AddParticipantModalProps = {
   disabledPreferredPaymentMethod?: boolean;
-  // groupForm: UseFormReturnType<GroupFormValues>;
   participants: Participant[];
   setParticipants: React.Dispatch<React.SetStateAction<Participant[]>>;
-  // setNewParticipant?: React.Dispatch<React.SetStateAction<Participant>>;
   onConfirmClick?: (newParticipant: Participant) => void;
   confirmSuccess?: boolean;
   setConfirmSuccess?: React.Dispatch<React.SetStateAction<boolean>>;
   nextButtonIsPending?: boolean;
+  // Controlled / edit mode
+  opened?: boolean;
+  onClose?: () => void;
+  editIndex?: number;
+  editParticipant?: Participant;
 };
 
 const AddParticipantModal = ({
-  // groupForm,
   disabledPreferredPaymentMethod,
   participants,
   setParticipants,
-  // setNewParticipant,
   onConfirmClick,
   confirmSuccess,
   setConfirmSuccess,
   nextButtonIsPending,
+  opened,
+  onClose,
+  editIndex,
+  editParticipant,
 }: AddParticipantModalProps) => {
   useEffect(() => {
-    form.setFieldValue("avatar", { emoji: randomPersonEmoji(), unified: "" });
+    if (editParticipant == null) {
+      form.setFieldValue("avatar", { emoji: randomPersonEmoji(), unified: "" });
+    }
   }, [confirmSuccess]);
 
-  const maxPage = 1;
+  useEffect(() => {
+    if (editParticipant != null) {
+      form.setValues(editParticipant);
+    }
+  }, [editParticipant]);
+
+  const maxPage = 0;
   const confirmPage = 0;
   const [page, pageHandler] = useCounter(0, {
     min: 0,
@@ -96,11 +108,20 @@ const AddParticipantModal = ({
           pageHandler={pageHandler}
           maxPage={maxPage}
           confirmPage={confirmPage}
+          opened={opened}
+          onClose={onClose}
           onConfirmClick={() => {
-            setParticipants([...participants, form.values]);
+            if (editIndex !== undefined) {
+              setParticipants((prev) =>
+                prev.map((p, i) => (i === editIndex ? { ...p, ...form.values } : p))
+              );
+            } else {
+              setParticipants([...participants, form.values]);
+            }
             if (onConfirmClick) {
               onConfirmClick(form.values);
             }
+            form.reset();
           }}
           onCloseModalClick={() => {
             form.reset();
@@ -125,9 +146,6 @@ const AddParticipantModal = ({
               disabledPreferredPaymentMethod={disabledPreferredPaymentMethod}
               form={form}
             />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PageNotifyFinish />
           </Carousel.Slide>
         </Modal>
       </form>

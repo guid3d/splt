@@ -169,6 +169,7 @@ const AddGroupModal = () => {
             form={form}
             participants={participants}
             setParticipants={setParticipants}
+            isActive={page === 1}
           />
         </Carousel.Slide>
         <Carousel.Slide>
