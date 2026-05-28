@@ -87,24 +87,23 @@ const TopSummary = ({ selectedTab, groupData, localUserId }: TopSummaryProps) =>
             {netBalance !== null ? (
               <>
                 <Center>
-                  <Text c="dimmed">Your balance</Text>
+                  <Text c="dimmed">
+                    {netBalance > 0
+                      ? "You are owed"
+                      : netBalance < 0
+                      ? "You owe"
+                      : "All settled"}
+                  </Text>
                 </Center>
                 <Center>
                   <Title
                     order={2}
                     c={netBalance > 0 ? "green" : netBalance < 0 ? "red" : "dimmed"}
                   >
-                    <CurrencyFormatter value={Math.abs(netBalance)} currency={data.expand.groupInfo.currency} />
+                    {netBalance !== 0 && (
+                      <CurrencyFormatter value={Math.abs(netBalance)} currency={data.expand.groupInfo.currency} />
+                    )}
                   </Title>
-                </Center>
-                <Center>
-                  <Text size="sm" c="dimmed">
-                    {netBalance > 0
-                      ? "you are owed"
-                      : netBalance < 0
-                      ? "you owe"
-                      : "all settled"}
-                  </Text>
                 </Center>
               </>
             ) : (
